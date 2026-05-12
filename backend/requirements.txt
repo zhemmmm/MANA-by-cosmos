@@ -7,6 +7,7 @@ psycopg2-binary==2.9.12
 apify-client==1.12.1
 python-dotenv==1.2.2
 corextopic==1.1
+six>=1.16.0
 vaderSentiment==3.3.2
 scikit-learn==1.8.0
 joblib==1.5.3

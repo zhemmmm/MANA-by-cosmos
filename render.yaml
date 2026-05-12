@@ -16,9 +16,7 @@ services:
         sync: false                  # e.g. https://mana-frontend.onrender.com
       - key: APIFY_TOKEN
         sync: false
-      - key: APIFY_POSTS_TASK_ID
-        sync: false
-      - key: APIFY_COMMENTS_TASK_ID
+      - key: APIFY_FB_ACTOR_TASK_ID
         sync: false
       - key: APIFY_WEBHOOK_SECRET
         sync: false

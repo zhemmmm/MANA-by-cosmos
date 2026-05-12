@@ -161,8 +161,7 @@ For live Apify sync, also add:
 
 ```env
 APIFY_TOKEN=apify_api_xxxxx
-APIFY_POSTS_TASK_ID=your-posts-task-id
-APIFY_COMMENTS_TASK_ID=your-comments-task-id
+APIFY_FB_ACTOR_TASK_ID=your-facebook-task-id
 APIFY_WEBHOOK_SECRET=replace-with-a-long-random-secret
 ```
 
