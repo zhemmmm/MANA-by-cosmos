@@ -5,6 +5,7 @@ Endpoints:
   POST /api/admin/rf/train        — train from existing labeled posts
   POST /api/admin/rf/predict-all  — classify all posts, update Post.priority + PostPriority
   GET  /api/admin/rf/status       — model metadata and training state
+  rff
 """
 
 from __future__ import annotations
@@ -148,3 +149,4 @@ def predict_all():
 @admin_required
 def status():
     return jsonify(get_model_status())
+

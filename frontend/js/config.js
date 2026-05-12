@@ -9,8 +9,8 @@
  * USE_MOCK = false → all calls go to Flask/Django at API_BASE
  */
 
-const SUPABASE_URL = "https://gizuoookwwkximbqvcpx.supabase.co/";
-const SUPABASE_KEY = "sb_publishable_cj0YjBeAVubMaZVOyYXNyQD0en0BF";
+const SUPABASE_URL = "https://gilmqjaygnkcrabyacnv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_KAreWH4IpJSaSPTMxwT3lQ_dTianTP-";
 
 const API_BASE = "https://mana-backend-4s1w.onrender.com/api";
 const USE_MOCK = false;
