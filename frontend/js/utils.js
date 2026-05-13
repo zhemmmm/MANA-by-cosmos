@@ -75,8 +75,22 @@ function matchesPostSearch(post, searchTerm) {
   return tokens.every(token => haystack.includes(token));
 }
 
-function filterPosts(sourcePosts, dateRange, source, searchTerm = "") {
+function getPostStatus(post) {
+  return state?.statuses?.[post.id] || post.status || "Monitoring";
+}
+
+function isResolvedStatus(status) {
+  return String(status || "").toLowerCase() === "resolved";
+}
+
+function isResolvedPost(post) {
+  return isResolvedStatus(getPostStatus(post));
+}
+
+function filterPosts(sourcePosts, dateRange, source, searchTerm = "", options = {}) {
+  const { includeResolved = false } = options;
   return sourcePosts
+    .filter(p => includeResolved || !isResolvedPost(p))
     .filter(p => matchesDateRange(p.date, dateRange))
     .filter(p => source === "All" ? true : p.source === source)
     .filter(p => matchesPostSearch(p, searchTerm));

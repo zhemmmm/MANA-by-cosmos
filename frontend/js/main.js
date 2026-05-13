@@ -34,6 +34,7 @@ const state = {
   // User state
   pinned:        new Set(),
   statuses:      {},
+  statusHistory: {},
   verifications: {},
   profile:       { username: "admin_mana", role: "LGU Analyst", email: "lgu.analyst@mana.ph" },
   emailAlerts:   true,
@@ -55,6 +56,7 @@ const state = {
 
 const pageTitles = {
   dashboard:       { eyebrow:"Dashboard",        title:"MANA command overview" },
+  resolved:        { eyebrow:"Resolved Posts",   title:"Resolved archive and restore queue" },
   analytics:       { eyebrow:"Analytics",        title:"Trend and sentiment analysis" },
   alerts:          { eyebrow:"Live Alerts",      title:"Priority cluster and severity watch" },
   watchlist:       { eyebrow:"Saved Intelligence",title:"Pinned incident review queue" },
@@ -88,6 +90,7 @@ function resetDeferredState() {
   state.dashboardComments = [];
   state.analytics = {};
   state.statuses = {};
+  state.statusHistory = {};
   state.verifications = {};
   state.pinned = new Set();
 }
@@ -131,10 +134,10 @@ async function loadCriticalAppData() {
       }));
       state.statuses = Object.fromEntries(state.posts.map(p => [p.id, p.status]));
 
-      if (USE_MOCK) {
-        const saved = localStorage.getItem("mana-statuses");
-        if (saved) state.statuses = { ...state.statuses, ...JSON.parse(saved) };
-      }
+      const saved = localStorage.getItem("mana-statuses");
+      if (saved) state.statuses = { ...state.statuses, ...JSON.parse(saved) };
+      const savedHistory = localStorage.getItem("mana-status-history");
+      if (savedHistory) state.statusHistory = { ...state.statusHistory, ...JSON.parse(savedHistory) };
 
       state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
       initVerifications(state.posts);
@@ -300,12 +303,62 @@ function hydrateLocalPreferences() {
 }
 
 function persistLocalPreferences() {
+  localStorage.setItem("mana-statuses", JSON.stringify(state.statuses));
+  localStorage.setItem("mana-status-history", JSON.stringify(state.statusHistory));
   if (USE_MOCK) {
-    localStorage.setItem("mana-pinned",   JSON.stringify([...state.pinned]));
-    localStorage.setItem("mana-statuses", JSON.stringify(state.statuses));
-    localStorage.setItem("mana-profile",  JSON.stringify(state.profile));
+    localStorage.setItem("mana-pinned", JSON.stringify([...state.pinned]));
+    localStorage.setItem("mana-profile", JSON.stringify(state.profile));
   }
   localStorage.setItem("mana-email-alerts", String(state.emailAlerts));
+}
+
+function getRestoreStatus(postId) {
+  const remembered = state.statusHistory[postId];
+  if (remembered && !isResolvedStatus(remembered)) return remembered;
+
+  const original = state.posts.find(post => post.id === postId)?.status;
+  if (original && !isResolvedStatus(original)) return original;
+
+  return "Monitoring";
+}
+
+async function setPostStatus(postId, status, options = {}) {
+  const { silent = false } = options;
+  const post = state.posts.find(item => item.id === postId);
+  const previousStatus = getPostStatus(post || { id: postId, status: "Monitoring" });
+
+  if (!isResolvedStatus(previousStatus)) {
+    state.statusHistory[postId] = previousStatus;
+  }
+  if (!isResolvedStatus(status) && status) {
+    state.statusHistory[postId] = status;
+  }
+
+  state.statuses[postId] = status;
+  persistLocalPreferences();
+  renderCurrentPage({ refreshDashboardSummary: true });
+
+  document.querySelectorAll(`[data-status-select="${postId}"]`).forEach(select => {
+    select.value = status;
+    applyStatusStyle(select, status);
+  });
+
+  try {
+    const result = await PostsService.updatePostStatus(postId, status);
+    if (!silent) {
+      showToast(
+        result?.localOnly ? "Status updated locally" : "Post status updated",
+        result?.localOnly
+          ? "The operational status was saved in this browser for now."
+          : "The operational status has been updated."
+      );
+    }
+  } catch (err) {
+    if (!silent) {
+      showToast("Status saved locally", "The card updated in the dashboard, but the backend request failed.");
+    }
+    console.warn("Status update failed:", err);
+  }
 }
 
 // ─── Event Bindings ───────────────────────────────────────────────────────────
@@ -376,6 +429,7 @@ function handleDocumentClick(event) {
   const action        = event.target.closest("[data-action]");
   const pin           = event.target.closest("[data-pin]");
   const commentToggle = event.target.closest("[data-toggle-comments]");
+  const restorePost   = event.target.closest("[data-restore-post]");
 
   if (nav)        setPage(nav.dataset.nav);
   if (clusterNav) { state.currentCluster = clusterNav.dataset.clusterNav; setPage("cluster-detail"); }
@@ -390,6 +444,10 @@ function handleDocumentClick(event) {
   }
 
   if (pin) togglePin(pin.dataset.pin);
+  if (restorePost) {
+    const postId = restorePost.dataset.restorePost;
+    setPostStatus(postId, getRestoreStatus(postId), { silent: false });
+  }
 
   const openPost = event.target.closest("[data-open-post]");
   if (openPost) {
@@ -537,21 +595,8 @@ async function handleDocumentChange(event) {
   if (event.target.matches("[data-status-select]")) {
     const postId = event.target.dataset.statusSelect;
     const status = event.target.value;
-    state.statuses[postId] = status;
     applyStatusStyle(event.target, status);
-    persistLocalPreferences();
-    try {
-      const result = await PostsService.updatePostStatus(postId, status);
-      showToast(
-        result?.localOnly ? "Status updated locally" : "Post status updated",
-        result?.localOnly
-          ? "The operational status was saved in this browser for now."
-          : "The operational status has been updated."
-      );
-    } catch (err) {
-      showToast("Status saved locally", "The card updated in the dashboard, but the backend request failed.");
-      console.warn("Status update failed:", err);
-    }
+    await setPostStatus(postId, status);
   }
   if (event.target.matches("#clusterSeverityFilter")) {
     applySeverityStyle(event.target, event.target.value);
@@ -575,6 +620,10 @@ function renderCurrentPage({ refreshDashboardSummary = false } = {}) {
   }
   if (state.currentPage === "analytics") {
     renderAnalytics();
+    return;
+  }
+  if (state.currentPage === "resolved") {
+    renderResolvedArchivePage();
     return;
   }
   if (state.currentPage === "alerts") {

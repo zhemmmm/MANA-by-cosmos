@@ -145,6 +145,10 @@
               <span class="nav-btn-title">Dashboard</span>
               <span class="nav-btn-meta">Executive overview, signals, trending posts, and tracked comments</span>
             </button>
+            <button class="nav-btn" type="button" data-nav="resolved">
+              <span class="nav-btn-title">Resolved Posts</span>
+              <span class="nav-btn-meta">Archived resolved posts that can be returned to active monitoring</span>
+            </button>
             <button class="nav-btn" type="button" data-nav="analytics">
               <span class="nav-btn-title">Analytics</span>
               <span class="nav-btn-meta">Sentiment histogram, trend shifts, and cluster performance movement</span>
@@ -286,6 +290,30 @@
               </div>
             </div>
             <div class="comment-list" id="dashboardComments"></div>
+          </div>
+        </section>
+
+        <section class="page" data-page="resolved">
+          <div class="page-head">
+            <div>
+              <div class="eyebrow">Resolved Archive</div>
+              <h2>Resolved posts side panel</h2>
+              <p>All resolved posts are stored here so your team can restore them if someone marks a post resolved by mistake.</p>
+            </div>
+            <div class="page-meta">
+              <div class="page-chip">Hidden from dashboard and clusters</div>
+              <div class="page-chip">Restore in one click</div>
+            </div>
+          </div>
+
+          <div class="surface tone-slate">
+            <div class="surface-header">
+              <div>
+                <div class="surface-title">All resolved posts</div>
+                <div class="surface-subtitle">Posts from every cluster are collected here until they are brought back.</div>
+              </div>
+            </div>
+            <div class="resolved-panel" id="resolvedPostsPanel"></div>
           </div>
         </section>
 
@@ -483,6 +511,16 @@
           </div>
 
           <div class="cluster-posts" id="clusterPostGrid"></div>
+
+          <div class="panel tone-slate resolved-panel-shell">
+            <div class="panel-header">
+              <div>
+                <div class="surface-title">Resolved posts archive</div>
+                <div class="surface-subtitle">Resolved posts from this cluster can be returned to active monitoring.</div>
+              </div>
+            </div>
+            <div class="resolved-panel" id="clusterResolvedPostsPanel"></div>
+          </div>
         </section>
 
         <section class="page" data-page="settings">

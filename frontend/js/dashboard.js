@@ -143,6 +143,14 @@ function renderLoadingMessage(message) {
   return `<div class="watch-empty"><strong>${message}</strong></div>`;
 }
 
+function renderResolvedPostsPanel(postList, emptyMessage, scope = "dashboard") {
+  if (!postList.length) {
+    return `<div class="watch-empty"><strong>${emptyMessage}</strong></div>`;
+  }
+
+  return renderPostCards(postList, { archiveMode: true });
+}
+
 function getDashboardViewModel() {
   const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch);
   const sortedTrendingPosts = [...filteredPosts]
@@ -244,6 +252,18 @@ function renderDashboard() {
     : `<div class="watch-empty"><strong>No trending comments available.</strong>Import a Facebook comments dataset to populate this panel.</div>`);
 
   renderPriorityPosts();
+}
+
+function renderResolvedArchivePage() {
+  const resolvedPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { includeResolved: true })
+    .filter(isResolvedPost)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  document.getElementById("resolvedPostsPanel").innerHTML = renderResolvedPostsPanel(
+    resolvedPosts,
+    "No resolved posts yet. Resolved items will appear here after they are marked resolved.",
+    "resolved"
+  );
 }
 
 // ─── Render: Source Directory ─────────────────────────────────────────────────

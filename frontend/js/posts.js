@@ -151,7 +151,8 @@ async function togglePin(postId) {
 }
 
 // ─── Render: Post Cards ───────────────────────────────────────────────────────
-function renderPostCards(postList) {
+function renderPostCards(postList, options = {}) {
+  const { archiveMode = false } = options;
   if (!postList.length) return `<div class="watch-empty"><strong>No posts match the selected filters.</strong>Try a broader source selection or a wider date range.</div>`;
 
   return postList.map(post => {
@@ -174,7 +175,7 @@ function renderPostCards(postList) {
 
     const isVerified    = verifyStatus === "auto-verified" || verifyStatus === "manually-verified";
     const verifyLabel   = isVerified ? "✓ Verified" : "⊕ Unverified";
-    const currentStatus = state.statuses[post.id] || post.status || "Monitoring";
+    const currentStatus = getPostStatus(post);
 
     return `
       <article class="post-card post-priority-${priorityKey}" data-post-card="${post.id}">
@@ -210,9 +211,10 @@ function renderPostCards(postList) {
                 <p class="rec-popup-text">${post.recommendation}</p>
               </div>
             </div>` : ""}
+            ${archiveMode ? "" : `
             <button class="pin-btn ${pinned ? "pinned" : ""}" type="button" data-pin="${post.id}" aria-label="Pin post">
               <svg viewBox="0 0 24 24"><path d="M8 3h8l-1 5 3 3v1H6v-1l3-3-1-5z"></path><path d="M12 12v9"></path></svg>
-            </button>
+            </button>`}
           </div>
         </div>
 
@@ -433,8 +435,16 @@ function renderClusterDetail() {
       return true;
     })
     .sort((a, b) => f.severity === "Trending" ? getEngagement(b) - getEngagement(a) : sortPostsByPriority(a, b));
+  const resolvedClusterPosts = filterPosts(clusterPosts, f.dateRange, f.source, state.globalSearch, { includeResolved: true })
+    .filter(isResolvedPost)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   document.getElementById("clusterPostGrid").innerHTML = renderPostCards(filteredPosts);
+  document.getElementById("clusterResolvedPostsPanel").innerHTML = renderResolvedPostsPanel(
+    resolvedClusterPosts,
+    "No resolved posts in this cluster right now.",
+    "cluster"
+  );
   renderClusterNav();
   applySeverityStyle(document.getElementById("clusterSeverityFilter"), f.severity);
 }
