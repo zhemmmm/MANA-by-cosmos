@@ -67,6 +67,8 @@ const pageTitles = {
 let appBootPromise = null;
 let criticalDataPromise = null;
 let deferredDataPromise = null;
+let liveUpdatesChannel = null;
+let liveRefreshTimer = null;
 
 function resetDeferredState() {
   criticalDataPromise = null;
@@ -359,6 +361,78 @@ async function setPostStatus(postId, status, options = {}) {
     }
     console.warn("Status update failed:", err);
   }
+}
+
+function scheduleLiveRefresh() {
+  clearTimeout(liveRefreshTimer);
+  liveRefreshTimer = setTimeout(async () => {
+    try {
+      criticalDataPromise = null;
+      deferredDataPromise = null;
+      state.loaded.criticalData = false;
+      state.loaded.keywords = false;
+      state.loaded.dashboardComments = false;
+      state.loaded.analytics = false;
+      state.loaded.watchlist = false;
+
+      await loadCriticalAppData();
+      await loadDeferredAppData();
+      renderCurrentPage({ refreshDashboardSummary: true });
+      showToast("Live update received", "New Apify data was loaded automatically.");
+    } catch (err) {
+      console.warn("Live refresh failed:", err);
+    }
+  }, 2000);
+}
+
+function startLiveUpdates() {
+  if (USE_MOCK || !window.supabase || liveUpdatesChannel) return;
+
+  liveUpdatesChannel = window.supabase
+    .channel("mana-live-updates")
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "posts" },
+      payload => {
+        console.log("Realtime post insert:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "UPDATE", schema: "public", table: "posts" },
+      payload => {
+        console.log("Realtime post update:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "comments" },
+      payload => {
+        console.log("Realtime comment insert:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "UPDATE", schema: "public", table: "comments" },
+      payload => {
+        console.log("Realtime comment update:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .subscribe(status => {
+      console.log("Supabase Realtime status:", status);
+    });
+}
+
+function stopLiveUpdates() {
+  if (liveUpdatesChannel && window.supabase) {
+    window.supabase.removeChannel(liveUpdatesChannel);
+  }
+  liveUpdatesChannel = null;
+  clearTimeout(liveRefreshTimer);
 }
 
 // ─── Event Bindings ───────────────────────────────────────────────────────────

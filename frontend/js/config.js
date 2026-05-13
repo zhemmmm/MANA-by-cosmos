@@ -14,6 +14,7 @@ const SUPABASE_KEY = "sb_publishable_KAreWH4IpJSaSPTMxwT3lQ_dTianTP-";
 
 const API_BASE = "https://mana-backend-4s1w.onrender.com/api";
 // const API_BASE = "http://localhost:5000/api";
+// try lang
 const USE_MOCK = false;
 
 // ─── JWT Helpers ──────────────────────────────────────────────────────────────
