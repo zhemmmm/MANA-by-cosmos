@@ -15,7 +15,7 @@ from functools import wraps
 from flask import Blueprint, jsonify
 from flask_jwt_extended import get_jwt, jwt_required
 
-from data import recommendation_for
+from data import recommendation_payload_for
 from models import Post, PostPriority, PreprocessedText, db
 from services.random_forest.priority_classifier import (
     SEVERITY_MAP,
@@ -27,7 +27,7 @@ from services.random_forest.priority_classifier import (
 
 rf_bp = Blueprint("rf", __name__)
 
-# Map RF output back to the priority string that recommendation_for() acts on
+# Map RF output back to the priority string that the recommendation logic acts on
 _RF_TO_REC_PRIORITY = {"High": "Critical", "Medium": "Moderate", "Low": "Monitoring"}
 
 
@@ -108,9 +108,17 @@ def predict_all():
 
         post.priority      = label
         post.severity_rank = SEVERITY_MAP.get(label, 2)
-        post.recommendation = recommendation_for(
-            post.cluster_id, _RF_TO_REC_PRIORITY.get(label, "Moderate"), post.caption
-        )
+        post.recommendation = recommendation_payload_for(
+            post.cluster_id,
+            _RF_TO_REC_PRIORITY.get(label, "Moderate"),
+            sentiment_score=post.sentiment_score,
+            reactions=post.reactions,
+            likes=post.likes,
+            comments=post.comments,
+            shares=post.shares,
+            reposts=post.reposts,
+            post_count=1,
+        )["recommendation"]
 
         existing = PostPriority.query.filter_by(post_id=pid).first()
         if existing:

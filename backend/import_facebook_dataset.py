@@ -18,7 +18,7 @@ from data import (
     infer_priority,
     infer_sentiment_score,
     media_type_for,
-    recommendation_for,
+    recommendation_payload_for,
     extract_location,
     PRIORITY_ORDER,
 )
@@ -112,6 +112,16 @@ def normalize_item(item: dict):
     engagement = reactions + comments + shares
     priority = infer_priority(text, engagement)
     sentiment_score = infer_sentiment_score(text, engagement)
+    recommendation_payload = recommendation_payload_for(
+        cluster["id"],
+        priority,
+        sentiment_score=sentiment_score,
+        reactions=reactions,
+        likes=like_reactions,
+        comments=comments,
+        shares=shares,
+        post_count=1,
+    )
 
     post_id = str(item.get("postId") or item.get("url") or item.get("topLevelUrl"))
     return {
@@ -132,7 +142,7 @@ def normalize_item(item: dict):
         "media_type": media_type_for(item),
         "priority": priority,
         "sentiment_score": sentiment_score,
-        "recommendation": recommendation_for(cluster["id"], priority, text),
+        "recommendation": recommendation_payload["recommendation"],
         "status": "Monitoring",
         "cluster_id": cluster["id"],
         "cluster_label_source": "heuristic",

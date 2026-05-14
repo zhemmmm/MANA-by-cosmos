@@ -13,7 +13,7 @@ from functools import wraps
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, jwt_required
 
-from data import recommendation_for
+from data import recommendation_payload_for
 from models import Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, db
 from services.corex.topic_modeler import (
     get_model_status as corex_status,
@@ -37,7 +37,7 @@ from services.random_forest.priority_classifier import (
     train_rf,
 )
 
-# Map RF labels to the priority string recommendation_for() acts on
+# Map RF labels to the priority string recommendation logic acts on
 _RF_TO_REC_PRIORITY = {"High": "Critical", "Medium": "Moderate", "Low": "Monitoring"}
 
 pipeline_bp = Blueprint("pipeline", __name__)
@@ -390,9 +390,17 @@ def run_all():
                 continue
             post.priority      = label
             post.severity_rank = SEVERITY_MAP.get(label, 2)
-            post.recommendation = recommendation_for(
-                post.cluster_id, _RF_TO_REC_PRIORITY.get(label, "Moderate"), post.caption
-            )
+            post.recommendation = recommendation_payload_for(
+                post.cluster_id,
+                _RF_TO_REC_PRIORITY.get(label, "Moderate"),
+                sentiment_score=post.sentiment_score,
+                reactions=post.reactions,
+                likes=post.likes,
+                comments=post.comments,
+                shares=post.shares,
+                reposts=post.reposts,
+                post_count=1,
+            )["recommendation"]
             existing = PostPriority.query.filter_by(post_id=pid).first()
             if existing:
                 existing.priority_label     = label

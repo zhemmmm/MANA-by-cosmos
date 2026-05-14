@@ -1,391 +1,387 @@
 """
-MANA — Rule-Based Decision Module
-Maps topic + sentiment results to actionable LGU recommendations.
+Thesis-approved deterministic recommendation engine.
 
-Inputs  : cluster_id (str), neg_pct (float 0–100), post_count (int)
-Outputs : recommendation (str), rule_id (str), rationale (str)
+Recommendation inputs:
+1. topic
+2. sentiment
+3. engagement score
+4. predicted priority
 
-Priority levels are handled separately by the Random Forest classifier.
-This module is responsible for recommendations only.
-
-Rule ordering: first match wins. Life-safety clusters (G, H) have the
-lowest thresholds because delayed response carries the highest human cost.
+The engine is intentionally rule-based and explainable. Topic selects the
+response category, while sentiment, engagement score, and predicted priority
+select the recommendation level.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable
 
 
-# ── Volume tiers ─────────────────────────────────────────────────────────────
+HIGH_ENGAGEMENT_THRESHOLD = 1000
+MODERATE_ENGAGEMENT_THRESHOLD = 300
 
-HIGH_VOLUME = 10      # ≥ 10 posts → amplifies urgency in recommendation
-MODERATE_VOLUME = 5   # 5–9 posts
+HIGH_PRIORITIES = {"HIGH", "CRITICAL"}
+MEDIUM_OR_HIGH_PRIORITIES = {"MEDIUM", "HIGH", "CRITICAL"}
 
+TOPIC_LABELS = {
+    "cluster-a": "Relief Supply",
+    "cluster-b": "Health and WASH",
+    "cluster-c": "Evacuation Center Management",
+    "cluster-d": "Logistics",
+    "cluster-e": "Emergency Telecommunications",
+    "cluster-f": "Education",
+    "cluster-g": "Search and Rescue",
+    "cluster-h": "Missing Persons",
+}
 
-# ── Rule definition ───────────────────────────────────────────────────────────
+TOPIC_RESPONSES = {
+    "cluster-a": {
+        "HIGH": "Immediate LGU Relief and DSWD Dispatch",
+        "MEDIUM": "Relief Needs Validation and Prepositioning",
+        "LOW": "Routine Relief Monitoring",
+        "HIGH_TEXT": (
+            "Coordinate with DSWD for immediate food pack deployment. Alert LGU and "
+            "partner NGOs for supplementary relief distribution. Prioritize infants, "
+            "elderly, and other vulnerable evacuees."
+        ),
+        "MEDIUM_TEXT": (
+            "Coordinate NFI distribution with DSWD and Red Cross. Preposition "
+            "blankets, clothing, and hygiene kits in the evacuation center. Monitor "
+            "inventory for follow-up replenishment."
+        ),
+        "LOW_TEXT": (
+            "Log successful relief distribution. Continue monitoring food and NFI "
+            "levels. Assess remaining stock for the next distribution cycle."
+        ),
+    },
+    "cluster-b": {
+        "HIGH": "Immediate MDRRMO Health Response",
+        "MEDIUM": "Barangay Health Validation and Supply Readiness",
+        "LOW": "Routine Health Monitoring",
+        "HIGH_TEXT": (
+            "Deploy a rapid health response team immediately. Coordinate with DOH and "
+            "RHU for disease surveillance, medical assessment, and sanitation "
+            "intervention. Isolate symptomatic individuals and inspect water sources."
+        ),
+        "MEDIUM_TEXT": (
+            "Deploy potable water supply and sanitation support to the evacuation "
+            "center. Coordinate with WASH teams for toilet cleaning, desludging, and "
+            "hygiene promotion. Monitor public health risks among evacuees."
+        ),
+        "LOW_TEXT": (
+            "Log the stabilization of health conditions in the evacuation center. "
+            "Continue routine monitoring, basic treatment, and health information "
+            "dissemination. Maintain standby support for vulnerable groups."
+        ),
+    },
+    "cluster-c": {
+        "HIGH": "Immediate Evacuation Center Protection Response",
+        "MEDIUM": "Evacuation Site Validation and Support",
+        "LOW": "Routine Shelter Monitoring",
+        "HIGH_TEXT": (
+            "Activate secondary evacuation sites. Coordinate transport of overflow "
+            "evacuees to alternate safe sites. Update camp capacity records and "
+            "inform MDRRMO of congestion status."
+        ),
+        "MEDIUM_TEXT": (
+            "Deploy camp management personnel, barangay peacekeeping staff, and "
+            "social workers to restore order. Coordinate with PNP if crowd control "
+            "support is needed. Re-establish camp rules and complaint handling "
+            "procedures."
+        ),
+        "LOW_TEXT": (
+            "Log improved camp organization and volunteer coordination. Continue "
+            "monitoring protection concerns and service flow. Maintain regular camp "
+            "management supervision."
+        ),
+    },
+    "cluster-d": {
+        "HIGH": "Immediate Logistics and Route Clearing Response",
+        "MEDIUM": "Logistics Validation and Rerouting Readiness",
+        "LOW": "Routine Logistics Monitoring",
+        "HIGH_TEXT": (
+            "Coordinate with MDRRMO and logistics teams to identify alternate "
+            "delivery routes immediately. Deploy smaller transport units or boats if "
+            "needed. Prioritize delivery of essential relief items to isolated areas."
+        ),
+        "MEDIUM_TEXT": (
+            "Reassign available transport assets and coordinate with partner agencies "
+            "for supplemental hauling support. Review dispatch scheduling and update "
+            "expected delivery times to field responders. Monitor stock levels until "
+            "delivery is completed."
+        ),
+        "LOW_TEXT": (
+            "Log successful delivery and distribution of supplies. Continue routine "
+            "monitoring of warehouse stock and field replenishment needs. Maintain "
+            "delivery readiness for follow-up requests."
+        ),
+    },
+    "cluster-e": {
+        "HIGH": "Immediate Emergency Communications Restoration",
+        "MEDIUM": "Communications Validation and Backup Readiness",
+        "LOW": "Routine Communications Monitoring",
+        "HIGH_TEXT": (
+            "Coordinate with DICT for deployment of emergency satellite communication "
+            "unit. Alert TELCO providers for priority signal restoration. Activate "
+            "amateur radio network for backup communication."
+        ),
+        "MEDIUM_TEXT": (
+            "Investigate MDRRMO hotline system status. Activate secondary communication "
+            "channels and publish alternate hotlines immediately. Monitor unresolved "
+            "communication complaints for escalation."
+        ),
+        "LOW_TEXT": (
+            "Log restoration of communication services in the affected area. Continue "
+            "monitoring for intermittent outages and nearby signal gaps. Maintain "
+            "advisory updates until service becomes stable."
+        ),
+    },
+    "cluster-f": {
+        "HIGH": "Immediate Education Continuity Coordination",
+        "MEDIUM": "School Disruption Validation and Coordination",
+        "LOW": "Routine Education Monitoring",
+        "HIGH_TEXT": (
+            "Coordinate with DepEd and MDRRMO for urgent school use assessment and "
+            "transition planning. Identify temporary learning spaces or alternate "
+            "class arrangements. Issue an advisory on safe resumption timelines."
+        ),
+        "MEDIUM_TEXT": (
+            "Coordinate with DepEd and partner organizations for replacement of "
+            "damaged learning materials and classroom supplies. Conduct a rapid "
+            "damage assessment and prioritize affected grade levels."
+        ),
+        "LOW_TEXT": (
+            "Log school reopening and recovery status. Continue monitoring remaining "
+            "educational material needs and student attendance. Maintain coordination "
+            "with school administrators for follow-up concerns."
+        ),
+    },
+    "cluster-g": {
+        "HIGH": "Immediate MDRRMO Disaster Response",
+        "MEDIUM": "Rescue Validation and Standby Deployment",
+        "LOW": "Routine Rescue Monitoring",
+        "HIGH_TEXT": (
+            "Deploy Search and Rescue units immediately to the reported location. "
+            "Coordinate with MDRRMO, BFP, and water rescue teams for extraction. "
+            "Relay exact location details to the rescue operations commander."
+        ),
+        "MEDIUM_TEXT": (
+            "Validate the incident and dispatch the nearest available rescue team. "
+            "Prioritize assisted evacuation of vulnerable individuals. Coordinate "
+            "with local health responders in case medical transport is needed."
+        ),
+        "LOW_TEXT": (
+            "Log the completed rescue operation and document the number of "
+            "individuals assisted. Continue monitoring the area for follow-up rescue "
+            "needs. Coordinate with evacuation center personnel for status "
+            "confirmation."
+        ),
+    },
+    "cluster-h": {
+        "HIGH": "Immediate Missing Persons Coordination",
+        "MEDIUM": "Case Validation and Tracing Readiness",
+        "LOW": "Routine Missing Persons Monitoring",
+        "HIGH_TEXT": (
+            "Coordinate with PNP, rescue personnel, and medico-legal teams for body "
+            "retrieval and identification procedures. Notify MDRRMO for "
+            "documentation and cross-reference with missing persons reports."
+        ),
+        "MEDIUM_TEXT": (
+            "Register the missing person case with MDRRMO and PNP. Cross-reference "
+            "evacuation center registries, hospital admissions, and available "
+            "incident reports. Coordinate with barangay officials for localized "
+            "tracing."
+        ),
+        "LOW_TEXT": (
+            "Log the resolution of the missing person report. Update incident records "
+            "and close the tracing case after verification. Continue monitoring for "
+            "related or duplicate reports."
+        ),
+    },
+}
+
+DEFAULT_TOPIC = "general"
+DEFAULT_TOPIC_LABEL = "General Incident"
+DEFAULT_RESPONSES = {
+    "HIGH": "Immediate LGU Assessment",
+    "MEDIUM": "Field Validation and Monitoring",
+    "LOW": "Routine Situation Monitoring",
+    "HIGH_TEXT": "Immediate LGU assessment is recommended due to the combined distress indicators.",
+    "MEDIUM_TEXT": "Validate the reported concern and maintain response readiness while monitoring for escalation.",
+    "LOW_TEXT": "Continue routine monitoring until stronger urgency signals are observed.",
+}
+
 
 @dataclass(frozen=True)
-class Rule:
+class RecommendationResult:
+    recommendation: str
     rule_id: str
-    rationale: str          # human-readable explanation of why the rule fires
-    recommendation: str     # actionable LGU instruction
-    condition: Callable[[str, float, int], bool]
+    rationale: str
+    inputs: dict
 
-    def matches(self, cluster_id: str, neg_pct: float, post_count: int) -> bool:
-        return self.condition(cluster_id, neg_pct, post_count)
-
-
-# ── Rule table ────────────────────────────────────────────────────────────────
-#
-# Format:
-#   IF  <condition expressed in plain English as rationale>
-#   THEN recommendation = <actionable LGU instruction>
-#
-# Clusters:
-#   cluster-a  Food & NFIs
-#   cluster-b  Health / WASH / Mental Health
-#   cluster-c  Camp Coordination & Evacuation Management (CCCM)
-#   cluster-d  Logistics
-#   cluster-e  Emergency Telecommunications
-#   cluster-f  Education
-#   cluster-g  Search, Rescue & Retrieval  ← lowest threshold (life-safety)
-#   cluster-h  Management of Dead & Missing ← lowest threshold (life-safety)
-
-RULES: list[Rule] = [
-
-    # ── Cluster G: Search, Rescue & Retrieval ─────────────────────────────────
-
-    Rule(
-        rule_id="R-G1",
-        rationale="Rescue/SRR topic AND negative sentiment ≥ 50% — active distress likely",
-        recommendation=(
-            "Deploy SRR team to the reported area immediately. "
-            "Forward distress coordinates to the nearest rescue unit and activate "
-            "barangay emergency protocols."
-        ),
-        condition=lambda c, n, v: c == "cluster-g" and n >= 50,
-    ),
-
-    Rule(
-        rule_id="R-G2",
-        rationale="Rescue/SRR topic AND negative sentiment ≥ 30% AND ≥ 5 posts — multi-source distress",
-        recommendation=(
-            "Multiple rescue-related reports detected. Validate distress locations, "
-            "pre-position SRR assets, and coordinate with NDRRMC for reinforcement."
-        ),
-        condition=lambda c, n, v: c == "cluster-g" and n >= 30 and v >= MODERATE_VOLUME,
-    ),
-
-    Rule(
-        rule_id="R-G3",
-        rationale="Rescue/SRR topic with low negative sentiment — situational monitoring required",
-        recommendation=(
-            "Rescue-related activity detected. Alert nearest SRR unit for standby "
-            "deployment and monitor for escalating distress calls."
-        ),
-        condition=lambda c, n, v: c == "cluster-g" and n >= 10,
-    ),
-
-    # ── Cluster H: Management of Dead & Missing ───────────────────────────────
-
-    Rule(
-        rule_id="R-H1",
-        rationale="Missing/MDM topic AND negative sentiment ≥ 50% — active unresolved cases",
-        recommendation=(
-            "Activate MDM coordination desk. Coordinate with hospitals, barangay officials, "
-            "and family tracing teams to verify and register all missing persons."
-        ),
-        condition=lambda c, n, v: c == "cluster-h" and n >= 50,
-    ),
-
-    Rule(
-        rule_id="R-H2",
-        rationale="Missing/MDM topic AND negative sentiment ≥ 30% AND ≥ 3 posts — multiple cases",
-        recommendation=(
-            "Multiple missing persons reports detected. Dispatch family tracing team, "
-            "update hospital intake registry, and coordinate with DSWD for psychosocial support."
-        ),
-        condition=lambda c, n, v: c == "cluster-h" and n >= 30 and v >= 3,
-    ),
-
-    Rule(
-        rule_id="R-H3",
-        rationale="Missing/MDM topic with low negative sentiment — early monitoring stage",
-        recommendation=(
-            "Monitor missing persons reports. Maintain coordination desk readiness "
-            "and ensure barangay-level reporting channels are active."
-        ),
-        condition=lambda c, n, v: c == "cluster-h" and n >= 10,
-    ),
-
-    # ── Cluster B: Health / WASH / Nutrition / Mental Health ──────────────────
-
-    Rule(
-        rule_id="R-B1",
-        rationale="Health topic AND negative sentiment ≥ 60% — probable health emergency",
-        recommendation=(
-            "Deploy mobile medical team to affected area. Conduct health sweep, "
-            "distribute medicines and oral rehydration salts, and enforce water safety protocols."
-        ),
-        condition=lambda c, n, v: c == "cluster-b" and n >= 60,
-    ),
-
-    Rule(
-        rule_id="R-B2",
-        rationale="Health topic AND negative sentiment ≥ 40% AND ≥ 8 posts — high-volume health complaints",
-        recommendation=(
-            "High-volume health complaints detected. Activate mobile health units, "
-            "conduct barangay-level health screening, and reinforce sanitation checkpoints."
-        ),
-        condition=lambda c, n, v: c == "cluster-b" and n >= 40 and v >= HIGH_VOLUME,
-    ),
-
-    Rule(
-        rule_id="R-B3",
-        rationale="Health topic AND negative sentiment ≥ 35% — emerging health concern",
-        recommendation=(
-            "Coordinate health monitoring. Pre-position medical supplies and alert "
-            "health centers in affected barangays to increase readiness."
-        ),
-        condition=lambda c, n, v: c == "cluster-b" and n >= 35,
-    ),
-
-    # ── Cluster A: Food & Non-Food Items ──────────────────────────────────────
-
-    Rule(
-        rule_id="R-A1",
-        rationale="Food/NFI topic AND negative sentiment ≥ 65% — acute food shortage",
-        recommendation=(
-            "Immediate food and NFI dispatch required. Coordinate with DSWD for rapid "
-            "relief distribution. Prioritize families with children, elderly, and PWDs."
-        ),
-        condition=lambda c, n, v: c == "cluster-a" and n >= 65,
-    ),
-
-    Rule(
-        rule_id="R-A2",
-        rationale="Food/NFI topic AND negative sentiment ≥ 45% AND ≥ 8 posts — widespread shortage",
-        recommendation=(
-            "Widespread food shortage reports. Activate relief pipeline, "
-            "coordinate convoy dispatch, and set up community distribution points."
-        ),
-        condition=lambda c, n, v: c == "cluster-a" and n >= 45 and v >= HIGH_VOLUME,
-    ),
-
-    Rule(
-        rule_id="R-A3",
-        rationale="Food/NFI topic AND negative sentiment ≥ 35% — emerging relief need",
-        recommendation=(
-            "Validate relief needs in affected area. Prepare food packs and NFIs "
-            "for distribution within the next LGU response cycle."
-        ),
-        condition=lambda c, n, v: c == "cluster-a" and n >= 35,
-    ),
-
-    # ── Cluster C: Camp Coordination, Management & Protection ─────────────────
-
-    Rule(
-        rule_id="R-C1",
-        rationale="CCCM topic AND negative sentiment ≥ 60% — critical camp conditions",
-        recommendation=(
-            "Evacuation center conditions are critical. Conduct immediate protection audit, "
-            "address sanitation failures, decongest overcrowded sites, and open overflow shelters."
-        ),
-        condition=lambda c, n, v: c == "cluster-c" and n >= 60,
-    ),
-
-    Rule(
-        rule_id="R-C2",
-        rationale="CCCM topic AND negative sentiment ≥ 40% AND ≥ 5 posts — multiple camp issues",
-        recommendation=(
-            "Multiple evacuation center complaints detected. Dispatch camp management team, "
-            "inspect sanitation and water supply, and activate overflow evacuation sites."
-        ),
-        condition=lambda c, n, v: c == "cluster-c" and n >= 40 and v >= MODERATE_VOLUME,
-    ),
-
-    Rule(
-        rule_id="R-C3",
-        rationale="CCCM topic AND negative sentiment ≥ 30% — early camp management concern",
-        recommendation=(
-            "Monitor evacuation center conditions. Conduct barangay-level check on "
-            "shelter capacity, basic services, and protection concerns."
-        ),
-        condition=lambda c, n, v: c == "cluster-c" and n >= 30,
-    ),
-
-    # ── Cluster D: Logistics ──────────────────────────────────────────────────
-
-    Rule(
-        rule_id="R-D1",
-        rationale="Logistics topic AND negative sentiment ≥ 65% — critical supply disruption",
-        recommendation=(
-            "Critical logistics disruption detected. Activate alternate supply routes immediately, "
-            "issue field advisory, and coordinate DPWH road clearing operations."
-        ),
-        condition=lambda c, n, v: c == "cluster-d" and n >= 65,
-    ),
-
-    Rule(
-        rule_id="R-D2",
-        rationale="Logistics topic AND negative sentiment ≥ 45% AND ≥ 5 posts — multiple route problems",
-        recommendation=(
-            "Multiple road or supply route problems reported. Reroute relief convoys, "
-            "deploy road clearing teams, and update field logistics advisories."
-        ),
-        condition=lambda c, n, v: c == "cluster-d" and n >= 45 and v >= MODERATE_VOLUME,
-    ),
-
-    Rule(
-        rule_id="R-D3",
-        rationale="Logistics topic AND negative sentiment ≥ 35% — route monitoring required",
-        recommendation=(
-            "Monitor route status. Pre-clear alternate supply corridors and "
-            "issue a precautionary logistics advisory to field teams."
-        ),
-        condition=lambda c, n, v: c == "cluster-d" and n >= 35,
-    ),
-
-    # ── Cluster E: Emergency Telecommunications ───────────────────────────────
-
-    Rule(
-        rule_id="R-E1",
-        rationale="Telecom topic AND negative sentiment ≥ 65% — possible communications blackout",
-        recommendation=(
-            "Communications blackout likely. Deploy satellite phone or HF radio "
-            "to affected LGU immediately and coordinate with DICT and telcos for signal restoration."
-        ),
-        condition=lambda c, n, v: c == "cluster-e" and n >= 65,
-    ),
-
-    Rule(
-        rule_id="R-E2",
-        rationale="Telecom topic AND negative sentiment ≥ 40% — telecommunications disruption",
-        recommendation=(
-            "Telecommunications disruptions reported. Coordinate with telcos for "
-            "priority restoration and pre-position backup communication assets in affected areas."
-        ),
-        condition=lambda c, n, v: c == "cluster-e" and n >= 40,
-    ),
-
-    # ── Cluster F: Education ──────────────────────────────────────────────────
-
-    Rule(
-        rule_id="R-F1",
-        rationale="Education topic AND negative sentiment ≥ 70% AND ≥ 10 posts — major school disruption",
-        recommendation=(
-            "Significant education disruption detected. Coordinate with DepEd for a class "
-            "suspension order and implement temporary distance or modular learning modalities."
-        ),
-        condition=lambda c, n, v: c == "cluster-f" and n >= 70 and v >= HIGH_VOLUME,
-    ),
-
-    Rule(
-        rule_id="R-F2",
-        rationale="Education topic AND negative sentiment ≥ 50% — school safety concerns",
-        recommendation=(
-            "Education-related concerns detected. Advise LGU to assess school "
-            "structural safety and coordinate with DepEd for contingency class arrangements."
-        ),
-        condition=lambda c, n, v: c == "cluster-f" and n >= 50,
-    ),
-
-    # ── Global volume override ────────────────────────────────────────────────
-
-    Rule(
-        rule_id="R-VOL",
-        rationale="Any cluster AND negative sentiment ≥ 65% AND ≥ 15 posts — volume spike",
-        recommendation=(
-            "Abnormally high post volume with majority negative sentiment detected. "
-            "Escalate to LGU operations center for immediate cross-sector response assessment."
-        ),
-        condition=lambda c, n, v: n >= 65 and v >= 15,
-    ),
-
-    # ── Global fallback rules ─────────────────────────────────────────────────
-
-    Rule(
-        rule_id="R-MED",
-        rationale="Any cluster AND negative sentiment ≥ 35% — general distress signal",
-        recommendation=(
-            "Negative sentiment detected in incoming reports. Monitor the situation, "
-            "verify reports at the barangay level, and prepare contingency measures."
-        ),
-        condition=lambda c, n, v: n >= 35,
-    ),
-
-    Rule(
-        rule_id="R-LOW",
-        rationale="Default — negative sentiment < 35%, no urgent signals",
-        recommendation=(
-            "Situation is within normal parameters. Continue routine monitoring "
-            "and update relevant stakeholders at regular reporting intervals."
-        ),
-        condition=lambda c, n, v: True,
-    ),
-]
-
-
-# ── Public API ────────────────────────────────────────────────────────────────
-
-def evaluate(cluster_id: str, neg_pct: float, post_count: int = 1) -> dict:
-    """
-    Apply rules in order and return the recommendation for the first match.
-
-    Args:
-        cluster_id  : NDRRMC cluster identifier (e.g. "cluster-g")
-        neg_pct     : percentage of posts with negative sentiment (0–100)
-        post_count  : number of posts in this cluster window (default 1)
-
-    Returns:
-        {
-            "recommendation": str,
-            "rule_id":        str,
-            "rationale":      str,
-            "inputs": {
-                "cluster_id":  str,
-                "neg_pct":     float,
-                "post_count":  int,
-            }
+    def to_dict(self) -> dict:
+        return {
+            "recommendation": self.recommendation,
+            "rule_id": self.rule_id,
+            "rationale": self.rationale,
+            "inputs": self.inputs,
         }
-    """
-    neg_pct = float(neg_pct or 0)
-    post_count = int(post_count or 1)
 
-    for rule in RULES:
-        if rule.matches(cluster_id, neg_pct, post_count):
-            return {
-                "recommendation": rule.recommendation,
-                "rule_id": rule.rule_id,
-                "rationale": rule.rationale,
-                "inputs": {
-                    "cluster_id": cluster_id,
-                    "neg_pct": round(neg_pct, 2),
-                    "post_count": post_count,
-                },
-            }
 
-    return {
-        "recommendation": RULES[-1].recommendation,
-        "rule_id": "R-LOW",
-        "rationale": RULES[-1].rationale,
-        "inputs": {
-            "cluster_id": cluster_id,
-            "neg_pct": round(neg_pct, 2),
-            "post_count": post_count,
-        },
+def normalize_topic(topic: str | None) -> str:
+    key = (topic or "").strip().lower()
+    if key in TOPIC_LABELS:
+        return key
+    for topic_id, label in TOPIC_LABELS.items():
+        if key == label.lower():
+            return topic_id
+    return DEFAULT_TOPIC
+
+
+def normalize_sentiment(sentiment: str | None) -> str:
+    value = (sentiment or "").strip().lower()
+    if value == "negative":
+        return "Negative"
+    if value == "positive":
+        return "Positive"
+    return "Neutral"
+
+
+def normalize_priority(priority: str | None) -> str:
+    value = (priority or "").strip().lower()
+    mapping = {
+        "critical": "CRITICAL",
+        "high": "HIGH",
+        "moderate": "MEDIUM",
+        "medium": "MEDIUM",
+        "monitoring": "LOW",
+        "low": "LOW",
     }
+    return mapping.get(value, "MEDIUM")
+
+
+def sentiment_from_score(sentiment_score: int | float | None) -> str:
+    score = int(sentiment_score or 0)
+    if score >= 80:
+        return "Negative"
+    if score >= 60:
+        return "Neutral"
+    return "Positive"
+
+
+def compute_engagement_score(
+    post_count: int = 1,
+    reactions: int = 0,
+    comments: int = 0,
+    shares: int = 0,
+) -> int:
+    count = max(int(post_count or 0), 1)
+    return (
+        (count * 10)
+        + (int(reactions or 0) * 1)
+        + (int(comments or 0) * 3)
+        + (int(shares or 0) * 5)
+    )
+
+
+def _resolve_level(sentiment: str, engagement_score: int, priority: str) -> str:
+    if priority in HIGH_PRIORITIES:
+        return "HIGH"
+    if priority == "MEDIUM":
+        return "MEDIUM"
+    return "LOW"
+
+
+def _rationale_for(level: str, topic_label: str, sentiment: str, engagement_score: int, priority: str) -> str:
+    if level == "HIGH":
+        return (
+            f"{topic_label} topic received predicted priority {priority}, so the engine "
+            f"used the HIGH recommendation mapped for that cluster. Supporting inputs "
+            f"were sentiment={sentiment} and engagement_score={engagement_score}."
+        )
+    if level == "MEDIUM":
+        return (
+            f"{topic_label} topic received predicted priority {priority}, so the engine "
+            f"used the MEDIUM recommendation mapped for that cluster. Supporting inputs "
+            f"were sentiment={sentiment} and engagement_score={engagement_score}."
+        )
+    return (
+        f"{topic_label} topic received predicted priority {priority}, so the engine "
+        f"used the LOW recommendation mapped for that cluster. Supporting inputs were "
+        f"sentiment={sentiment} and engagement_score={engagement_score}."
+    )
+
+
+def evaluate(topic: str, sentiment: str, engagement_score: int, priority: str) -> dict:
+    topic_key = normalize_topic(topic)
+    sentiment_label = normalize_sentiment(sentiment)
+    priority_label = normalize_priority(priority)
+    score = int(engagement_score or 0)
+
+    profile = TOPIC_RESPONSES.get(topic_key, DEFAULT_RESPONSES)
+    topic_label = TOPIC_LABELS.get(topic_key, DEFAULT_TOPIC_LABEL)
+    level = _resolve_level(sentiment_label, score, priority_label)
+    rule_id = f"REC-{topic_key.replace('cluster-', '').upper() if topic_key != DEFAULT_TOPIC else 'GEN'}-{level}"
+    rationale = _rationale_for(level, topic_label, sentiment_label, score, priority_label)
+
+    return RecommendationResult(
+        recommendation=profile[f"{level}_TEXT"],
+        rule_id=rule_id,
+        rationale=rationale,
+        inputs={
+            "topic": topic_label,
+            "sentiment": sentiment_label,
+            "engagement_score": score,
+            "priority": priority_label,
+        },
+    ).to_dict()
+
+
+def evaluate_from_post(
+    topic: str,
+    priority: str,
+    sentiment: str | None = None,
+    sentiment_score: int | float | None = None,
+    reactions: int = 0,
+    comments: int = 0,
+    shares: int = 0,
+    post_count: int = 1,
+) -> dict:
+    sentiment_label = normalize_sentiment(sentiment) if sentiment else sentiment_from_score(sentiment_score)
+    engagement_score = compute_engagement_score(
+        post_count=post_count,
+        reactions=reactions,
+        comments=comments,
+        shares=shares,
+    )
+    return evaluate(topic, sentiment_label, engagement_score, priority)
 
 
 def list_rules() -> list[dict]:
-    """Return the full rule table as plain dicts (for inspection/documentation)."""
-    return [
-        {
-            "rule_id": r.rule_id,
-            "rationale": r.rationale,
-            "recommendation": r.recommendation,
-        }
-        for r in RULES
-    ]
+    rules = []
+    for topic_id, topic_label in TOPIC_LABELS.items():
+        rules.extend([
+            {
+                "rule_id": f"REC-{topic_id.replace('cluster-', '').upper()}-HIGH",
+                "topic": topic_label,
+                "condition": (
+                    "IF predicted priority IN {HIGH, CRITICAL}"
+                ),
+                "recommendation": TOPIC_RESPONSES[topic_id]["HIGH_TEXT"],
+            },
+            {
+                "rule_id": f"REC-{topic_id.replace('cluster-', '').upper()}-MEDIUM",
+                "topic": topic_label,
+                "condition": (
+                    "IF predicted priority = MEDIUM"
+                ),
+                "recommendation": TOPIC_RESPONSES[topic_id]["MEDIUM_TEXT"],
+            },
+            {
+                "rule_id": f"REC-{topic_id.replace('cluster-', '').upper()}-LOW",
+                "topic": topic_label,
+                "condition": "IF predicted priority = LOW",
+                "recommendation": TOPIC_RESPONSES[topic_id]["LOW_TEXT"],
+            },
+        ])
+    return rules

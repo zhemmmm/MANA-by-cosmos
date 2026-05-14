@@ -270,7 +270,7 @@ function renderPostCards(postList, options = {}) {
         <div class="comments-box" data-comments-box="${post.id}">
           ${previewComments.length ? previewComments.map(c => `
               <div class="comment-entry">
-                <strong>${c.author}</strong>
+                <strong>${anonymizedCommentAuthor(c)}</strong>
                 <span>${c.text}</span>
               </div>
             `).join("") : `<div class="comment-entry empty-comment">No preview comments are available for this post yet.</div>`}

@@ -12,6 +12,7 @@ from collections import Counter
 from datetime import datetime, timedelta, timezone
 
 from models import Cluster, db
+from services.rules.decision_engine import evaluate_from_post
 
 CLUSTER_DEFINITIONS = [
     {
@@ -706,40 +707,62 @@ def normalize_recommendation_priority(priority: str) -> str:
     }.get((priority or "").strip(), "MEDIUM")
 
 
-def recommendation_for(cluster_id: str | None, priority: str, text: str | None = None):
-    if not cluster_id or cluster_id not in CLUSTER_MAP:
-        return "General incident. Monitor the situation and await further verifying details before escalating."
-        
-    normalized = normalize_recommendation_priority(priority)
-    lower_text = (text or "").lower()
+def recommendation_payload_for(
+    cluster_id: str | None,
+    priority: str,
+    *,
+    sentiment: str | None = None,
+    sentiment_score: int | float | None = None,
+    reactions: int = 0,
+    likes: int = 0,
+    comments: int = 0,
+    shares: int = 0,
+    reposts: int = 0,
+    post_count: int = 1,
+):
+    topic = cluster_id if cluster_id in CLUSTER_MAP else None
+    reaction_total = int(reactions or 0) or int(likes or 0)
+    share_total = int(shares or 0) or int(reposts or 0)
+    return evaluate_from_post(
+        topic=topic or "general",
+        priority=normalize_recommendation_priority(priority),
+        sentiment=sentiment,
+        sentiment_score=sentiment_score,
+        reactions=reaction_total,
+        comments=int(comments or 0),
+        shares=share_total,
+        post_count=post_count,
+    )
 
-    for scenario in SCENARIO_RECOMMENDATIONS:
-        if scenario["cluster_id"] != cluster_id:
-            continue
-        if normalized not in scenario["priorities"]:
-            continue
-        if lower_text and any(re.search(r'\b' + re.escape(term) + r'\b', lower_text) for term in scenario["match_terms"]):
-            return scenario["recommendation"]
 
-    cluster_recommendations = EXCEL_RECOMMENDATIONS.get(cluster_id, {})
-
-    if normalized in cluster_recommendations:
-        return cluster_recommendations[normalized]
-
-    fallback_order = {
-        "CRITICAL": ["HIGH", "MEDIUM", "LOW"],
-        "HIGH": ["CRITICAL", "MEDIUM", "LOW"],
-        "MEDIUM": ["HIGH", "LOW", "CRITICAL"],
-        "LOW": ["MEDIUM", "HIGH", "CRITICAL"],
-    }
-    for candidate in fallback_order.get(normalized, ["MEDIUM", "HIGH", "LOW", "CRITICAL"]):
-        if candidate in cluster_recommendations:
-            return cluster_recommendations[candidate]
-
-    base = CLUSTER_MAP[cluster_id]["recommendation"]
-    if priority == "Critical":
-        return base.replace("Coordinate", "Immediately coordinate").replace("Dispatch", "Immediately dispatch")
-    return base
+def recommendation_for(
+    cluster_id: str | None,
+    priority: str,
+    text: str | None = None,
+    *,
+    sentiment: str | None = None,
+    sentiment_score: int | float | None = None,
+    reactions: int = 0,
+    likes: int = 0,
+    comments: int = 0,
+    shares: int = 0,
+    reposts: int = 0,
+    post_count: int = 1,
+):
+    del text
+    payload = recommendation_payload_for(
+        cluster_id,
+        priority,
+        sentiment=sentiment,
+        sentiment_score=sentiment_score,
+        reactions=reactions,
+        likes=likes,
+        comments=comments,
+        shares=shares,
+        reposts=reposts,
+        post_count=post_count,
+    )
+    return payload["recommendation"]
 
 
 def priority_label(priority: str):

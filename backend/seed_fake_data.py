@@ -39,7 +39,7 @@ from data import (
     infer_priority,
     infer_sentiment_score,
     media_type_for,
-    recommendation_for,
+    recommendation_payload_for,
 )
 from models import Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, db
 from preprocessing import save_preprocessed_text
@@ -590,7 +590,16 @@ def normalize_item(item: dict) -> dict:
         "media_type": media_type_for(item),
         "priority": priority,
         "sentiment_score": sentiment_score,
-        "recommendation": recommendation_for(cluster["id"], priority),
+        "recommendation": recommendation_payload_for(
+            cluster["id"],
+            priority,
+            sentiment_score=sentiment_score,
+            reactions=int(item.get("topReactionsCount") or item.get("likes") or 0),
+            likes=int(item.get("likes") or 0),
+            comments=int(item.get("comments") or 0),
+            shares=int(item.get("shares") or 0),
+            post_count=1,
+        )["recommendation"],
         "status": "Monitoring",
         "cluster_id": cluster["id"],
         "date": _parse_iso(item.get("time")),
@@ -727,7 +736,7 @@ def run_vader() -> dict:
 
 
 def run_rf() -> dict:
-    from data import recommendation_for
+    from data import recommendation_payload_for
 
     _RF_TO_REC_PRIORITY = {"High": "Critical", "Medium": "Moderate", "Low": "Monitoring"}
 
@@ -754,9 +763,17 @@ def run_rf() -> dict:
             continue
         post.priority      = label
         post.severity_rank = SEVERITY_MAP.get(label, 2)
-        post.recommendation = recommendation_for(
-            post.cluster_id, _RF_TO_REC_PRIORITY.get(label, "Moderate")
-        )
+        post.recommendation = recommendation_payload_for(
+            post.cluster_id,
+            _RF_TO_REC_PRIORITY.get(label, "Moderate"),
+            sentiment_score=post.sentiment_score,
+            reactions=post.reactions,
+            likes=post.likes,
+            comments=post.comments,
+            shares=post.shares,
+            reposts=post.reposts,
+            post_count=1,
+        )["recommendation"]
         existing = PostPriority.query.filter_by(post_id=pid).first()
         if existing:
             existing.priority_label     = label

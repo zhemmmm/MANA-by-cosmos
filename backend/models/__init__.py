@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from services.rules.decision_engine import compute_engagement_score, evaluate_from_post
+
 db = SQLAlchemy()
 
 
@@ -151,6 +153,15 @@ class Post(TimestampMixin, db.Model):
         return json.loads(self.keywords_json or "[]")
 
     def to_api_dict(self, top_comments=None):
+        recommendation_details = evaluate_from_post(
+            topic=self.cluster_id,
+            priority=self.priority,
+            sentiment_score=self.sentiment_score,
+            reactions=self.reactions or self.likes,
+            comments=self.comments,
+            shares=self.shares or self.reposts,
+            post_count=1,
+        )
         return {
             "id": self.id,
             "source": self.source,
@@ -165,7 +176,14 @@ class Post(TimestampMixin, db.Model):
             "priority": self.priority,
             "sentimentScore": self.sentiment_score,
             "sentimentCompound": self.sentiment_compound,
-            "recommendation": self.recommendation,
+            "recommendation": recommendation_details["recommendation"],
+            "recommendationDetails": recommendation_details,
+            "engagementScore": compute_engagement_score(
+                post_count=1,
+                reactions=self.reactions or self.likes,
+                comments=self.comments,
+                shares=self.shares or self.reposts,
+            ),
             "status": self.status,
             "clusterId": self.cluster_id,
             "reviewedClusterId": self.reviewed_cluster_id,
