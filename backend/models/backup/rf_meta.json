@@ -1,0 +1,34 @@
+{
+  "trained_at": "2026-05-13T16:59:17.004555+00:00",
+  "corpus_size": 49,
+  "n_estimators": 100,
+  "accuracy": 0.9,
+  "class_distribution": {
+    "High": 5,
+    "Medium": 44,
+    "Low": 0
+  },
+  "feature_columns": [
+    "vader_compound",
+    "vader_positive",
+    "vader_negative",
+    "vader_neutral",
+    "sentiment_encoded",
+    "reactions",
+    "comments",
+    "shares",
+    "reposts",
+    "engagement_score",
+    "engagement_level",
+    "keyword_intensity",
+    "recurrence_frequency",
+    "topic_flood",
+    "topic_evacuation",
+    "topic_rescue",
+    "topic_infrastructure_damage",
+    "topic_relief",
+    "topic_power_outage",
+    "topic_health_medical",
+    "topic_communication"
+  ]
+}

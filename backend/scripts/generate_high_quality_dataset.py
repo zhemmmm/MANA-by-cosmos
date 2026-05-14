@@ -835,6 +835,37 @@ def _cluster_h_posts_ext(base_idx: int) -> list[dict]:
     return [_post(text, cid, base_idx + i, urgency) for i, (text, urgency) in enumerate(templates)]
 
 
+# ── cluster-c extended v3: PHIVOLCS alert level / volcano evacuation ──────────
+# Mirrors real NDRRMC/PHIVOLCS posts: Alert Level 3/4, permanent danger zone,
+# lava flows, pyroclastic density currents, Mayon/Kanlaon, effusive eruption.
+
+def _cluster_c_posts_phivolcs(base_idx: int) -> list[dict]:
+    cid = "cluster-c"
+    templates = [
+        ("PHIVOLCS raises Alert Level 3 over Mayon Volcano. Entry into the 6-km Permanent Danger Zone (PDZ) is strictly prohibited.", "urgent"),
+        ("Alert Level 4 declared for Kanlaon Volcano. All residents within 8-km danger zone must evacuate immediately.", "panic"),
+        ("NDRRMC advisory: Effusive eruption at Mayon Volcano persists. Lava flows and rockfalls ongoing. Danger zone strictly enforced.", "urgent"),
+        ("PHIVOLCS-DOST: Strombolian activity observed at Mayon summit crater. Pyroclastic density currents possible. Stay outside danger zone.", "urgent"),
+        ("Mayon Volcano Alert Level 3 remains in effect. Incandescent lava flows and PDC activity recorded. Evacuation order stands.", "urgent"),
+        ("Kanlaon Watch: Alert Level 2 raised. Residents within 4-km radius must pre-emptively evacuate. NDRRMC on full alert.", "urgent"),
+        ("PHIVOLCS nagpapanatili ng Alert Level 3 sa Mayon Bulkan. Ipinagbabawal ang pagpasok sa 6-km Permanent Danger Zone.", "urgent"),
+        ("Ang effusive eruption ng Mayon Volcano ay nagpapatuloy. Lava flows, PDC, at rockfalls aktibo. Manatiling malayo sa danger zone.", "urgent"),
+        ("NDRRMC activates full disaster response for Mayon Volcano eruption. Evacuation of 6-km PDZ ongoing. Relief operations begin.", "official"),
+        ("Volcano bulletin: Kanlaon shows increased unrest. Alert Level 3 raised. Mandatory evacuation within 6-km radius now in effect.", "panic"),
+        ("Mayon Volcano lava flow reaches 3.2 km from summit. PHIVOLCS warns of possible pyroclastic surge. Danger zone strictly enforced.", "urgent"),
+        ("Sulphur dioxide emission from Mayon Volcano at hazardous levels. All residents within PDZ must have evacuated by tonight.", "urgent"),
+        ("PHIVOLCS update: Mayon crater glow intensifying. Possibility of explosive eruption cannot be ruled out. Alert Level 3 maintained.", "urgent"),
+        ("Lahar alert in Mayon river channels during rain. Residents in river valleys must evacuate regardless of alert level.", "urgent"),
+        ("NDRRMC at PHIVOLCS nagbababala: Huwag pumasok sa Permanent Danger Zone ng Mayon. Aktibo ang lava flow at PDC ngayon.", "urgent"),
+        ("Kanlaon Volcano Alert Level 3: LGU buses ferrying evacuees from danger zone to designated evacuation centers in lowland areas.", "official"),
+        ("Pyroclastic density currents or 'uson' recorded at Mayon today. Extreme danger within 6-km PDZ. Do not return to danger zone.", "panic"),
+        ("Alert Level 3 sa Mayon: Mahigpit na ipinagbabawal ang pagpasok sa 6-km PDZ. Ang mga sumusuway ay pananagutin.", "urgent"),
+        ("PHIVOLCS volcano bulletin: Mayon showing continued effusive activity for the 110th consecutive day. Danger zone remains enforced.", "official"),
+        ("NDRRMC confirms all residents within Mayon 6-km PDZ have been evacuated. Monitoring continues 24 hours.", "official"),
+    ]
+    return [_post(text, cid, base_idx + i, urgency) for i, (text, urgency) in enumerate(templates)]
+
+
 # ── cluster-b extended v2: Manila DRRM air quality advisory style ─────────────
 # Mirrors real MnlCDRRMD posts: air quality sensors, facemask advisory,
 # vulnerable groups (bata, senior, buntis, hika), landfill fire smoke, hotlines.
@@ -890,6 +921,7 @@ def main():
         (_cluster_b_posts_ext2, "cluster-b"),
         (_cluster_c_posts, "cluster-c"),
         (_cluster_c_posts_ext, "cluster-c"),
+        (_cluster_c_posts_phivolcs, "cluster-c"),
         (_cluster_d_posts, "cluster-d"),
         (_cluster_d_posts_ext, "cluster-d"),
         (_cluster_e_posts, "cluster-e"),

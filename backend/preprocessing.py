@@ -219,6 +219,19 @@ PUBLIC_SERVICE_MAINTENANCE_TERMS = {
     "cleanliness", "kalinisan", "flushing", "flushing operation", "bugahan", "washdown", "road washing",
     "cleanup", "clean up", "street cleaning", "canal cleaning", "declogging", "traffic advisory",
     "sanitation drive", "beautification", "road clearing", "public works",
+    # Political / governance PR — not disaster response
+    "motorcycle donation", "motor pool", "flag-raising ceremony", "flag raising",
+    "donation ceremony", "turnover ceremony", "city hall", "board of trustees",
+    "housing program", "vertical housing", "binondominium", "base community",
+    "real estate", "nrea", "dhsud", "national convention", "landbank", "development bank",
+    "college president", "vice president", "institutional advancement",
+    "producer to consumer", "p2c", "ilocano trader", "good governance",
+    "bilis kilos", "self-made man", "private sector effort", "operational use",
+    "police district", "motor pool", "mpd", "manila police",
+    "catheterization laboratory", "angioplasty", "college of medicine",
+    "squatter", "informal settlement", "relocation", "housing development board",
+    "monthly fee", "ownership transfer", "public service announcement",
+    "news alert", "manila pio", "city mayor", "lgu program", "lgu project",
 }
 
 
