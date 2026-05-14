@@ -102,15 +102,36 @@ def sentiment_trend():
 @stats_bp.route("/analytics/cluster-activity", methods=["GET"])
 @jwt_required(optional=True)
 def cluster_activity():
+    from services.priority.priority_scorer import compute_cluster_trends
+    from models import db
+    
     date_range = request.args.get("date_range", "14d")
     counts = defaultdict(int)
     for post in filtered_posts(date_range):
         counts[post.cluster_id] += 1
 
+    # Get the advanced 4-factor trend scores to sort the options
+    trends = compute_cluster_trends(db.session)
+
     cluster_activity_data = []
     for cluster_id, cluster in CLUSTER_MAP.items():
         label = cluster["name"].replace("WASH, Medical and Public Health, Nutrition, Mental Health and Psychosocial Support (Health)", "Health")
-        cluster_activity_data.append({"label": label, "value": counts.get(cluster_id, 0), "color": cluster["accent"]})
+        trend_score = trends.get(cluster_id, {}).get("trend_score", 0)
+        cluster_activity_data.append({
+            "cluster_id": cluster_id,
+            "label": label, 
+            "value": counts.get(cluster_id, 0), 
+            "color": cluster["accent"],
+            "_trend_score": trend_score  # Hidden score for sorting
+        })
+        
+    # Sort from most trending to least trending
+    cluster_activity_data.sort(key=lambda x: x["_trend_score"], reverse=True)
+    
+    # Remove the hidden score before sending to frontend to maintain 0 blast radius
+    for item in cluster_activity_data:
+        del item["_trend_score"]
+
     return jsonify({"clusterActivity": cluster_activity_data})
 
 

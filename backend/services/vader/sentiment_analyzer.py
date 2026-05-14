@@ -21,14 +21,49 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 # ── Singleton (VADER lexicon loaded once at import time) ──────────────────────
 _analyzer = SentimentIntensityAnalyzer()
 
+# Domain-specific lexicon injection: Teach VADER that these words are heavy
+# distress signals in a disaster context, even if normally neutral.
+DISASTER_LEXICON = {
+    "stranded": -3.2,
+    "trapped": -3.5,
+    "sos": -4.0,
+    "rescue": -1.5,   # Inherently implies distress
+    "missing": -3.0,
+    "fire": -2.8,
+    "blackout": -2.5,
+    "outage": -2.2,
+    "submerged": -3.0,
+    "flash flood": -3.0,
+    "sos calls": -3.5,
+    "help us": -3.0,
+    "please help": -2.5,
+}
+_analyzer.lexicon.update(DISASTER_LEXICON)
+
 # MANA cluster IDs that represent inherently negative disaster contexts.
-# Maps to thesis NEGATIVE_TOPICS = {flood, rescue, infrastructure_damage, ...}
-# using MANA's cluster-ID vocabulary instead of CorEx topic names.
 NEGATIVE_CLUSTERS = {
     "cluster-d",   # Logistics — blocked roads/bridges are objectively negative
     "cluster-e",   # Telecom/Power — outages are objectively negative
     "cluster-h",   # MDM — no genuinely positive news about death/missing
+    "cluster-g",   # SRR — rescue calls are almost always negative (distress)
 }
+
+# ── Sarcasm detection phrases ──────────────────────────────────────────────────
+_SARCASM_PHRASES = frozenset({
+    "oh great", "oh wow", "how wonderful", "how amazing", "how nice",
+    "how fantastic", "how lovely", "how convenient", "how helpful",
+    "yeah right", "of course it is", "oh perfect", "just perfect",
+    "absolutely perfect", "so great", "so wonderful", "so amazing",
+    "how great", "how perfect", "how nice of",
+    "congrats", "well done", "keep it up", "nice one", "good job",
+    "thank you so much", "thanks for everything", "god bless you",
+    "salamat sa lahat", "napaka galing",
+})
+
+def _check_sarcasm_phrases(text: str) -> bool:
+    """Thesis sarcasm rule 3: exclamatory positive phrases in disaster context."""
+    lowered = (text or "").lower()
+    return any(phrase in lowered for phrase in _SARCASM_PHRASES)
 
 # ── Core functions ─────────────────────────────────────────────────────────────
 
@@ -94,21 +129,6 @@ def check_thread_deviation(
     return abs(comment_compound - float(np.mean(thread_compounds))) / std > threshold
 
 
-_SARCASM_PHRASES = frozenset({
-    "oh great", "oh wow", "how wonderful", "how amazing", "how nice",
-    "how fantastic", "how lovely", "how convenient", "how helpful",
-    "yeah right", "of course it is", "oh perfect", "just perfect",
-    "absolutely perfect", "so great", "so wonderful", "so amazing",
-    "how great", "how perfect", "how nice of",
-})
-
-
-def _check_sarcasm_phrases(text: str) -> bool:
-    """Thesis sarcasm rule 3: exclamatory positive phrases in disaster context."""
-    lowered = (text or "").lower()
-    return any(phrase in lowered for phrase in _SARCASM_PHRASES)
-
-
 def analyze_post(
     text: str,
     cluster_id: str | None,
@@ -133,6 +153,46 @@ def analyze_post(
         or check_thread_deviation(result["compound"], thread_compounds or [])
         or _check_sarcasm_phrases(text)
     )
+    return result
+
+
+def analyze_post_with_comments(
+    text: str,
+    cluster_id: str | None,
+    comment_texts: list[str] | None = None,
+) -> dict:
+    """
+    Analyze a post plus its comments as one thread-level sentiment signal.
+
+    No comment sentiment rows are stored. Each usable comment contributes one
+    VADER observation to the post's existing sentiment row and sentiment_score.
+    """
+    comments = [value for value in (comment_texts or []) if value and value.strip()]
+    post_result = analyze_sentiment(text)
+    comment_results = [analyze_sentiment(value) for value in comments]
+    observations = [post_result, *comment_results]
+
+    compound = sum(item["compound"] for item in observations) / len(observations)
+    positive = sum(item["positive"] for item in observations) / len(observations)
+    negative = sum(item["negative"] for item in observations) / len(observations)
+    neutral = sum(item["neutral"] for item in observations) / len(observations)
+    comment_compounds = [item["compound"] for item in comment_results]
+
+    result = {
+        "compound": round(compound, 4),
+        "positive": round(positive, 4),
+        "negative": round(negative, 4),
+        "neutral": round(neutral, 4),
+        "label": "Positive" if compound >= 0.05 else ("Negative" if compound <= -0.05 else "Neutral"),
+    }
+    result["sentiment_score"] = compound_to_score(result["compound"])
+    result["sarcasm_flag"] = (
+        check_sarcasm_incongruence(result["compound"], cluster_id)
+        or check_thread_deviation(post_result["compound"], comment_compounds)
+        or _check_sarcasm_phrases(text)
+        or any(_check_sarcasm_phrases(value) for value in comments)
+    )
+    result["comments_analyzed"] = len(comments)
     return result
 
 

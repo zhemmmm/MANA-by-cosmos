@@ -1,0 +1,352 @@
+"""
+sandbox_train_corex.py — Train CorEx on synthetic disaster posts.
+
+Generates ~300 realistic English disaster posts in memory (no database access),
+trains CorEx on them, and saves the improved model files to backend/models/.
+
+Run: python sandbox_train_corex.py
+"""
+import os
+import sys
+
+# Make sure we can import from the backend package
+sys.path.insert(0, os.path.dirname(__file__))
+
+from services.corex.topic_modeler import train_corex
+
+SYNTHETIC_POSTS = [
+    # ── Cluster G: Search, Rescue and Retrieval (SRR) ──────────────────────────
+    "Families trapped on rooftop due to flash flood in Marikina. SOS. Need rescue boat immediately.",
+    "Bureau of Fire Protection responds to a structure fire in Tondo Manila. Two alarm fire. Firefighters on scene.",
+    "Fire alert Batasan Hills QC for verification. Call hotline for emergencies. Fire truck dispatched.",
+    "Blaze engulfs residential area in Pandacan. BFP deploying units. Three alarm fire.",
+    "People stranded on second floor of flooded house in Malabon. Requesting rubber boat rescue.",
+    "SOS from rooftop in Caloocan. Rising water, chest deep. Swift water rescue team needed.",
+    "Coast guard rescuing stranded residents along Pasig River. Inflatable boat deployed.",
+    "Building collapse in Binondo. USAR team deployed. People pinned under debris.",
+    "Helicopter rescue operation ongoing in Marikina for flood victims on rooftop.",
+    "Swift water rescue team responding to flash flood in San Juan. Waist deep floodwater.",
+    "Wildfire spreading in Payatas area. BFP firefighters battling four alarm fire.",
+    "Residents swept away by flash flood in Taguig. Search and rescue operation ongoing.",
+    "Fire alert Quezon City. Two alarm fire at residential building. Bureau of Fire on scene.",
+    "Rescue boat dispatched to stranded families in low lying area of Malabon.",
+    "Structural collapse in Quiapo building. Extraction team deployed. Search party activated.",
+    "Life vest distributed to rescue personnel responding to flash flood in Pasig.",
+    "Mudslide blocks evacuation route in Antipolo. SAR team deployed for debris flow.",
+    "Engulfed in fire: warehouse in Divisoria burns. Firefighters request backup.",
+    "Coast guard boat rescues 12 fishermen stranded at sea after typhoon.",
+    "Debris flow reported in mountain barangay. Search and rescue activated.",
+    "Fire alarm triggered at Intramuros hotel. Firefighters on standby.",
+    "Trapped workers rescued from collapsed construction site in BGC Taguig.",
+    "Washed away: three individuals missing after flash flood in creek area.",
+    "Five alarm fire in Ermita Manila. Multiple fire trucks responding.",
+    "Rooftop rescue ongoing in Marikina River area. Helicopter on standby.",
+    "Flash flood in Katipunan rises neck deep. Rubber boat rescue needed.",
+    "BFP confirms fire is now under control in Sampaloc Manila.",
+    "Kayak rescue team deployed to flooded streets of Malabon.",
+    "Call for help from elderly residents trapped in flooded basement.",
+    "Emergency: building on fire in Quiapo. Residents evacuate immediately.",
+    "Structure fire reported near Manila bay. Fire trucks responding.",
+    "Pinned under collapsed wall in Tondo. USAR team on the way.",
+    "Rising water in Novaliches. Rescue boat requested for stranded families.",
+    "Arson suspected in warehouse fire near Divisoria market Manila.",
+    "Thermal imaging used by rescue team to locate survivors in debris.",
+
+    # ── Cluster H: Dead and Missing (MDM) ──────────────────────────────────────
+    "Missing person: female, 32 years old, last seen in Pandacan Manila. Please contact MDRRMO.",
+    "Death toll from typhoon rises to 15 in Metro Manila. Fatality count being updated.",
+    "Body found floating in Pasig River near Sta. Ana. Authorities investigating.",
+    "Family tracing ongoing at evacuation center. 3 persons unaccounted for.",
+    "Casualty report from landslide: 2 confirmed dead, 5 missing in Antipolo.",
+    "Next of kin notified for body identified as typhoon victim in Marikina.",
+    "Coordination desk for missing persons set up at Batasan Hills barangay hall.",
+    "Remains recovered from collapsed building in Binondo. Autopsy ordered.",
+    "Death certificate processing ongoing for typhoon fatalities.",
+    "Missing child last seen near Tondo evacuation center. Age 7, male.",
+    "Ante mortem data being collected for missing flood victims in Malabon.",
+    "Body found in creek in Novaliches. DNA fingerprint analysis requested.",
+    "Morgue at San Lazaro Hospital overwhelmed with typhoon casualties.",
+    "Confirmed dead: two persons swept away by Marikina River flood.",
+    "Lost contact with family in flooded area of San Juan. Please respond.",
+    "Dental records being used to identify typhoon victims at Manila morgue.",
+    "Fatalities from building collapse: 3 deceased, 7 still missing.",
+    "Family tracing hotline activated at NDRRMC for missing persons.",
+    "Photograph of missing person circulated by MDRRMO. Last seen Saturday.",
+    "Burial assistance provided to families of typhoon victims by DSWD.",
+    "Death toll updated: 22 dead, 14 still missing after typhoon.",
+    "Cremation services arranged for unidentified typhoon victims.",
+    "Victim of flash flood found deceased in Pasig City creek.",
+    "Disappeared after typhoon: elderly male, Caloocan City resident.",
+    "Body found in debris after landslide in Antipolo Rizal.",
+    "Declared dead: 5 fishermen missing after typhoon at sea.",
+    "MDRRMO deploys family tracing team to evacuation centers in Manila.",
+
+    # ── Cluster C: Evacuation (CCCM) ──────────────────────────────────────────
+    "Evacuation order issued for low lying areas in Malabon due to flooding.",
+    "Evacuation center at Batasan Hills covered court now at full capacity. Overflow to gymnasium.",
+    "Displaced families from Marikina now at evacuation site in Quezon City.",
+    "Mandatory evacuation of flood prone areas in Taguig ordered by local DRRMO.",
+    "Evacuees at barangay hall request sleeping mats and portable toilets.",
+    "Over 500 evacuees now at Sports Complex. Preemptive evacuation ongoing.",
+    "Warning level 3 issued. Mandatory evacuation of danger zone residents.",
+    "High risk area residents of Pasig told to evacuate immediately.",
+    "Welfare desk set up at evacuation center. Headcount being done.",
+    "Child friendly space established at Astrodome evacuation center.",
+    "Overcrowded evacuation center in Tondo. Overflow evacuees being relocated.",
+    "Displaced families from Malabon returned home after flood receded.",
+    "Forced evacuation of 200 families from low lying area of Caloocan.",
+    "Breastfeeding area set up at evacuation center for nursing mothers.",
+    "Decampment of evacuees begins as flood waters subside in Marikina.",
+    "Evacuation site registration ongoing at barangay multipurpose hall.",
+    "Tent city erected at sports complex for flood victims.",
+    "Cooking area at evacuation center stocked with relief goods.",
+    "Privacy partition installed in gymnasium for displaced families.",
+    "Segregation protocols in place at evacuation center for COVID prevention.",
+    "Overflow evacuation site opened at Astrodome Manila.",
+    "Curfew in effect in flooded areas of Malabon during rescue operations.",
+    "Preemptive evacuation saves hundreds in flood prone area of Novaliches.",
+    "Return home order issued for residents of low lying barangay after flood.",
+
+    # ── Cluster A: Relief Goods (NFI) ─────────────────────────────────────────
+    "DSWD distributes relief goods to 500 displaced families at Batasan evacuation center.",
+    "Red Cross conducts relief operations in flood affected areas of Manila.",
+    "Food packs and hygiene kits distributed to typhoon victims in Malabon.",
+    "Relief convoy of 20 trucks departs for Marikina flood victims.",
+    "Canned goods, noodles, and sardines distributed at Quezon City evacuation site.",
+    "Water refill station set up for evacuees at covered court in Pasig.",
+    "Blankets and sleeping mats distributed to families at evacuation center.",
+    "Relief distribution ongoing. Queue forming at barangay hall.",
+    "Baby food and formula milk included in relief pack for families with infants.",
+    "Hygiene kit distribution at evacuation center: soap, toothbrush, sanitary napkin.",
+    "Tarpaulin and mosquito net distributed to families returning to flooded homes.",
+    "Repacking of relief goods underway at DSWD warehouse in Manila.",
+    "Jerry cans and water containers distributed for clean water storage.",
+    "Ready to eat meals distributed to rescue workers in flooded areas.",
+    "Donation drive for typhoon victims: food, clothing, and hygiene items needed.",
+    "DSWD NFI distribution reaches 1,000 families in Taguig flood area.",
+    "Relief operations extended to remote barangays in Novaliches.",
+    "Diaper and baby food included in relief pack for evacuees with infants.",
+    "Aid distribution for typhoon victims continues at Marikina gymnasium.",
+    "Feminine hygiene products included in relief kit for women evacuees.",
+    "Loading of relief packs at DSWD staging area now complete.",
+    "Relief convoy blocked by flooded road. Alternate route via Quirino.",
+    "Packed relief goods being distributed to families in danger zones.",
+
+    # ── Cluster B: Health / WASH ───────────────────────────────────────────────
+    "Leptospirosis cases reported at Malabon evacuation center. Medical team deployed.",
+    "Field hospital set up at Batasan Hills for typhoon victims needing treatment.",
+    "Diarrhea outbreak at evacuation center in Quezon City. Medical volunteers responding.",
+    "Water-borne disease risk high in flooded areas. Boil drinking water advisory.",
+    "Contaminated water warning issued for Marikina River flood affected areas.",
+    "Medical mission conducted at Tondo evacuation center. 200 patients seen.",
+    "Triage area set up at covered court for injured flood victims.",
+    "Dengue cases rising in flooded communities. DRRMO issues health advisory.",
+    "Cholera scare at evacuation center. Sanitation teams deployed immediately.",
+    "Medical team from Red Cross treating wounds of rescued flood victims.",
+    "Dehydration cases rising at evacuation center. Oral rehydration salts distributed.",
+    "Mental health counseling available for trauma victims at evacuation center.",
+    "Maynilad reports water outage in Malabon due to flooded pump stations.",
+    "Manila Water supply interrupted in Pasig due to typhoon damage.",
+    "No water supply in Quezon City areas due to power outage at pumping station.",
+    "Psychosocial support team deployed to evacuation center for disaster survivors.",
+    "Ambulance dispatched to evacuation center for elderly patient with fever.",
+    "Pneumonia cases reported among children at evacuation center.",
+    "Malnutrition screening for children at displacement camp in Manila.",
+    "First aid stations set up along relief distribution routes.",
+    "Heat stroke risk high for rescue workers. Hydration stations deployed.",
+    "Vaccination drive ongoing at evacuation center for flood affected families.",
+    "Hospital at San Lazaro overwhelmed. Patients transferred to field hospital.",
+    "Snake bite treatment available at medical mission in Antipolo.",
+    "Prenatal care available for pregnant evacuees at field health unit.",
+
+    # ── Cluster D: Logistics ───────────────────────────────────────────────────
+    "Road along Quirino Avenue not passable due to flash flood. Alternate route via Roxas.",
+    "Bridge in Marikina closed due to rising water. Vehicles diverted to Marcos Highway.",
+    "Landslide blocks road in Antipolo. DPWH clearing operations underway.",
+    "Relief truck convoy rerouted due to flooded road in Malabon.",
+    "Fallen tree blocks Espana Boulevard. Road clearing in progress.",
+    "Road subsidence reported in Novaliches due to heavy rains. Road closed.",
+    "Blocked road in San Juan. Backhoe deployed for debris removal.",
+    "Road cut off in Taguig. Alternate barge transport arranged for relief goods.",
+    "Checkpoint at EDSA to regulate traffic during typhoon relief operations.",
+    "Convoy of aid trucks en route to Marikina evacuation center.",
+    "Impassable: Aurora Boulevard flooded. Detour via Katipunan.",
+    "Distribution point for relief goods set up at Batasan Hills gymnasium.",
+    "Chokepoint at C5 due to flooding. DPWH on scene for road clearing.",
+    "Heavy equipment deployed to clear debris from landslide in Antipolo.",
+    "Supply chain disruption due to flooded roads in Metro Manila.",
+    "Vehicular accident on C5 during typhoon. Road partially blocked.",
+    "Car crash due to flooded road in Taguig. Vehicles stuck.",
+    "Aerial delivery of relief goods to isolated barangay in Rizal.",
+    "Warehouse full of relief goods ready for distribution in Manila.",
+    "Staging area for relief operations established at Quezon City Hall.",
+    "Road not passable in Novaliches. Bottleneck forming near checkpoint.",
+    "Sinkhole reported on Espana due to heavy rain. DPWH investigating.",
+    "Infrastructure damage to roads and bridges in flood hit Metro Manila.",
+
+    # ── Cluster E: Telecom / Power ─────────────────────────────────────────────
+    "Power outage in Marikina due to typhoon. Meralco crews on standby for restoration.",
+    "Blackout reported in Quezon City. No electricity in multiple barangays.",
+    "No signal in Tondo after cell site damaged by typhoon.",
+    "Globe network outage in Metro Manila due to typhoon damage to fiber optic lines.",
+    "PLDT repairs communication lines cut by typhoon in Pasig.",
+    "Generator deployed at evacuation center in Malabon due to power outage.",
+    "Charging station available at barangay hall for affected residents.",
+    "Dead zone reported in Marikina. No internet or mobile signal.",
+    "Power bank distribution at evacuation center for affected residents.",
+    "Utility pole knocked down by typhoon in Caloocan. Brownout in the area.",
+    "Smart communications restores signal in typhoon affected areas of Manila.",
+    "Meralco reports power restoration underway in flooded areas.",
+    "Emergency light distributed to evacuation centers without power supply.",
+    "Satellite communication deployed by NDRRMC for typhoon affected areas.",
+    "Antenna damaged at cell site in Novaliches. Network outage ongoing.",
+    "Communication cut in remote barangay of Antipolo. Radio contact only.",
+    "No connectivity in flood affected areas of San Juan. DICT deploying satellite.",
+    "Signal restored in Pasig after PLDT repairs typhoon damaged cable.",
+    "Backup power at MDRRMO operations center activated due to blackout.",
+    "Transformer destroyed by typhoon in Tondo. Brownout expected 48 hours.",
+
+    # ── Cluster F: Education ───────────────────────────────────────────────────
+    "Classes suspended in Metro Manila due to typhoon. DepEd issues advisory.",
+    "School cancelled in Quezon City tomorrow due to flooding.",
+    "No classes in Manila public schools due to typhoon signal number 2.",
+    "School building used as evacuation center in Marikina during flood.",
+    "DepEd orders class suspension in Metro Manila. Students to stay home.",
+    "School flooded in Malabon. Classes to resume after cleanup.",
+    "Temporary classroom set up at barangay hall after school was damaged.",
+    "Online class continues for students in typhoon affected areas.",
+    "Modular learning materials distributed to displaced students at evacuation center.",
+    "School closure in Caloocan extended due to ongoing flooding.",
+    "DepEd activates learning continuity plan for typhoon affected students.",
+    "Class cancellation in Manila due to severe flooding. Students safe.",
+    "School reopening scheduled after cleanup of flooded classrooms.",
+    "Blended learning option offered for students who cannot attend class.",
+    "Class resumption expected Monday after typhoon damage assessment.",
+    "Learning materials damaged by flood at school in Pasig. Replacement needed.",
+    "School used as shelter for 300 displaced families during typhoon.",
+    "Enrollment affected by typhoon. DepEd extends enrollment period.",
+    "Printed modules distributed to students without internet access in flooded areas.",
+    "Academic calendar adjustment expected due to school closures from typhoon.",
+    "Classes resume at Marikina school after flood damage repair.",
+    "School as evacuation center: 150 families sheltering at Batasan Hills elementary.",
+
+    # ── General / Civic (to teach CorEx what NOT to classify) ─────────────────
+    "Mayor attends inauguration ceremony of new barangay hall in Sampaloc Manila.",
+    "Fashion designers showcase their designs at the Flores de Mayo gala in Manila Hotel.",
+    "City government holds anniversary celebration at Rizal Park.",
+    "Senator files impeachment case against Vice President. Senate hearing set.",
+    "Christmas carols echo in Intramuros as the holiday season begins.",
+    "Promo: Get 50 percent discount on all items this weekend at SM Manila.",
+    "Beauty queen from Manila wins national pageant title.",
+    "Concert at Mall of Asia: tickets on sale now.",
+    "Senate approves ordinance on garbage segregation.",
+    "Ribbon cutting ceremony held for new city hall building in Quezon City.",
+    "City government distributes scholar grants to top students.",
+    "Manila Summer pride parade draws thousands of participants.",
+    "Film festival opens at Cultural Center of the Philippines.",
+    "Groundbreaking ceremony for new expressway held in Parañaque.",
+    "Valentines day concert at Araneta Coliseum sold out.",
+    "Mayor inaugurates new road project in District 5 Manila.",
+    "Art exhibit opens at National Museum featuring local painters.",
+    "Holy week procession draws thousands of devotees in Quiapo.",
+    "New year fireworks display at Manila Bay.",
+    "Raffle winners announced at city hall fiesta.",
+    "Senate budget hearing resumes Monday. Congress in session.",
+    "Gala night for fashion designers at The Manila Hotel.",
+    "Voucher giveaway at city hall for residents.",
+    "Free trial of new internet service for Manila residents.",
+    "City government announces proclamation of new barangay.",
+    "NEWS ALERT: Isko Moreno welcomes 20 motorcycle donations from Chiang Kai Shek College to strengthen Manila Police District motor pool Manila City Mayor Francisco \"Isko\" Moreno Domagoso on Monday, May 4, welcomed the donation of 20 motorcycle units for the Manila Police District (MPD) from Chiang Kai Shek College.",
+
+
+    # ── EXPANDED: Cluster G: Search, Rescue and Retrieval (SRR) ───────────────
+    "TXTFIRE Fire Alert! – QC 📍 Luzviminda Batasan Hills, QC – For Verification Update as of 5:48:25 PM For Emergencies Call or Message us on 📞 Hotline: (02) 8561-1111 📲 Viber: a.ongp.in/txtFViber 🌐 www.txtfire.net #FireAlert #TXTFIRE #QC",
+    "Rescue needed urgently. Families trapped on second floor of house in Marikina.",
+    "Please rescue us. Water is rising fast in our area. Neck deep na.",
+    "Emergency rescue operation launched for residents stranded in flooded subdivision.",
+    "Rescue team deployed to flash flood area in Caloocan. People trapped.",
+    "SOS from rooftop. Requesting rubber boat rescue immediately.",
+    "Fire rescue underway at three-story building in Sampaloc. BFP on scene.",
+    "Flood rescue ongoing in San Juan. Rescue personnel need more boats.",
+    "Water rescue needed in Novaliches. Families stuck on rooftop.",
+
+    # ── EXPANDED: Cluster H: Dead and Missing (MDM) ────────────────────────────
+    "Still missing: male resident of Tondo, 45 years old. Last contact Friday morning.",
+    "Person missing after flash flood in Marikina. Family requesting information.",
+    "Death report confirmed: 3 fatalities after landslide in Antipolo.",
+    "Casualty report updated: 5 dead, 8 still missing after typhoon in Metro Manila.",
+    "Missing family: mother and two children unaccounted for after evacuation.",
+    "Whereabouts unknown. Elderly man reported missing in Malabon flood area.",
+    "Has not returned home since typhoon. Please contact MDRRMO if you have information.",
+    "Feared dead: fisherman swept away by strong current near Manila Bay.",
+
+    # ── EXPANDED: Cluster C: Evacuation (CCCM) ────────────────────────────────
+    "Evacuation order issued. All residents in danger zone must leave immediately.",
+    "Mass evacuation of barangay residents underway. Evacuation notice sent to households.",
+    "Temporary shelter set up at community gymnasium for displaced residents.",
+    "Relief center at barangay hall now receiving evacuees from flooded areas.",
+    "Welfare center opened at school grounds for stranded families.",
+    "Safe haven for 300 displaced families established at sports complex.",
+    "Night shelter available at multipurpose hall. Evacuees being registered.",
+    "Community shelter capacity reached. Overflow evacuees redirected to gymnasium.",
+
+    # ── EXPANDED: Cluster A: Relief Goods (NFI) ───────────────────────────────
+    "Relief items being distributed to flood victims. Queue forming at distribution point.",
+    "Aid package from DSWD arrives at evacuation center. Food assistance underway.",
+    "Community kitchen set up at barangay hall providing hot meals to evacuees.",
+    "Food distribution ongoing. Relief package includes rice, canned goods, and water.",
+    "Emergency supply of clean water and non food items delivered to evacuation site.",
+    "Relief drive ongoing. Donations of food and hygiene items needed.",
+    "Supply drop of relief goods to isolated barangay via helicopter.",
+    "Water supply for evacuees running low. Additional delivery being arranged.",
+
+    # ── EXPANDED: Cluster B: Health / WASH ────────────────────────────────────
+    "Medical supply running low at evacuation center. Medicine shortage reported.",
+    "Health emergency declared at evacuation site. Disease outbreak feared.",
+    "Medical aid team deployed to flood affected areas in Malabon.",
+    "Health risk high in flooded communities. Water safety advisory issued.",
+    "Medication shortage at field hospital. Additional medicine requested from DOH.",
+    "Medicine shortage at evacuation center clinic. Diabetic patients affected.",
+    "Health team from DOH conducting disease surveillance in flooded areas.",
+    "Sick evacuee transported to hospital by ambulance. Fever and dehydration.",
+
+    # ── EXPANDED: Cluster D: Logistics ────────────────────────────────────────
+    "Road blocked due to flooding. Delivery route to evacuation center cut off.",
+    "Supply route via EDSA flooded. Logistics team seeking alternate road.",
+    "Road condition: flooded road on Marcos Highway. Not passable for relief trucks.",
+    "Cargo of relief goods stranded due to road blocked by landslide.",
+    "Access blocked at San Mateo. Route update: detour via Sumulong Highway.",
+    "Road flooded in Marikina. Supply delivery delayed. Rerouting convoy.",
+    "Logistics team requests road update from DPWH for passable road to evacuation site.",
+    "Road condition advisory: Cainta Junction impassable. Alternate route via Ortigas.",
+
+    # ── EXPANDED: Cluster E: Telecom / Power ──────────────────────────────────
+    "No internet in Marikina since typhoon hit. Communication blackout in the area.",
+    "Signal loss reported across Metro Manila after typhoon. Mobile data down.",
+    "Power cut in Quezon City. Grid down. Meralco crews responding.",
+    "Communication blackout in Rodriguez Rizal. No signal area. Radio contact only.",
+    "Telecoms down in affected areas. Globe and Smart both experiencing network down.",
+    "Power failure in Malabon. No electricity since midnight. Brownout ongoing.",
+    "Electricity cut in Tondo. Residents using flashlights and candles.",
+    "Phone dead. Cannot reach family in flooded area. No signal area reported.",
+]
+
+
+if __name__ == "__main__":
+    print(f"Synthetic corpus: {len(SYNTHETIC_POSTS)} posts")
+    print("Training CorEx on synthetic disaster posts...")
+    try:
+        result = train_corex(SYNTHETIC_POSTS)
+        print(f"Done! Corpus size: {result['corpus_size']}")
+        print(f"Overall coherence: {result['overall_coherence']:.4f}")
+        print("\nCoherence scores per topic:")
+        for topic, score in result["coherence_scores"].items():
+            flag = " ⚠ LOW" if score < 0.30 else ""
+            print(f"  {topic:20s} {score:.4f}{flag}")
+        print("\nExpanded keywords saved to models/corex_keywords.json")
+        print("Model files saved to models/corex_model.pkl and models/corex_vectorizer.pkl")
+    except ValueError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        raise

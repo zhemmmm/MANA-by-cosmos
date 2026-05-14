@@ -164,6 +164,7 @@ def ensure_sentiment_columns():
     if "sentiment_compound" not in columns:
         cur.execute("ALTER TABLE posts ADD COLUMN sentiment_compound REAL")
     conn.commit()
+    conn.commit()
     conn.close()
 
 
@@ -330,6 +331,90 @@ def ensure_database():
         seed_clusters()
         seed_default_users()
         seed_settings()
+    _retrain_if_stale()
+
+
+def _retrain_if_stale():
+    """Spawn a background thread to retrain CorEx + re-predict if anchor words changed.
+    No-ops immediately when no model exists or when the hash matches.
+    Server starts and serves requests without waiting for this thread."""
+    import threading
+
+    def _worker():
+        try:
+            from services.corex.topic_modeler import (
+                is_model_stale, train_corex, predict_topics_batch,
+            )
+            from models import PostTopic, PreprocessedText, db  # noqa: F811
+
+            if not is_model_stale():
+                return
+
+            print("[MANA] Anchor words changed — retraining CorEx in background...", flush=True)
+
+            with app.app_context():
+                rows = (
+                    PreprocessedText.query
+                    .filter_by(record_type="post", preprocessing_status="processed", is_relevant=True)
+                    .filter(PreprocessedText.final_tokens_json != "[]")
+                    .all()
+                )
+                texts = [" ".join(r.final_tokens) for r in rows if r.final_tokens]
+                post_ids = [r.raw_id for r in rows if r.final_tokens]
+
+                if not texts:
+                    print("[MANA] No preprocessed posts found — skipping auto-retrain.", flush=True)
+                    return
+
+                train_corex(texts)
+                print("[MANA] CorEx retrained. Running predictions...", flush=True)
+
+                batch_results = predict_topics_batch(texts)
+                inserted = skipped = 0
+                for post_id, topic_list in zip(post_ids, batch_results):
+                    PostTopic.query.filter_by(post_id=post_id).delete()
+                    for item in topic_list:
+                        db.session.add(PostTopic(
+                            post_id=post_id,
+                            topic_label=item["topic"],
+                            confidence=item["confidence"],
+                        ))
+                        inserted += 1
+                    if not topic_list:
+                        skipped += 1
+                db.session.commit()
+
+                # Correct Post.cluster_id for posts whose top CorEx topic changed.
+                from data import TOPIC_TO_CLUSTER
+                from models import Post
+                cluster_updates = 0
+                for post_id, topic_list in zip(post_ids, batch_results):
+                    if not topic_list:
+                        continue
+                    top_topic = max(topic_list, key=lambda x: x["confidence"])
+                    new_cluster_id = TOPIC_TO_CLUSTER.get(top_topic["topic"])
+                    if not new_cluster_id:
+                        continue
+                    post = db.session.get(Post, post_id)
+                    if post and post.cluster_label_source != "reviewed" and post.cluster_id != new_cluster_id:
+                        post.cluster_id = new_cluster_id
+                        post.cluster_label_source = "corex_enriched"
+                        cluster_updates += 1
+                if cluster_updates:
+                    db.session.commit()
+
+                print(
+                    f"[MANA] Auto-retrain complete. "
+                    f"{inserted} topic rows inserted, {skipped} posts unclassified, "
+                    f"{cluster_updates} cluster_id corrections applied.",
+                    flush=True,
+                )
+        except Exception as exc:
+            import sys
+            print(f"[MANA] Auto-retrain failed: {exc}", file=sys.stderr, flush=True)
+
+    threading.Thread(target=_worker, daemon=True).start()
+
 
 # Run at module load so gunicorn also initialises the DB on startup.
 try:

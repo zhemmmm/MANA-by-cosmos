@@ -15,8 +15,8 @@ from functools import wraps
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, jwt_required
 
-from models import Post, PostSentiment, PreprocessedText, db
-from services.vader.sentiment_analyzer import analyze_post, get_status
+from models import Comment, Post, PostSentiment, PreprocessedText, db
+from services.vader.sentiment_analyzer import analyze_post_with_comments, get_status
 
 vader_bp = Blueprint("vader", __name__)
 
@@ -95,6 +95,9 @@ def analyze_all():
             .all()
         if (row.vader_text or row.clean_text)
     }
+    comments_by_post: dict[str, list[str]] = {}
+    for comment in Comment.query.filter(Comment.post_id.in_(post_ids)).all():
+        comments_by_post.setdefault(comment.post_id, []).append(comment.text or "")
 
     inserted = updated = skipped = 0
 
@@ -104,7 +107,11 @@ def analyze_all():
             continue
 
         text   = vader_text_map.get(post.id) or post.caption or ""
-        result = analyze_post(text, post.cluster_id)
+        result = analyze_post_with_comments(
+            text,
+            post.cluster_id,
+            comments_by_post.get(post.id, []),
+        )
 
         existing = PostSentiment.query.filter_by(post_id=post.id).first()
         if existing:
@@ -157,7 +164,11 @@ def analyze_single(post_id: str):
     vader_src = (pt.vader_text or pt.clean_text) if pt else None
     text      = vader_src or post.caption or ""
 
-    result   = analyze_post(text, post.cluster_id)
+    comment_texts = [
+        comment.text or ""
+        for comment in Comment.query.filter_by(post_id=post_id).all()
+    ]
+    result   = analyze_post_with_comments(text, post.cluster_id, comment_texts)
     existing = PostSentiment.query.filter_by(post_id=post_id).first()
 
     if existing:

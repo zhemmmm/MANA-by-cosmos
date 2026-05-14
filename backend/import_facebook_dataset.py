@@ -22,7 +22,7 @@ from data import (
     extract_location,
     PRIORITY_ORDER,
 )
-from models import Post, PostCluster, PostSentiment, PostTopic, PreprocessedText, db
+from models import Comment, Post, PostCluster, PostSentiment, PostTopic, PreprocessedText, db
 from preprocessing import save_preprocessed_text
 from services.corex.topic_modeler import is_model_trained, predict_topics_batch
 from services.svm.cluster_classifier import (
@@ -271,13 +271,16 @@ def import_items(payload: list[dict]):
         # Run VADER sentiment analysis on newly imported posts.
         vader_sentiments_assigned = 0
         try:
-            from services.vader.sentiment_analyzer import analyze_post as _vader_analyze
+            from services.vader.sentiment_analyzer import analyze_post_with_comments as _vader_analyze
 
             new_post_ids_set = {
                 str(item.get("postId") or item.get("url") or item.get("topLevelUrl"))
                 for item in payload
             }
             new_posts = Post.query.filter(Post.id.in_(new_post_ids_set)).all()
+            comments_by_post: dict[str, list[str]] = {}
+            for comment in Comment.query.filter(Comment.post_id.in_(new_post_ids_set)).all():
+                comments_by_post.setdefault(comment.post_id, []).append(comment.text or "")
 
             pt_lookup: dict[str, str] = {
                 row.raw_id: (row.vader_text or row.clean_text)
@@ -290,7 +293,7 @@ def import_items(payload: list[dict]):
 
             for post in new_posts:
                 text   = pt_lookup.get(post.id) or post.caption or ""
-                result = _vader_analyze(text, post.cluster_id)
+                result = _vader_analyze(text, post.cluster_id, comments_by_post.get(post.id, []))
 
                 existing = PostSentiment.query.filter_by(post_id=post.id).first()
                 if existing:

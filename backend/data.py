@@ -19,7 +19,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster A",
         "name": "Food and Non-food Items (NFIs)",
         "description": "Tracks posts about food packs, water, hygiene kits, blankets, and other basic relief needs.",
-        "keywords": ["relief goods", "rice", "water refill", "hygiene kit", "blanket", "food pack", "pagkain", "bigas", "relief pack", "drinking water", "canned goods", "sardinas", "noodles", "inumin", "water sachet", "ayuda", "NFI", "non-food items"],
+        "keywords": ["relief goods", "rice", "water refill", "hygiene kit", "blanket", "food pack", "relief pack", "drinking water", "canned goods", "noodles", "water sachet", "nfi", "non-food items", "donation", "grocery"],
         "accent": "#f59e0b",
         "recommendation": "Dispatch rapid food and NFI validation support to the affected area within the next response cycle.",
     },
@@ -28,7 +28,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster B",
         "name": "WASH, Medical and Public Health, Nutrition, Mental Health and Psychosocial Support (Health)",
         "description": "Tracks posts about health, medicine, clean water, nutrition, and mental health support.",
-        "keywords": ["fever", "insulin", "washing area", "dehydration", "doctor", "medical team", "medicine", "gamot", "health center", "clean water", "clinic", "nurse", "ospital", "sugat", "wound", "injured", "leptospirosis", "diarrhea", "cholera", "first aid", "tubig linis"],
+        "keywords": ["fever", "insulin", "washing area", "dehydration", "doctor", "medical team", "medicine", "health center", "clean water", "clinic", "nurse", "hospital", "wound", "injured", "leptospirosis", "diarrhea", "cholera", "first aid", "water outage", "no water"],
         "accent": "#3b82f6",
         "recommendation": "Coordinate a health sweep, water safety check, and medicine support with the nearest response unit.",
     },
@@ -37,7 +37,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster C",
         "name": "Camp Coordination, Management and Protection (CCCM)",
         "description": "Tracks evacuation center crowding, camp services, registration, and protection issues.",
-        "keywords": ["evacuation center", "overcapacity", "privacy", "registration", "safe space", "toilet line", "evacuation site", "evacuees", "shelter", "camp", "crowded", "likas", "displaced families", "pabahay", "gym", "covered court", "barangay hall", "tent", "evacuation area"],
+        "keywords": ["evacuation center", "overcapacity", "privacy", "registration", "safe space", "toilet line", "evacuation site", "evacuees", "shelter", "camp", "crowded", "displaced families", "housing", "gym", "covered court", "barangay hall", "tent", "evacuation area"],
         "accent": "#8b5cf6",
         "recommendation": "Coordinate immediate shelter protection adjustments, sanitation checks, and overflow site support.",
     },
@@ -46,7 +46,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster D",
         "name": "Logistics",
         "description": "Tracks blocked routes, delivery delays, convoy movement, and supply transport issues.",
-        "keywords": ["blocked road", "convoy", "truck", "warehouse", "delivery", "reroute", "road clearing", "bridge damage", "passable", "supply route", "transport", "blocked bridge", "impassable", "mudslide", "alternate route", "aerial delivery", "bangka", "barge"],
+        "keywords": ["blocked road", "convoy", "truck", "warehouse", "delivery", "reroute", "road clearing", "bridge damage", "passable", "supply route", "transport", "blocked bridge", "impassable", "mudslide", "alternate route", "aerial delivery", "boat", "barge", "traffic", "car crash", "vehicular accident", "collision"],
         "accent": "#f97316",
         "recommendation": "Activate alternate routing and issue a field logistics advisory before dispatch resumes.",
     },
@@ -55,7 +55,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster E",
         "name": "Emergency Telecommunications (ETC)",
         "description": "Tracks signal loss, network problems, and urgent communication needs.",
-        "keywords": ["signal down", "no network", "power bank", "cell site", "radio", "connectivity", "no signal", "communication line", "internet down", "telecom", "network outage", "walang signal", "dead zone", "no wifi", "brownout", "blackout", "walang kuryente", "generator", "DRRM radio"],
+        "keywords": ["signal down", "no network", "power bank", "cell site", "radio", "connectivity", "no signal", "communication line", "internet down", "telecom", "network outage", "dead zone", "no wifi", "brownout", "blackout", "no power", "generator", "drrm radio"],
         "accent": "#06b6d4",
         "recommendation": "Escalate emergency telecommunications support and deploy backup communications where needed.",
     },
@@ -64,7 +64,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster F",
         "name": "Education",
         "description": "Tracks school closures, displaced learners, and temporary learning needs.",
-        "keywords": ["school closure", "class suspension", "learning materials", "temporary classroom", "deped", "students", "walang pasok", "school suspension", "learners", "class cancelled", "walang klase", "no classes", "virtual learning", "school flooded", "school used as evacuation", "online class"],
+        "keywords": ["school closure", "class suspension", "learning materials", "temporary classroom", "deped", "students", "no classes", "school suspension", "learners", "class cancelled", "online class", "virtual learning", "school flooded", "school used as evacuation"],
         "accent": "#10b981",
         "recommendation": "Coordinate temporary learning support and school recovery planning with education partners.",
     },
@@ -73,7 +73,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster G",
         "name": "Search, Rescue and Retrieval (SRR)",
         "description": "Tracks stranded people, rescue calls, rooftop signals, and retrieval updates.",
-        "keywords": ["stranded", "roof", "rescue boat", "trapped family", "sos", "retrieval", "rescue team", "saklolo", "na stranded", "trapped", "save us", "tabang", "nastranded", "naipit", "helicopter", "coast guard", "search party", "swift water rescue"],
+        "keywords": ["stranded", "roof", "rescue boat", "trapped family", "sos", "retrieval", "rescue team", "help needed", "trapped", "save us", "helicopter", "coast guard", "search party", "swift water rescue", "fire", "blaze", "burning", "firefighter", "fire alert"],
         "accent": "#ef4444",
         "recommendation": "Push rescue coordinates to the nearest SRR team and validate extraction access immediately.",
     },
@@ -82,7 +82,7 @@ CLUSTER_DEFINITIONS = [
         "short": "Cluster H",
         "name": "Management of Dead and Missing (MDM)",
         "description": "Tracks missing persons, identification concerns, and related coordination updates.",
-        "keywords": ["missing", "identified", "hospital list", "family tracing", "coordination desk", "verification", "missing person", "body identified", "casualty", "fatality", "unaccounted", "namatay", "patay", "nawawala", "nawala", "missing child", "lost contact", "remains"],
+        "keywords": ["missing", "identified", "hospital list", "family tracing", "coordination desk", "missing person", "body identified", "casualty", "fatality", "unaccounted", "dead", "missing child", "lost contact", "remains", "deceased"],
         "accent": "#64748b",
         "recommendation": "Cross-check tracing, registry, and hospital intake data with missing-person coordination desks.",
     },
@@ -93,7 +93,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-a",
         "priorities": {"HIGH"},
-        "match_terms": ["pagkain", "food", "evacuation center", "walang pagkain"],
+        "match_terms": ["food", "evacuation center", "no food", "hungry", "starving"],
         "recommendation": (
             "Coordinate with DSWD for immediate food pack deployment. Alert LGU and "
             "partner NGOs for supplementary relief distribution. Prioritize families "
@@ -151,7 +151,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-c",
         "priorities": {"HIGH"},
-        "match_terms": ["puno", "capacity", "hindi na makapasok", "overflow", "bagong dating"],
+        "match_terms": ["full capacity", "capacity", "cannot enter", "overflow", "new arrivals"],
         "recommendation": (
             "Activate secondary evacuation sites. Coordinate transport of overflow "
             "evacuees to alternate centers. Update evacuation center capacity "
@@ -161,7 +161,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-c",
         "priorities": {"MEDIUM"},
-        "match_terms": ["nag-aaway", "crowd", "peacekeeping", "ayos"],
+        "match_terms": ["fighting", "crowd", "peacekeeping", "conflict"],
         "recommendation": (
             "Deploy barangay peacekeeping team and social workers to evacuation site. "
             "Coordinate with PNP for crowd management support. Establish camp "
@@ -171,7 +171,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-c",
         "priorities": {"HIGH"},
-        "match_terms": ["bata", "magulang", "iisa", "child", "minor", "family tracing"],
+        "match_terms": ["child", "parent", "alone", "minor", "family tracing", "lost child"],
         "recommendation": (
             "Immediately coordinate with DSWD for child protection intervention. "
             "Deploy social workers for family tracing. Alert BCPC for unaccompanied "
@@ -181,7 +181,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-d",
         "priorities": {"HIGH"},
-        "match_terms": ["relief truck", "kalsada", "road", "route", "baha"],
+        "match_terms": ["relief truck", "street", "road", "route", "flood", "blocked"],
         "recommendation": (
             "Coordinate with DPWH for alternate route assessment. Deploy amphibious "
             "or boat transport for relief delivery. Alert MDRRMO logistics team for "
@@ -191,7 +191,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-d",
         "priorities": {"CRITICAL"},
-        "match_terms": ["kulang ang sasakyan", "evacuation", "transport assets", "hindi pa nakakaalis"],
+        "match_terms": ["not enough vehicles", "evacuation", "transport assets", "stranded group", "cannot leave"],
         "recommendation": (
             "Immediately mobilize all available LGU vehicles and coordinate with DOTC "
             "for additional transport assets. Request mutual aid from adjacent LGUs. "
@@ -201,7 +201,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-d",
         "priorities": {"HIGH"},
-        "match_terms": ["fuel", "rescue boat", "vessel", "operasyon"],
+        "match_terms": ["fuel", "rescue boat", "vessel", "operation"],
         "recommendation": (
             "Dispatch fuel supply team to reported coordinates. Coordinate with Coast "
             "Guard for backup vessel deployment. Alert rescue operations commander of "
@@ -211,7 +211,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-e",
         "priorities": {"HIGH"},
-        "match_terms": ["walang signal", "signal", "makakontak", "network"],
+        "match_terms": ["no signal", "signal", "cannot contact", "network", "dead zone"],
         "recommendation": (
             "Coordinate with DICT for deployment of emergency satellite communication "
             "unit. Alert TELCO providers for priority signal restoration. Activate "
@@ -221,7 +221,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-e",
         "priorities": {"MEDIUM"},
-        "match_terms": ["hotline", "tumatawag", "sumasagot", "contact numbers"],
+        "match_terms": ["hotline", "calling", "answering", "contact numbers"],
         "recommendation": (
             "Investigate MDRRMO hotline system status. Activate secondary communication "
             "channels. Post alternate contact numbers on official LGU social media "
@@ -231,7 +231,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-e",
         "priorities": {"LOW"},
-        "match_terms": ["naibalik", "restoration", "signal", "makipag-ugnayan"],
+        "match_terms": ["restored", "restoration", "signal", "contacted"],
         "recommendation": (
             "Log restoration of communication in affected area. Continue monitoring "
             "for remaining communication gaps in adjacent barangays."
@@ -240,7 +240,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-f",
         "priorities": {"MEDIUM"},
-        "match_terms": ["evacuation center", "makakabalik sa klase", "school facility", "learning spaces"],
+        "match_terms": ["evacuation center", "resume class", "school facility", "learning spaces"],
         "recommendation": (
             "Coordinate with DepEd for school facility assessment and timeline for "
             "resumption. Identify alternative learning spaces. Alert DepEd Division "
@@ -250,7 +250,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-f",
         "priorities": {"MEDIUM"},
-        "match_terms": ["libro", "kagamitan", "materials", "nasira", "baha"],
+        "match_terms": ["books", "supplies", "materials", "damaged", "flood"],
         "recommendation": (
             "Coordinate with DepEd and partner NGOs for emergency learning materials "
             "replacement. Submit rapid school damage assessment to MDRRMO and DepEd "
@@ -260,7 +260,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-f",
         "priorities": {"MEDIUM"},
-        "match_terms": ["takot", "panic", "lindol", "psychosocial", "mhpss"],
+        "match_terms": ["scared", "panic", "earthquake", "psychosocial", "mhpss"],
         "recommendation": (
             "Coordinate with DepEd and DSWD for deployment of psychosocial support "
             "team. Conduct school-based MHPSS sessions before class resumption."
@@ -269,7 +269,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-g",
         "priorities": {"HIGH"},
-        "match_terms": ["baha", "natrap", "trapped", "water rescue", "hindi makalabas"],
+        "match_terms": ["flood", "trapped", "water rescue", "cannot get out"],
         "recommendation": (
             "Deploy Search and Rescue units. Coordinate with MDRRMO and Coast Guard "
             "for water rescue operations. Report exact location to rescue operations "
@@ -279,7 +279,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-g",
         "priorities": {"CRITICAL"},
-        "match_terms": ["gumuho", "collapse", "rescue ngayon", "nalipit", "usar"],
+        "match_terms": ["collapse", "rescue now", "pinned", "usar"],
         "recommendation": (
             "Immediately dispatch Urban Search and Rescue (USAR) team. Coordinate "
             "with BFP and MDRRMO for structural collapse rescue protocol. Alert "
@@ -289,7 +289,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-g",
         "priorities": {"LOW"},
-        "match_terms": ["narescue na", "walang casualty", "completed rescue"],
+        "match_terms": ["rescued", "no casualty", "completed rescue"],
         "recommendation": (
             "Log completed rescue operation. Document number of rescued individuals. "
             "Continue area monitoring for additional rescue requests."
@@ -298,7 +298,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-h",
         "priorities": {"HIGH"},
-        "match_terms": ["bangkay", "body", "retrieval", "identification"],
+        "match_terms": ["corpse", "body", "retrieval", "identification"],
         "recommendation": (
             "Coordinate with PNP and NBI for body retrieval and identification. "
             "Notify MDRRMO for incident documentation. Alert barangay officials for "
@@ -308,7 +308,7 @@ SCENARIO_RECOMMENDATIONS = [
     {
         "cluster_id": "cluster-h",
         "priorities": {"MEDIUM"},
-        "match_terms": ["wala pa ring balita", "missing", "hospital admission", "evacuation center registries"],
+        "match_terms": ["still no news", "missing", "hospital admission", "evacuation center registries"],
         "recommendation": (
             "Register reported missing person with MDRRMO and PNP. Coordinate with "
             "barangay officials for local search. Cross-reference with evacuation "
@@ -443,43 +443,50 @@ EXCEL_RECOMMENDATIONS = {
 CLUSTER_SIGNAL_TERMS = {
     "cluster-a": {
         "relief goods", "food pack", "rice", "bigas", "pagkain", "tubig", "water", "drinking water", "blanket",
-        "hygiene kit", "relief pack", "inumin", "canned goods", "sardinas", "noodles", "ayuda", "donation",
-        "NFI", "distribution", "supply", "water sachet",
+        "hygiene kit", "relief pack", "inumin", "canned goods", "sardinas", "noodles", "ayuda", "relief donation", "food donation",
+        "NFI", "distribution", "supply", "water sachet", "DSWD", "relief operations", "relief convoy",
+        "packed relief", "family pack", "hygiene pack",
     },
     "cluster-b": {
         "doctor", "nurse", "hospital", "clinic", "medical", "medicine", "gamot", "health", "dehydration",
         "fever", "clean water", "sanitation", "ospital", "sugat", "wound", "injured", "sick",
         "leptospirosis", "diarrhea", "cholera", "first aid", "health center", "tubig linis",
+        "DOH", "medical team", "ambulance", "triage", "medical mission", "contaminant",
     },
     "cluster-c": {
         "evacuation center", "evacuation site", "evacuees", "shelter", "camp", "registration", "safe space",
         "overcapacity", "crowded", "likas", "displaced", "pabahay", "gym", "covered court",
-        "barangay hall", "tent", "displaced families", "evacuation area",
+        "barangay hall", "tent", "displaced families", "evacuation area", "preemptive evacuation",
+        "mandatory evacuation", "danger zone", "evacuated",
     },
     "cluster-d": {
         "blocked road", "bridge", "road", "truck", "convoy", "delivery", "reroute", "warehouse", "transport",
         "passable", "impassable", "landslide", "debris", "alternate route", "road clearing",
-        "mudslide", "blocked bridge", "guho", "collapsed road",
+        "mudslide", "blocked bridge", "guho", "collapsed road", "DPWH", "road damage", "road closed",
+        "fallen tree", "not passable", "road cut off",
     },
     "cluster-e": {
         "signal", "no signal", "no network", "network", "connectivity", "radio", "cell site", "internet",
         "telecom", "communication", "power bank", "walang signal", "dead zone", "no wifi", "brownout",
-        "blackout", "walang kuryente", "generator", "power outage",
+        "blackout", "walang kuryente", "generator", "power outage", "Meralco", "blackout", "no electricity",
+        "signal restored", "communication cut", "fiber optic",
     },
     "cluster-f": {
         "school", "class suspension", "school closure", "walang pasok", "deped", "students", "learners",
         "class cancelled", "temporary classroom", "walang klase", "school flooded", "online class",
-        "virtual learning", "no classes",
+        "virtual learning", "no classes", "classes suspended", "academic calendar", "CHED",
     },
     "cluster-g": {
         "rescue", "rescue team", "rescue boat", "stranded", "trapped", "saklolo", "sos", "roof", "retrieval",
         "save us", "tabang", "nastranded", "naipit", "helicopter", "coast guard", "naiipit",
-        "swift water", "search party",
+        "swift water", "search party", "BFP", "Bureau of Fire", "fire alert", "fire truck", "blaze",
+        "burning", "structure fire", "five alarm", "call for help", "trapped", "SOS",
     },
     "cluster-h": {
         "missing", "missing person", "identified", "family tracing", "casualty", "fatality", "body identified",
         "hospital list", "unaccounted", "namatay", "patay", "nawawala", "nawala",
-        "missing child", "lost contact",
+        "missing child", "lost contact", "death toll", "confirmed dead", "found dead", "morgue",
+        "next of kin", "remains",
     },
 }
 # Maps CorEx topic labels → NDRRMC cluster IDs.
@@ -571,46 +578,77 @@ def seed_clusters():
 
 def infer_cluster(text: str):
     lower = (text or "").lower()
+
+    # Soft Irrelevance Penalty: civic/cultural terms raise the minimum threshold.
+    # Posts about fashion shows or festivals won't classify unless 3+ disaster
+    # keywords are present — a genuine disaster at a public event would still pass.
+    IRRELEVANCE_TERMS = [
+        "fashion", "fiesta", "pageant", "sagala", "flores de mayo",
+        "festival", "concert", "parade", "beauty queen", "gala", "exhibit",
+        "inauguration", "ceremony", "anniversary", "awarding", "pride month",
+        "christmas", "new year", "valentines", "holy week",
+        "impeachment", "senate", "congress", "ordinance", "proclamation",
+        "promo", "discount", "sale", "voucher", "raffle", "giveaway", "free trial",
+        "launching", "ribbon cutting", "groundbreaking",
+    ]
+    is_civic_post = any(
+        re.search(r'\b' + re.escape(term) + r'\b', lower)
+        for term in IRRELEVANCE_TERMS
+    )
+    # Normal posts need score >= 3; civic posts need >= 9 (3 strong keyword matches)
+    min_score = 9 if is_civic_post else 3
+
     best_cluster = CLUSTER_DEFINITIONS[0]
     best_score = -1
     matched_keywords = []
 
     for cluster in CLUSTER_DEFINITIONS:
-        exact_matches = [keyword for keyword in cluster["keywords"] if keyword.lower() in lower]
-        signal_matches = [term for term in CLUSTER_SIGNAL_TERMS.get(cluster["id"], set()) if term in lower]
+        exact_matches = [keyword for keyword in cluster["keywords"] if re.search(r'\b' + re.escape(keyword.lower()) + r'\b', lower)]
+        signal_matches = [term for term in CLUSTER_SIGNAL_TERMS.get(cluster["id"], set()) if re.search(r'\b' + re.escape(term) + r'\b', lower)]
         weighted_score = (len(exact_matches) * 3) + len(signal_matches)
-        if any(term in lower for term in ["sos", "saklolo", "rescue", "trapped", "stranded"]) and cluster["id"] == "cluster-g":
+
+        if any(re.search(r'\b' + re.escape(term) + r'\b', lower) for term in ["sos", "rescue", "trapped", "stranded", "fire"]) and cluster["id"] == "cluster-g":
             weighted_score += 4
-        if any(term in lower for term in ["evacuation center", "evacuees", "shelter"]) and cluster["id"] == "cluster-c":
+        if any(re.search(r'\b' + re.escape(term) + r'\b', lower) for term in ["evacuation center", "evacuees", "shelter"]) and cluster["id"] == "cluster-c":
             weighted_score += 3
-        if any(term in lower for term in ["missing", "fatality", "body identified"]) and cluster["id"] == "cluster-h":
+        if any(re.search(r'\b' + re.escape(term) + r'\b', lower) for term in ["missing", "fatality", "body identified"]) and cluster["id"] == "cluster-h":
             weighted_score += 4
+
         score = weighted_score
         if score > best_score:
             best_cluster = cluster
             best_score = score
             matched_keywords = exact_matches or signal_matches
 
-    if best_score <= 0:
-        fallback_map = [
-            ("weather", "cluster-e"),
-            ("heat index", "cluster-b"),
-            ("air quality", "cluster-b"),
-            ("volcano", "cluster-g"),
-            ("ash", "cluster-g"),
-            ("evacuation", "cluster-c"),
-            ("relief", "cluster-a"),
-            ("medicine", "cluster-b"),
-            ("school", "cluster-f"),
-            ("signal", "cluster-e"),
-        ]
-        for trigger, cluster_id in fallback_map:
-            if trigger in lower:
-                best_cluster = CLUSTER_MAP[cluster_id]
-                break
+    # Apply threshold (higher for civic posts)
+    if best_score < min_score:
+        # Only check fallback if it's not a civic post (civic posts require real keyword density)
+        if not is_civic_post:
+            fallback_map = [
+                ("weather", "cluster-e"),
+                ("heat index", "cluster-b"),
+                ("air quality", "cluster-b"),
+                ("volcano", "cluster-g"),
+                ("ash", "cluster-g"),
+                ("evacuation", "cluster-c"),
+                ("relief", "cluster-a"),
+                ("medicine", "cluster-b"),
+                ("school", "cluster-f"),
+                ("signal", "cluster-e"),
+                ("fire", "cluster-g"),
+            ]
+            for trigger, cluster_id in fallback_map:
+                if re.search(r'\b' + re.escape(trigger) + r'\b', lower):
+                    best_cluster = CLUSTER_MAP[cluster_id]
+                    matched_keywords = [trigger]
+                    break
+            else:
+                return None, []
+        else:
+            return None, []
 
     hashtags = [token.strip("#") for token in re.findall(r"#([A-Za-z][A-Za-z0-9]+)", text or "")]
-    keywords = matched_keywords or hashtags[:3] or best_cluster["keywords"][:2]
+    keywords = matched_keywords or hashtags[:3]
     return best_cluster, keywords[:6]
 
 
@@ -641,7 +679,7 @@ def infer_priority(text: str, engagement: int):
     lower = (text or "").lower()
     if any(term in lower for term in ["sos", "rescue", "stranded", "trapped", "critical", "danger zone"]):
         return "Critical"
-    if any(term in lower for term in ["alert", "warning", "evacu", "ash", "volcano", "flood", "medical", "heat index"]):
+    if any(re.search(r'\b' + re.escape(term) + r'\b', lower) for term in ["alert", "warning", "volcano", "flood", "medical", "heat index"]) or re.search(r'\bevacuat', lower) or re.search(r'\bash\b', lower):
         return "High"
     if engagement >= 100:
         return "High"
@@ -668,7 +706,10 @@ def normalize_recommendation_priority(priority: str) -> str:
     }.get((priority or "").strip(), "MEDIUM")
 
 
-def recommendation_for(cluster_id: str, priority: str, text: str | None = None):
+def recommendation_for(cluster_id: str | None, priority: str, text: str | None = None):
+    if not cluster_id or cluster_id not in CLUSTER_MAP:
+        return "General incident. Monitor the situation and await further verifying details before escalating."
+        
     normalized = normalize_recommendation_priority(priority)
     lower_text = (text or "").lower()
 
@@ -677,7 +718,7 @@ def recommendation_for(cluster_id: str, priority: str, text: str | None = None):
             continue
         if normalized not in scenario["priorities"]:
             continue
-        if lower_text and any(term in lower_text for term in scenario["match_terms"]):
+        if lower_text and any(re.search(r'\b' + re.escape(term) + r'\b', lower_text) for term in scenario["match_terms"]):
             return scenario["recommendation"]
 
     cluster_recommendations = EXCEL_RECOMMENDATIONS.get(cluster_id, {})

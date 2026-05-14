@@ -10,9 +10,10 @@ from collections import defaultdict
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from data import CLUSTER_DEFINITIONS, now_utc, parse_date_range, top_keywords_from_posts
+from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, now_utc, parse_date_range, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
-from models import Comment, Post, Watchlist, db
+from models import Comment, Post, PostTopic, Watchlist, db
+from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
 
 posts_bp = Blueprint("posts", __name__)
 
@@ -60,7 +61,22 @@ def apply_post_filters(query):
     if source:
         query = query.filter(Post.source == source)
     if cluster_id:
-        query = query.filter(Post.cluster_id == cluster_id)
+        topics_for_cluster = [
+            topic for topic, cid in TOPIC_TO_CLUSTER.items() if cid == cluster_id
+        ]
+        if topics_for_cluster:
+            qualifying = (
+                db.session.query(PostTopic.post_id)
+                .filter(
+                    PostTopic.topic_label.in_(topics_for_cluster),
+                    PostTopic.confidence >= MIN_CLUSTER_CONFIDENCE,
+                )
+                .distinct()
+                .subquery()
+            )
+            query = query.filter(Post.cluster_id == cluster_id, Post.id.in_(qualifying))
+        else:
+            query = query.filter(Post.cluster_id == cluster_id)
     if priority:
         mapped = "Moderate" if priority == "Medium" else ("Monitoring" if priority == "Low" else priority)
         query = query.filter(Post.priority == mapped)

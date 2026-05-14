@@ -15,7 +15,7 @@ from pathlib import Path
 from app import app, ensure_database
 from data import extract_location, infer_cluster, now_utc
 from facebook_matching import build_post_match_index, find_post_match, normalize_facebook_url
-from models import Comment, Post, db
+from models import Comment, Post, PostSentiment, PreprocessedText, db
 from preprocessing import save_preprocessed_text
 
 
@@ -69,6 +69,7 @@ def import_items(payload: list[dict]):
     ensure_database()
     with app.app_context():
         post_match_index = build_post_match_index(Post.query.all())
+        affected_post_ids: set[str] = set()
         for item in payload:
             text = (item.get("text") or item.get("comment") or item.get("body") or item.get("message") or "").strip()
             post_url = item.get("facebookUrl") or ""
@@ -99,6 +100,8 @@ def import_items(payload: list[dict]):
                 external_id=item.get("postId"),
             )
             normalized = normalize_item(item, post)
+            if normalized["post_id"]:
+                affected_post_ids.add(normalized["post_id"])
             comment = db.session.get(Comment, normalized["id"])
 
             if comment:
@@ -137,6 +140,52 @@ def import_items(payload: list[dict]):
                 errors += stats["errors"]
 
         db.session.commit()
+
+        # Recompute parent post sentiment after comments are imported. This keeps
+        # the existing post-level sentiment fields current without adding tables.
+        if affected_post_ids:
+            try:
+                from services.vader.sentiment_analyzer import analyze_post_with_comments
+
+                post_texts = {
+                    row.raw_id: (row.vader_text or row.clean_text)
+                    for row in PreprocessedText.query
+                        .filter(PreprocessedText.raw_id.in_(affected_post_ids))
+                        .filter_by(record_type="post")
+                        .all()
+                    if (row.vader_text or row.clean_text)
+                }
+                comments_by_post: dict[str, list[str]] = {}
+                for comment in Comment.query.filter(Comment.post_id.in_(affected_post_ids)).all():
+                    comments_by_post.setdefault(comment.post_id, []).append(comment.text or "")
+
+                for post in Post.query.filter(Post.id.in_(affected_post_ids)).all():
+                    result = analyze_post_with_comments(
+                        post_texts.get(post.id) or post.caption or "",
+                        post.cluster_id,
+                        comments_by_post.get(post.id, []),
+                    )
+                    existing = PostSentiment.query.filter_by(post_id=post.id).first()
+                    if existing:
+                        existing.compound = result["compound"]
+                        existing.positive = result["positive"]
+                        existing.negative = result["negative"]
+                        existing.neutral = result["neutral"]
+                        existing.sarcasm_flag = result["sarcasm_flag"]
+                    else:
+                        db.session.add(PostSentiment(
+                            post_id=post.id,
+                            compound=result["compound"],
+                            positive=result["positive"],
+                            negative=result["negative"],
+                            neutral=result["neutral"],
+                            sarcasm_flag=result["sarcasm_flag"],
+                        ))
+                    post.sentiment_score = result["sentiment_score"]
+                    post.sentiment_compound = result["compound"]
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
 
     summary = {
         "total_records_loaded": len(payload),

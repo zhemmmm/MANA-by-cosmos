@@ -14,7 +14,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, jwt_required
 
 from data import recommendation_for
-from models import Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, db
+from models import Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, db
 from services.corex.topic_modeler import (
     get_model_status as corex_status,
     is_model_trained as corex_trained,
@@ -28,7 +28,7 @@ from services.svm.cluster_classifier import (
     select_top_cluster,
     train_svm,
 )
-from services.vader.sentiment_analyzer import analyze_post, get_status as vader_status
+from services.vader.sentiment_analyzer import analyze_post_with_comments, get_status as vader_status
 from services.random_forest.priority_classifier import (
     SEVERITY_MAP,
     get_model_status as rf_status,
@@ -155,19 +155,65 @@ def run_all():
                 for topic, words in corex_kw.items()
                 if topic in TOPIC_TO_CLUSTER
             }
+            # Strong-signal terms — when present, force the post to that cluster
+            # (these are unambiguous in the disaster-response domain).
+            STRONG_CLUSTER_SIGNALS = {
+                "cluster-g": {  # rescue — fire and active rescue language
+                    "fire", "fire alert", "txtfire", "bfp", "firefighter", "blaze",
+                    "burning", "arson", "fire truck", "fire department",
+                    "structure fire", "wildfire", "rescue", "trapped", "stranded",
+                    "sos", "rescue boat", "search and rescue",
+                },
+                "cluster-h": {  # dead/missing — fatality language
+                    "fatality", "casualty", "confirmed dead", "body found",
+                    "death toll", "missing person", "remains identified",
+                },
+                "cluster-c": {  # evacuation
+                    "evacuation center", "evacuees", "displaced families",
+                },
+            }
+
             for i, pid in enumerate(post_ids):
                 post = posts_map.get(pid)
                 if not post or post.cluster_label_source == "reviewed":
                     continue
                 tokens_set = set(rows[i].final_tokens)
-                best_cluster_id = None
-                best_score = 0
-                for cluster_id, kw_set in cluster_keyword_sets.items():
-                    score = len(tokens_set & kw_set)
-                    if score > best_score:
-                        best_score = score
-                        best_cluster_id = cluster_id
-                if best_cluster_id and best_score > 0 and post.cluster_id != best_cluster_id:
+                raw_text = (post.caption or "").lower()
+
+                forced_cluster = None
+                for cid, signals in STRONG_CLUSTER_SIGNALS.items():
+                    for term in signals:
+                        if " " in term:
+                            if term in raw_text:
+                                forced_cluster = cid
+                                break
+                        elif term in tokens_set:
+                            forced_cluster = cid
+                            break
+                    if forced_cluster:
+                        break
+
+                if forced_cluster:
+                    if post.cluster_id != forced_cluster:
+                        post.cluster_id = forced_cluster
+                        post.cluster_label_source = "corex_enriched"
+                        corex_relabeled += 1
+                    continue
+
+                scores = {
+                    cluster_id: len(tokens_set & kw_set)
+                    for cluster_id, kw_set in cluster_keyword_sets.items()
+                }
+                if not scores:
+                    continue
+                sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+                best_cluster_id, best_score = sorted_scores[0]
+                runner_up_score = sorted_scores[1][1] if len(sorted_scores) > 1 else 0
+                if (
+                    best_score > 0
+                    and (best_score - runner_up_score) >= 2
+                    and post.cluster_id != best_cluster_id
+                ):
                     post.cluster_id = best_cluster_id
                     post.cluster_label_source = "corex_enriched"
                     corex_relabeled += 1
@@ -237,6 +283,9 @@ def run_all():
             top_cluster = select_top_cluster(cluster_list)
             post = posts_map.get(post_id)
             if post and top_cluster and post.cluster_id != top_cluster["cluster_id"]:
+                # Never overwrite strong-signal CorEx decisions or human-reviewed labels.
+                if post.cluster_label_source in ("reviewed", "corex_enriched"):
+                    continue
                 post.cluster_id = top_cluster["cluster_id"]
                 post.cluster_label_source = "svm"
                 cluster_updates += 1
@@ -261,13 +310,20 @@ def run_all():
                 .all()
             if (row.vader_text or row.clean_text)
         }
+        comments_by_post: dict[str, list[str]] = {}
+        for comment in Comment.query.filter(Comment.post_id.in_(post_ids)).all():
+            comments_by_post.setdefault(comment.post_id, []).append(comment.text or "")
         vader_inserted = vader_updated = 0
         for post_id in post_ids:
             post = posts_map.get(post_id)
             if not post:
                 continue
             text = vader_text_map.get(post_id) or post.caption or ""
-            result = analyze_post(text, post.cluster_id)
+            result = analyze_post_with_comments(
+                text,
+                post.cluster_id,
+                comments_by_post.get(post_id, []),
+            )
             existing = PostSentiment.query.filter_by(post_id=post_id).first()
             if existing:
                 existing.compound = result["compound"]

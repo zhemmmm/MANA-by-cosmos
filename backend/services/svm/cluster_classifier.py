@@ -109,8 +109,14 @@ def train_svm(texts: list[str], labels: list[list[str]]) -> dict:
     primary_labels = [l[0] for l in labels_clean]
     n_classes = len(set(primary_labels))
     test_size = max(0.2, n_classes / len(texts_clean))
+    
+    # Stratify fails if any class has only 1 sample
+    from collections import Counter
+    class_counts = Counter(primary_labels)
+    can_stratify = min(class_counts.values()) > 1
+
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=42, stratify=primary_labels
+        X, y, test_size=test_size, random_state=42, stratify=primary_labels if can_stratify else None
     )
 
     base_clf = OneVsRestClassifier(LinearSVC(max_iter=10000, class_weight="balanced"))
@@ -214,7 +220,7 @@ def predict_clusters(text: str) -> list[dict]:
 
     results = []
     for cluster_id, score, conf in zip(CLUSTER_LABELS, decision, confidences):
-        if score > 0:
+        if conf > 0.60:
             results.append({"cluster_id": cluster_id, "confidence": round(float(conf), 4)})
 
     results.sort(key=lambda x: x["confidence"], reverse=True)
@@ -241,7 +247,7 @@ def predict_clusters_batch(texts: list[str]) -> list[list[dict]]:
     for doc_decisions, doc_confidences in zip(decisions, confidences):
         doc_clusters = []
         for cluster_id, score, conf in zip(CLUSTER_LABELS, doc_decisions, doc_confidences):
-            if score > 0:
+            if conf > 0.60:
                 doc_clusters.append({"cluster_id": cluster_id, "confidence": round(float(conf), 4)})
         doc_clusters.sort(key=lambda x: x["confidence"], reverse=True)
         all_results.append(doc_clusters)

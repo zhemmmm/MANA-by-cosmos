@@ -1540,7 +1540,8 @@ body.light-theme .rec-popup-text  { color: #134e4a; }
   font-size: 0.94rem;
 }
 
-.comment-card .comment-tag {
+.comment-card .comment-tag,
+.topic-comment-card .comment-tag {
   width: fit-content;
   padding: 6px 10px;
   border-radius: 999px;
@@ -1548,6 +1549,48 @@ body.light-theme .rec-popup-text  { color: #134e4a; }
   color: var(--accent);
   font-size: 0.77rem;
   font-weight: 800;
+}
+
+.cluster-comment-sections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.topic-comment-list {
+  display: grid;
+  gap: 10px;
+}
+
+.topic-comment-card {
+  padding: 11px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  gap: 8px;
+}
+
+.topic-comment-card p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 0.9rem;
+}
+
+.topic-comment-card small {
+  color: var(--text-soft);
+}
+
+.topic-comment-link {
+  justify-self: start;
+  width: auto;
+  border-radius: 10px;
+}
+
+.post-card.focused-post {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25), var(--shadow-soft);
 }
 
 .post-card {
@@ -1877,7 +1920,8 @@ body.light-theme .rec-popup-text  { color: #134e4a; }
 }
 
 body.light-theme .post-card,
-body.light-theme .comment-card {
+body.light-theme .comment-card,
+body.light-theme .topic-comment-card {
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   background: #f8f9fb;
@@ -1892,7 +1936,8 @@ body.light-theme .post-card {
 }
 
 body.light-theme .post-card:hover,
-body.light-theme .comment-card:hover {
+body.light-theme .comment-card:hover,
+body.light-theme .topic-comment-card:hover {
   box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
   border-color: #d8dee8;
 }
@@ -1908,7 +1953,8 @@ body.light-theme .post-meta strong {
 
 body.light-theme .post-meta span,
 body.light-theme .post-meta small,
-body.light-theme .comment-card small {
+body.light-theme .comment-card small,
+body.light-theme .topic-comment-card small {
   color: #64748b;
 }
 
@@ -1919,7 +1965,8 @@ body.light-theme .post-text {
 body.light-theme .cluster-pill,
 body.light-theme .metric-pill,
 body.light-theme .page-chip,
-body.light-theme .comment-card .comment-tag {
+body.light-theme .comment-card .comment-tag,
+body.light-theme .topic-comment-card .comment-tag {
   background: #e8eef8;
   border: 1px solid #d7e2f1;
   color: #334155;
@@ -3055,6 +3102,10 @@ body.light-theme .trend-pill.down {
   }
 
   .cluster-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .cluster-comment-sections {
     grid-template-columns: 1fr;
   }
 

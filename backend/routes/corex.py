@@ -21,6 +21,7 @@ from services.corex.topic_modeler import (
     is_model_trained,
     predict_topics_batch,
     train_corex,
+    train_iteratively,
 )
 
 corex_bp = Blueprint("corex", __name__)
@@ -44,35 +45,56 @@ def admin_required(fn):
 def train():
     """
     Read all relevant, finalized preprocessed texts and train the CorEx model.
-    Returns expanded keywords, coherence scores, and training metadata.
+
+    Optional JSON body:
+      {
+        "max_iterations": 5,      # int >= 1; default 1 = single pass (existing behaviour)
+        "target_coherence": 3.0,  # float; iterative mode stops early if reached
+      }
+
+    Single pass (default) returns: corpus_size, trained_at, overall_coherence,
+      coherence_scores, low_coherence_topics, expanded_keywords.
+    Iterative mode additionally returns: iterations array, best_iteration.
     """
+    body = request.get_json(silent=True) or {}
+    max_iterations = max(1, int(body.get("max_iterations", 1)))
+    target_coherence = float(body.get("target_coherence", 3.0))
+
     rows = (
         PreprocessedText.query
         .filter_by(preprocessing_status="processed", is_relevant=True)
         .filter(PreprocessedText.final_tokens_json != "[]")
         .all()
     )
-
-    # Reconstruct space-joined text from final_tokens — these are the clean,
-    # lemmatized, bigram-enriched tokens that CorEx should learn from.
     texts = [" ".join(row.final_tokens) for row in rows if row.final_tokens]
 
     try:
-        result = train_corex(texts)
+        if max_iterations <= 1:
+            result = train_corex(texts)
+            return jsonify({
+                "message": "CorEx model trained successfully.",
+                "corpus_size": result["corpus_size"],
+                "trained_at": result["trained_at"],
+                "overall_coherence": result["overall_coherence"],
+                "coherence_scores": result["coherence_scores"],
+                "low_coherence_topics": result["low_coherence_topics"],
+                "expanded_keywords": result["expanded_keywords"],
+            })
+        else:
+            result = train_iteratively(texts, max_iterations=max_iterations, target_coherence=target_coherence)
+            return jsonify({
+                "message": f"CorEx iterative training complete ({result['best_iteration']} of {max_iterations} iterations used).",
+                "corpus_size": result["corpus_size"],
+                "trained_at": result["trained_at"],
+                "best_iteration": result["best_iteration"],
+                "best_overall_coherence": result["best_overall_coherence"],
+                "iterations": result["iterations"],
+                "final_keywords": result["final_keywords"],
+            })
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
     except Exception as exc:
         return jsonify({"error": f"Training failed: {exc}"}), 500
-
-    return jsonify({
-        "message": "CorEx model trained successfully.",
-        "corpus_size": result["corpus_size"],
-        "trained_at": result["trained_at"],
-        "overall_coherence": result["overall_coherence"],
-        "coherence_scores": result["coherence_scores"],
-        "low_coherence_topics": result["low_coherence_topics"],
-        "expanded_keywords": result["expanded_keywords"],
-    })
 
 
 # ── Status ─────────────────────────────────────────────────────────────────────
@@ -156,6 +178,87 @@ def predict_all():
         "posts_processed": len(post_ids),
         "topic_rows_inserted": inserted,
         "posts_skipped_no_topics": skipped,
+    })
+
+
+# ── Train and predict (convenience) ───────────────────────────────────────────
+
+@corex_bp.route("/corex/train-and-predict", methods=["POST"])
+@admin_required
+def train_and_predict():
+    """
+    Train CorEx (with optional iterative mode) then immediately run batch
+    prediction and upsert PostTopic rows — one round trip for the admin workflow.
+
+    JSON body:
+      {
+        "max_iterations": 3,      # optional, default 1 (single pass)
+        "target_coherence": 3.0,  # optional, default 3.0
+        "overwrite": true,        # optional, default true
+      }
+    """
+    body = request.get_json(silent=True) or {}
+    max_iterations = max(1, int(body.get("max_iterations", 1)))
+    target_coherence = float(body.get("target_coherence", 3.0))
+    overwrite = bool(body.get("overwrite", True))
+
+    rows = (
+        PreprocessedText.query
+        .filter_by(record_type="post", preprocessing_status="processed", is_relevant=True)
+        .filter(PreprocessedText.final_tokens_json != "[]")
+        .all()
+    )
+    texts = [" ".join(row.final_tokens) for row in rows if row.final_tokens]
+    post_ids = [row.raw_id for row in rows if row.final_tokens]
+
+    try:
+        if max_iterations <= 1:
+            train_result = train_corex(texts)
+            train_summary = {
+                "overall_coherence": train_result["overall_coherence"],
+                "iterations_used": 1,
+            }
+        else:
+            train_result = train_iteratively(texts, max_iterations=max_iterations, target_coherence=target_coherence)
+            train_summary = {
+                "overall_coherence": train_result["best_overall_coherence"],
+                "iterations_used": train_result["best_iteration"],
+                "iteration_details": train_result["iterations"],
+            }
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+    except Exception as exc:
+        return jsonify({"error": f"Training failed: {exc}"}), 500
+
+    try:
+        batch_results = predict_topics_batch(texts)
+        inserted = skipped = 0
+        for post_id, topic_list in zip(post_ids, batch_results):
+            if not topic_list:
+                skipped += 1
+                continue
+            if overwrite:
+                PostTopic.query.filter_by(post_id=post_id).delete()
+            for item in topic_list:
+                db.session.add(PostTopic(
+                    post_id=post_id,
+                    topic_label=item["topic"],
+                    confidence=item["confidence"],
+                ))
+                inserted += 1
+        db.session.commit()
+    except Exception as exc:
+        db.session.rollback()
+        return jsonify({"error": f"Prediction failed: {exc}"}), 500
+
+    return jsonify({
+        "message": "Train and predict complete.",
+        "train": train_summary,
+        "predict": {
+            "posts_processed": len(post_ids) - skipped,
+            "topic_rows_inserted": inserted,
+            "posts_skipped_no_topics": skipped,
+        },
     })
 
 

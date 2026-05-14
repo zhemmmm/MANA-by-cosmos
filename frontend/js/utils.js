@@ -24,6 +24,21 @@ function getInitials(name) {
   return name.replace(/^@/, "").split(/\s+/).slice(0, 3).map(w => w[0] || "").join("").toUpperCase().slice(0, 3);
 }
 
+function anonymizedCommentAuthor(comment = {}) {
+  const seed = [
+    comment.author,
+    comment.id,
+    comment.text,
+    comment.date,
+  ].filter(Boolean).join("|") || "comment";
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+  }
+  const suffix = String(Math.abs(hash) % 9000 + 1000);
+  return `facebookuser@${suffix}`;
+}
+
 // ─── Post Engagement ──────────────────────────────────────────────────────────
 function getEngagement(post) {
   return post.source === "Facebook"

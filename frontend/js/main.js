@@ -504,6 +504,7 @@ function handleDocumentClick(event) {
   const pin           = event.target.closest("[data-pin]");
   const commentToggle = event.target.closest("[data-toggle-comments]");
   const restorePost   = event.target.closest("[data-restore-post]");
+  const focusCommentPost = event.target.closest("[data-focus-comment-post]");
 
   if (nav)        setPage(nav.dataset.nav);
   if (clusterNav) { state.currentCluster = clusterNav.dataset.clusterNav; setPage("cluster-detail"); }
@@ -521,6 +522,9 @@ function handleDocumentClick(event) {
   if (restorePost) {
     const postId = restorePost.dataset.restorePost;
     setPostStatus(postId, getRestoreStatus(postId), { silent: false });
+  }
+  if (focusCommentPost) {
+    focusPostFromComment(focusCommentPost.dataset.focusCommentPost);
   }
 
   const openPost = event.target.closest("[data-open-post]");
