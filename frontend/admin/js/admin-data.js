@@ -29,7 +29,7 @@ function profileToUser(u, idx) {
 
 const AdminData = {
   async getCurrentAdmin() {
-    return fetch("http://localhost:5000/api/auth/me", {
+    return fetch(`${AUTH_API_BASE}/me`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getAdminToken()}`,

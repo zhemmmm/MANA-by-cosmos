@@ -12,7 +12,10 @@
 const SUPABASE_URL = "https://gizuoookwwkximbqvcpx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_cj0YjBeAVubMaZVOyYXNyQ_D0en0BF_";
 
-const ADMIN_API_BASE = "http://localhost:5000/api/admin";
+const API_ROOT = "https://mana-backend-4s1w.onrender.com/api";
+// const API_ROOT = "http://localhost:5000/api";
+const AUTH_API_BASE = `${API_ROOT}/auth`;
+const ADMIN_API_BASE = `${API_ROOT}/admin`;
 const USE_MOCK = false;
 
 // ─── Admin JWT Helpers ────────────────────────────────────────────────────────

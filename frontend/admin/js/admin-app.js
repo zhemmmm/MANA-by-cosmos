@@ -74,7 +74,7 @@ function showAdminApp() {
 }
 
 document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
-  await fetch("http://localhost:5000/api/auth/logout", {
+  await fetch(`${AUTH_API_BASE}/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
