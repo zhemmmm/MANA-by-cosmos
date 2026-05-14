@@ -14,6 +14,7 @@ from pathlib import Path
 
 from app import app, ensure_database
 from data import (
+    CLUSTER_DEFINITIONS,
     infer_cluster,
     infer_priority,
     infer_sentiment_score,
@@ -104,6 +105,10 @@ def parse_iso_datetime(value: str):
 def normalize_item(item: dict):
     text = (item.get("text") or item.get("caption") or item.get("content") or "").strip()
     cluster, keywords = infer_cluster(text)
+    if cluster is None:
+        # Keep the import running even when a post has too little signal to classify.
+        cluster = CLUSTER_DEFINITIONS[0]
+        keywords = keywords or []
     metrics = metrics_from_item(item)
     reactions = metrics["reactions"]
     like_reactions = metrics["likes"]
