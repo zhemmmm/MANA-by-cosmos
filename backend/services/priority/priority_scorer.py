@@ -49,6 +49,15 @@ RF_WEIGHT = 0.40
 FORMULA_WEIGHT = 0.60
 
 
+def as_utc_naive(value):
+    if value is None:
+        return None
+    tzinfo = getattr(value, "tzinfo", None)
+    if tzinfo is not None:
+        return value.astimezone(timezone.utc).replace(tzinfo=None)
+    return value
+
+
 # ── Core scoring ───────────────────────────────────────────────────────────────
 
 def compute_priority_score(
@@ -193,7 +202,7 @@ def compute_cluster_trends(db_session) -> dict[str, dict]:
     """
     from models import Post
 
-    now = datetime.now(timezone.utc)
+    now = as_utc_naive(datetime.now(timezone.utc))
     hour_1_ago = now - timedelta(hours=1)
     hour_2_ago = now - timedelta(hours=2)
     twenty_four_hours_ago = now - timedelta(hours=24)
@@ -222,8 +231,8 @@ def compute_cluster_trends(db_session) -> dict[str, dict]:
             ).all()
         )
         
-        posts_h1 = [p for p in recent_posts if p.date >= hour_1_ago]
-        posts_h2 = [p for p in recent_posts if p.date < hour_1_ago]
+        posts_h1 = [p for p in recent_posts if as_utc_naive(p.date) and as_utc_naive(p.date) >= hour_1_ago]
+        posts_h2 = [p for p in recent_posts if as_utc_naive(p.date) and as_utc_naive(p.date) < hour_1_ago]
         
         vol_h1 = len(posts_h1)
         vol_h2 = len(posts_h2)
