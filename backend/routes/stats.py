@@ -27,7 +27,7 @@ def comparable_dt(value):
 
 def filtered_posts(date_range: str):
     cutoff = now_utc() - parse_date_range(date_range)
-    return Post.query.filter(Post.is_relevant == True, Post.date >= cutoff).order_by(Post.date.asc()).all()
+    return Post.query.filter(Post.date >= cutoff).order_by(Post.date.asc()).all()
 
 
 @stats_bp.route("/analytics/sentiment-histogram", methods=["GET"])

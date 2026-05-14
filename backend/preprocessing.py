@@ -214,6 +214,10 @@ STRONG_DISASTER_TERMS = {
     "evacuation_center", "relief_goods", "landslide", "earthquake", "typhoon", "storm", "volcano",
     "ashfall", "power_outage", "signal_loss", "medical", "hospital", "missing", "dead", "fatality",
     "casualty", "family tracing", "body identified", "missing person",
+    # PHIVOLCS volcano bulletin vocabulary
+    "strombolian", "effusive eruption", "lava flow", "pyroclastic", "uson", "rockfall",
+    "alert level", "permanent danger zone", "phivolcs", "danger zone", "volcanic eruption",
+    "incandescent", "lava fountain", "sulfur dioxide", "mayon", "kanlaon", "taal",
 }
 PUBLIC_SERVICE_MAINTENANCE_TERMS = {
     "cleanliness", "kalinisan", "flushing", "flushing operation", "bugahan", "washdown", "road washing",
@@ -232,6 +236,16 @@ PUBLIC_SERVICE_MAINTENANCE_TERMS = {
     "squatter", "informal settlement", "relocation", "housing development board",
     "monthly fee", "ownership transfer", "public service announcement",
     "news alert", "manila pio", "city mayor", "lgu program", "lgu project",
+    # Cultural / religious events — not disaster response
+    "flores de mayo", "sagala", "prusisyon", "hermano mayor", "hermana mayor",
+    "fashion designer", "fashion designers association", "fdap",
+    "department of tourism", "national parks development", "npdc",
+    "anibersaryo", "selebrasyon", "pagdiriwang", "debosyon", "tradisyon",
+    "manila hotel", "cultural event", "cultural show", "beauty pageant",
+    "fiesta", "pista", "parade", "festival", "float", "carnival",
+    "concert", "sports event", "basketball", "pba", "uaap",
+    "award ceremony", "awarding", "recognition ceremony", "graduation",
+    "inauguration", "ribbon cutting", "groundbreaking ceremony",
 }
 
 

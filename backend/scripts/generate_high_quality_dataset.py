@@ -722,39 +722,42 @@ def _cluster_e_posts_ext(base_idx: int) -> list[dict]:
 
 
 def _cluster_f_posts_ext(base_idx: int) -> list[dict]:
-    """30 extra cluster-f posts: heat index class suspensions, volcanic ashfall school closures."""
+    """30 extra cluster-f posts: class suspensions due to typhoon/flood/eruption.
+    IMPORTANT: Do NOT use 'air quality', 'unhealthy', 'advisory', 'landfill', 'facemask',
+    'respiratory', 'hika' — those belong to cluster-b and cause CorEx bleed.
+    Anchor vocab: walang pasok, walang klase, DepEd, school, paaralan, estudyante, guro."""
     cid = "cluster-f"
     templates = [
-        (f"DepEd suspends classes in {_place()} due to extreme heat index reaching DANGER level. Stay home, stay safe.", "official"),
-        (f"WALANG PASOK bukas sa {_place()} at karatig-bayan dahil sa matinding init. Heat index DANGER level na.", "urgent"),
-        (f"Class suspension advisory: No classes in all levels in {_place()} due to heat index reaching 45°C.", "urgent"),
-        (f"DepEd {_muni()} cancels classes due to PAGASA heat advisory. Extreme heat poses health risk to students.", "official"),
-        (f"Walang klase bukas dahil sa init! Heat index DANGER level sa {_place()}. Stay hydrated mga bata!", "urgent"),
-        (f"Schools in {_place()} closed due to ashfall from volcanic eruption. DepEd to announce return schedule.", "urgent"),
-        (f"WALANG PASOK: Ashfall from {_place()} volcano makes road travel dangerous for students. Await DepEd advisory.", "urgent"),
-        (f"DepEd issues class suspension for {_place()} and surrounding towns due to volcanic ash affecting air quality.", "official"),
-        (f"School closure in {_place()}: buildings covered with ashfall. Cleaning and decontamination needed before reopening.", "official"),
-        (f"No face-to-face classes in {_place()} due to Typhoon Signal No. 2. Online and modular learning activated.", "official"),
-        (f"DepEd advisory sa {_place()}: lahat ng paaralan ay sarado bukas dahil sa Typhoon Signal No. 3.", "official"),
-        (f"Schools used as evacuation centers in {_place()} during typhoon. Classes suspended until displaced families leave.", "official"),
-        (f"Walang pasok! Super init ngayon sa {_place()}. Hindi ligtas ang mga bata. DepEd nag-suspend na.", "personal"),
-        (f"Heat advisory class suspension for {_place()}: Grades 1 to 12 and college all suspended for today.", "official"),
-        (f"DepEd distributing ashfall cleanup kits to schools in {_place()}. Brooms, masks, and disinfectant included.", "official"),
-        (f"Academic year adjustment for {_place()} schools disrupted by volcanic activity. DepEd extending school year.", "official"),
-        (f"Mga guro sa {_place()} naglilingkod bilang volunteers sa evacuation center habang walang klase.", "personal"),
-        (f"No classes na naman bukas! Sobrang init at mataas ang heat index sa {_place()}. DepEd suspends ulit.", "personal"),
-        (f"Schools in {_place()} to remain closed for 1 week due to ashfall damage and air quality concerns.", "official"),
-        (f"Typhoon-displaced students from {_place()} given alternate learning activities while evacuation centers active.", "official"),
-        (f"Class suspension due to volcanic ashfall in {_place()}: schools need 3 days to clean before reopening.", "official"),
-        (f"DepEd releases distance learning materials for {_place()} students affected by volcanic eruption school closure.", "official"),
-        (f"Walang klase sa {_place()} hanggang mababa ang volcanic alert level. DepEd nagmo-monitor ng sitwasyon.", "official"),
-        (f"School principals in {_place()} coordinating with barangay to ensure no students commuting in dangerous ashfall.", "official"),
-        (f"Return to school date for {_place()} announced: Monday next week, pending clearance from PHIVOLCS.", "official"),
-        (f"Parents advised not to send children to school in {_place()} until air quality returns to safe levels.", "official"),
+        (f"WALANG PASOK bukas sa {_place()}! DepEd nag-suspend ng klase dahil sa malakas na ulan at baha.", "urgent"),
+        (f"DepEd suspends classes in {_place()} due to Typhoon Signal No. 3. All schools closed tomorrow.", "official"),
+        (f"Walang klase bukas sa lahat ng paaralan sa {_place()}. DepEd order dahil sa bagyo.", "urgent"),
+        (f"Schools in {_place()} closed due to ashfall from volcanic eruption. DepEd to announce return date.", "urgent"),
+        (f"WALANG PASOK: Ashfall from {_place()} volcano covers school grounds. Students must stay home.", "urgent"),
+        (f"DepEd issues class suspension for {_place()} schools. Ashfall makes roads impassable for students.", "official"),
+        (f"School closure in {_place()}: buildings covered with volcanic ash. Cleaning needed before reopening.", "official"),
+        (f"No face-to-face classes in {_place()} due to Typhoon Signal No. 2. Modular learning activated.", "official"),
+        (f"DepEd advisory sa {_place()}: lahat ng paaralan ay sarado bukas dahil sa Signal No. 3.", "official"),
+        (f"Schools used as evacuation centers in {_place()} during typhoon. Classes suspended indefinitely.", "official"),
+        (f"Walang pasok! Malakas ang bagyo sa {_place()}. Hindi ligtas ang mga estudyante. DepEd nag-suspend.", "personal"),
+        (f"DepEd suspends classes in {_place()} for 3 days due to typhoon damage to school buildings.", "official"),
+        (f"DepEd distributing ashfall cleanup kits to schools in {_place()}. Brooms and disinfectant included.", "official"),
+        (f"Academic year extended for {_place()} schools disrupted by volcanic activity. DepEd announcement.", "official"),
+        (f"Mga guro sa {_place()} nagboboluntaryo sa evacuation center habang walang klase.", "personal"),
+        (f"No classes na naman bukas! Bagyo ulit sa {_place()}. DepEd suspends ulit ang pasok.", "personal"),
+        (f"Schools in {_place()} to remain closed for 1 week due to typhoon and flood damage.", "official"),
+        (f"Typhoon-displaced students from {_place()} given printed modules while evacuation centers active.", "official"),
+        (f"Class suspension in {_place()}: schools need 3 days to clean ashfall before reopening.", "official"),
+        (f"DepEd releases distance learning materials for {_place()} students during school closure.", "official"),
+        (f"Walang klase sa {_place()} hanggang mababa ang signal number. DepEd nagmo-monitor ng sitwasyon.", "official"),
+        (f"School principals in {_place()} checking buildings for flood damage before students return.", "official"),
+        (f"Return to school date for {_place()} announced: Monday next week after DepEd building inspection.", "official"),
         (f"Mga estudyante sa {_place()} ay nakatanggap ng printed modules habang sarado ang kanilang paaralan.", "official"),
-        (f"No classes in {_place()} tomorrow due to extreme heat index. DepEd prioritizes student health and safety.", "official"),
-        (f"DepEd {_place()} says schools will reopen once ashfall is cleaned and ventilation systems are cleared.", "official"),
-        (f"College students in {_place()} advised to stay home during heat advisory. Exams moved to next week.", "official"),
+        (f"No classes in {_place()} tomorrow. Typhoon signal raised. DepEd prioritizes student safety.", "official"),
+        (f"DepEd {_place()} says schools will reopen once floodwaters recede and buildings are cleared.", "official"),
+        (f"College students in {_place()} told to stay home. Typhoon signal raised. Exams moved to next week.", "official"),
+        (f"DepEd suspends enrollment activities in {_place()} due to ongoing typhoon. Rescheduled next week.", "official"),
+        (f"School canteen operations suspended in {_place()} evacuation center schools. Students receive packed meals.", "official"),
+        (f"Teachers in {_place()} checking Google Classroom attendance during typhoon-related school suspension.", "personal"),
     ]
     return [_post(text, cid, base_idx + i, urgency) for i, (text, urgency) in enumerate(templates)]
 
@@ -862,6 +865,17 @@ def _cluster_c_posts_phivolcs(base_idx: int) -> list[dict]:
         ("Alert Level 3 sa Mayon: Mahigpit na ipinagbabawal ang pagpasok sa 6-km PDZ. Ang mga sumusuway ay pananagutin.", "urgent"),
         ("PHIVOLCS volcano bulletin: Mayon showing continued effusive activity for the 110th consecutive day. Danger zone remains enforced.", "official"),
         ("NDRRMC confirms all residents within Mayon 6-km PDZ have been evacuated. Monitoring continues 24 hours.", "official"),
+        # Real NDRRMC/PHIVOLCS post style — using exact vocabulary from real Apify exports
+        ("LOOK: Close-up footage of minor Strombolian activity at the summit crater of Mayon Volcano captured by PHIVOLCS Quick Response Team. Effusive eruption persists producing incandescent lava flows pyroclastic density currents PDC known as uson and frequent rockfalls. Alert Level 3 remains in effect. Entry into the 6-km Permanent Danger Zone strictly prohibited. Source PHIVOLCS-DOST NDRRMC MayonVolcano.", "urgent"),
+        ("KANLAON WATCH: Close-up footage of minor Strombolian activity at summit crater of Mayon Volcano captured by Mayon Volcano Observatory. Effusive eruption persists for the 110th consecutive day producing incandescent lava flows pyroclastic density currents PDC uson and frequent rockfalls. Alert Level 3 remains in effect. Entry into the 6-km Permanent Danger Zone strictly prohibited. PHIVOLCS-DOST NDRRMC.", "urgent"),
+        ("PHIVOLCS bulletin: Effusive eruption at Mayon Volcano persists for the 111th consecutive day. Incandescent lava flows and rockfalls observed. Pyroclastic density currents uson possible. Alert Level 3. Entry into PDZ strictly prohibited.", "urgent"),
+        ("Mayon Volcano update: Strombolian activity recorded at summit crater. Lava fountain and incandescent rockfalls observed at 6pm tonight. Alert Level 3 maintained. Permanent Danger Zone entry prohibited. Source PHIVOLCS-DOST.", "urgent"),
+        ("NDRRMC BawatSegundoMahalaga: Effusive eruption ng Mayon Volcano ay nagpapatuloy. Incandescent lava flows pyroclastic density currents at rockfalls ang naitala. Alert Level 3 sa Mayon. Ipinagbabawal ang pagpasok sa 6-km PDZ.", "urgent"),
+        ("Kanlaon Watch PHIVOLCS: Minor Strombolian activity observed at Kanlaon summit crater. Lava fragments and incandescent rockfalls recorded. Alert Level 3 raised. Evacuation of 6-km danger zone ordered by NDRRMC.", "urgent"),
+        ("PHIVOLCS-DOST volcano bulletin: Mayon effusive eruption day 112. Lava flow advancing 3km southeast. Pyroclastic density currents PDC generated. Rockfalls frequent. Alert Level 3 in effect. Danger zone access strictly prohibited.", "urgent"),
+        ("Mayon Volcano Observatory: Incandescent lava fountaining recorded at summit crater. PDC uson generated along gullies. Sulfur dioxide emissions elevated. Alert Level 3 remains. Do not enter 6-km Permanent Danger Zone.", "urgent"),
+        ("LOOK: Mayon Volcano lava flow and rockfall footage captured tonight. Effusive eruption continues for consecutive days. Pyroclastic density currents active. PHIVOLCS maintains Alert Level 3. Permanent Danger Zone strictly enforced.", "urgent"),
+        ("NDRRMC advisory on Mayon Volcano: Effusive eruption producing lava flows uson pyroclastic currents and rockfalls. Alert Level 3. All residents within 6-km PDZ must remain evacuated. Do not return without PHIVOLCS clearance.", "urgent"),
     ]
     return [_post(text, cid, base_idx + i, urgency) for i, (text, urgency) in enumerate(templates)]
 

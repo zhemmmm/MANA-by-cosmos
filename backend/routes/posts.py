@@ -201,7 +201,7 @@ def get_clusters():
 def get_dashboard_summary():
     date_range = request.args.get("date_range", "7d")
     cutoff = now_utc() - parse_date_range(date_range)
-    posts = Post.query.filter(Post.is_relevant == True, Post.date >= cutoff).all()
+    posts = Post.query.filter(Post.date >= cutoff).all()
     total = len(posts)
     fb_posts = sum(1 for post in posts if post.source == "Facebook")
     x_posts = sum(1 for post in posts if post.source == "X")
