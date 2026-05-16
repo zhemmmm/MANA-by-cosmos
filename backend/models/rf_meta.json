@@ -1,8 +1,35 @@
 {
-  "trained_at": "2026-05-15T10:02:31.771343+00:00",
+  "trained_at": "2026-05-16T02:21:36.186947+00:00",
   "corpus_size": 105,
   "n_estimators": 100,
   "accuracy": 0.8095,
+  "precision": 0.8056,
+  "recall": 0.8095,
+  "f1_score": 0.8041,
+  "confusion_matrix": {
+    "labels": [
+      "High",
+      "Medium",
+      "Low"
+    ],
+    "values": [
+      [
+        6,
+        1,
+        0
+      ],
+      [
+        1,
+        2,
+        1
+      ],
+      [
+        1,
+        0,
+        9
+      ]
+    ]
+  },
   "class_distribution": {
     "High": 34,
     "Medium": 21,

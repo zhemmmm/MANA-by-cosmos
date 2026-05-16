@@ -28,7 +28,12 @@ from pathlib import Path
 import joblib
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    precision_recall_fscore_support,
+)
 from sklearn.model_selection import train_test_split
 
 # ── Path setup ─────────────────────────────────────────────────────────────────
@@ -350,6 +355,14 @@ def run_rf_training(rows: list[dict]) -> dict:
     y_pred = clf.predict(X_test)
     accuracy = float(accuracy_score(y_test, y_pred))
     report = classification_report(y_test, y_pred, output_dict=True, zero_division=0)
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        y_test,
+        y_pred,
+        average="weighted",
+        zero_division=0,
+    )
+    labels_in_matrix = [lbl for lbl in PRIORITY_LABELS if lbl in set(y_test) or lbl in set(y_pred)]
+    matrix = confusion_matrix(y_test, y_pred, labels=labels_in_matrix)
 
     joblib.dump(clf, RF_MODEL_PATH)
     RF_COLUMNS_PATH.write_text(json.dumps(feature_columns))
@@ -360,6 +373,13 @@ def run_rf_training(rows: list[dict]) -> dict:
         "corpus_size":        int(len(y)),
         "n_estimators":       100,
         "accuracy":           round(accuracy, 4),
+        "precision":          round(float(precision), 4),
+        "recall":             round(float(recall), 4),
+        "f1_score":           round(float(f1), 4),
+        "confusion_matrix": {
+            "labels": labels_in_matrix,
+            "values": matrix.tolist(),
+        },
         "class_distribution": class_dist,
         "feature_columns":    feature_columns,
         "source":             "train_from_csv.py",
@@ -367,6 +387,16 @@ def run_rf_training(rows: list[dict]) -> dict:
     RF_META_PATH.write_text(json.dumps(meta, indent=2))
 
     print(f"\n[RF] Done — accuracy={accuracy:.4f} on {len(y_test)}-post holdout")
+    print(
+        "     Weighted metrics: "
+        f"precision={float(precision):.4f} "
+        f"recall={float(recall):.4f} "
+        f"f1-score={float(f1):.4f}"
+    )
+    print("     Confusion matrix:")
+    print(f"       labels: {labels_in_matrix}")
+    for row in matrix.tolist():
+        print(f"       {row}")
     print("     Per-class report:")
     for lbl in PRIORITY_LABELS:
         m = report.get(lbl, {})
