@@ -12,8 +12,8 @@ import traceback
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required
 
-from data import now_utc, parse_date_range, priority_label, score_tone
-from models import ActivityLog, Post, SystemSetting, User, db
+from data import now_utc, parse_date_range, priority_label, recommendation_payload_for, score_tone
+from models import ActivityLog, Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, SystemSetting, User, db
 from services.apify_integration import (
     KIND_FACEBOOK,
     VALID_KINDS,
@@ -27,6 +27,138 @@ from services.apify_integration import (
 
 
 admin_bp = Blueprint("admin", __name__)
+
+_RF_TO_REC_PRIORITY = {"High": "Critical", "Medium": "Moderate", "Low": "Monitoring"}
+
+
+def _auto_classify_new_posts(app) -> None:
+    """Run ML predictions on posts that have been imported but not yet classified."""
+    try:
+        from services.corex.topic_modeler import is_model_trained as corex_trained, predict_topics_batch
+        from services.svm.cluster_classifier import is_model_trained as svm_trained, predict_clusters_batch, select_top_cluster
+        from services.vader.sentiment_analyzer import analyze_post_with_comments
+        from services.random_forest.priority_classifier import SEVERITY_MAP, is_model_trained as rf_trained, predict_priorities_batch
+
+        if not (corex_trained() and svm_trained() and rf_trained()):
+            print("[auto-classify] Models not fully trained — skipping auto-classification.")
+            return
+
+        with app.app_context():
+            rows = (
+                PreprocessedText.query
+                .filter_by(record_type="post", preprocessing_status="processed", is_relevant=True)
+                .filter(PreprocessedText.final_tokens_json != "[]")
+                .outerjoin(PostCluster, PreprocessedText.raw_id == PostCluster.post_id)
+                .filter(PostCluster.post_id.is_(None))
+                .all()
+            )
+
+            if not rows:
+                print("[auto-classify] No new unclassified posts found.")
+                return
+
+            print(f"[auto-classify] Classifying {len(rows)} new post(s)…")
+            post_ids = [row.raw_id for row in rows]
+            texts = [" ".join(row.final_tokens) for row in rows]
+            posts_map = {p.id: p for p in Post.query.filter(Post.id.in_(post_ids)).all()}
+
+            # Topics
+            for post_id, topic_list in zip(post_ids, predict_topics_batch(texts)):
+                PostTopic.query.filter_by(post_id=post_id).delete()
+                for item in topic_list:
+                    db.session.add(PostTopic(post_id=post_id, topic_label=item["topic"], confidence=item["confidence"]))
+
+            # Clusters
+            for post_id, cluster_list in zip(post_ids, predict_clusters_batch(texts)):
+                if not cluster_list:
+                    continue
+                for item in cluster_list:
+                    db.session.add(PostCluster(post_id=post_id, cluster_id=item["cluster_id"], confidence=item["confidence"]))
+                top = select_top_cluster(cluster_list)
+                post = posts_map.get(post_id)
+                if post and top:
+                    post.cluster_id = top["cluster_id"]
+                    post.cluster_label_source = "svm"
+
+            # Sentiment
+            comments_by_post: dict[str, list[str]] = {}
+            for comment in Comment.query.filter(Comment.post_id.in_(post_ids)).all():
+                comments_by_post.setdefault(comment.post_id, []).append(comment.text or "")
+            vader_texts = {row.raw_id: (row.vader_text or row.clean_text) for row in rows}
+            for post_id in post_ids:
+                post = posts_map.get(post_id)
+                if not post:
+                    continue
+                text = vader_texts.get(post_id) or post.caption or ""
+                result = analyze_post_with_comments(text, post.cluster_id, comments_by_post.get(post_id, []))
+                existing = PostSentiment.query.filter_by(post_id=post_id).first()
+                if existing:
+                    existing.compound = result["compound"]
+                    existing.positive = result["positive"]
+                    existing.negative = result["negative"]
+                    existing.neutral = result["neutral"]
+                    existing.sarcasm_flag = result["sarcasm_flag"]
+                else:
+                    db.session.add(PostSentiment(
+                        post_id=post_id,
+                        compound=result["compound"],
+                        positive=result["positive"],
+                        negative=result["negative"],
+                        neutral=result["neutral"],
+                        sarcasm_flag=result["sarcasm_flag"],
+                    ))
+                post.sentiment_score = result["sentiment_score"]
+                post.sentiment_compound = result["compound"]
+
+            # Priority
+            for pred in predict_priorities_batch(post_ids):
+                pid, label, conf, probs = pred["post_id"], pred["priority"], pred["confidence"], pred["probabilities"]
+                post = posts_map.get(pid)
+                if not post:
+                    continue
+                post.priority = label
+                post.severity_rank = SEVERITY_MAP.get(label, 2)
+                post.recommendation = recommendation_payload_for(
+                    post.cluster_id,
+                    _RF_TO_REC_PRIORITY.get(label, "Moderate"),
+                    sentiment_score=post.sentiment_score,
+                    reactions=post.reactions,
+                    likes=post.likes,
+                    comments=post.comments,
+                    shares=post.shares,
+                    reposts=post.reposts,
+                    post_count=1,
+                )["recommendation"]
+                existing = PostPriority.query.filter_by(post_id=pid).first()
+                if existing:
+                    existing.priority_label = label
+                    existing.confidence = conf
+                    existing.high_probability = probs.get("High", 0.0)
+                    existing.medium_probability = probs.get("Medium", 0.0)
+                    existing.low_probability = probs.get("Low", 0.0)
+                else:
+                    db.session.add(PostPriority(
+                        post_id=pid,
+                        priority_label=label,
+                        confidence=conf,
+                        high_probability=probs.get("High", 0.0),
+                        medium_probability=probs.get("Medium", 0.0),
+                        low_probability=probs.get("Low", 0.0),
+                    ))
+
+            db.session.commit()
+            print(f"[auto-classify] Done — {len(post_ids)} post(s) classified and committed.")
+
+    except Exception as exc:
+        print(f"[auto-classify] Error during background classification: {exc}")
+        traceback.print_exc()
+
+
+def _start_auto_classify() -> None:
+    import threading
+    from flask import current_app
+    app = current_app._get_current_object()
+    threading.Thread(target=_auto_classify_new_posts, args=(app,), daemon=True).start()
 
 
 def admin_required(fn):
@@ -410,6 +542,7 @@ def import_apify_dataset():
         "system",
     )
     db.session.commit()
+    _start_auto_classify()
     return jsonify(result)
 
 
@@ -468,4 +601,5 @@ def apify_webhook():
         traceback.print_exc()
         return jsonify({"message": str(exc), "error_type": type(exc).__name__}), 500
 
+    _start_auto_classify()
     return jsonify({"success": True, **result})

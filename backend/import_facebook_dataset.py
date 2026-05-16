@@ -283,6 +283,33 @@ def import_items(payload: list[dict]):
                         post.cluster_label_source = "svm"
                 db.session.commit()
 
+        # If RF model is already trained, update priority labels for newly imported posts.
+        rf_priorities_assigned = 0
+        try:
+            from services.random_forest.priority_classifier import (
+                is_model_trained as is_rf_trained,
+                predict_priorities_batch,
+                SEVERITY_MAP,
+            )
+            if is_rf_trained():
+                rf_post_ids = [
+                    str(item.get("postId") or item.get("url") or item.get("topLevelUrl"))
+                    for item in payload
+                    if item.get("postId") or item.get("url") or item.get("topLevelUrl")
+                ]
+                if rf_post_ids:
+                    rf_results = predict_priorities_batch(rf_post_ids)
+                    for pred in rf_results:
+                        post = db.session.get(Post, pred["post_id"])
+                        if post:
+                            post.priority = pred["priority"]
+                            post.severity_rank = SEVERITY_MAP.get(pred["priority"], 2)
+                            rf_priorities_assigned += 1
+                    db.session.commit()
+        except Exception:
+            db.session.rollback()
+            rf_priorities_assigned = -1
+
         # Run VADER sentiment analysis on newly imported posts.
         vader_sentiments_assigned = 0
         try:
@@ -352,6 +379,7 @@ def import_items(payload: list[dict]):
         "errors": errors,
         "corex_topics_assigned": corex_topics_assigned,
         "svm_clusters_assigned": svm_clusters_assigned,
+        "rf_priorities_assigned": rf_priorities_assigned,
         "vader_sentiments_assigned": vader_sentiments_assigned,
     }
     return summary

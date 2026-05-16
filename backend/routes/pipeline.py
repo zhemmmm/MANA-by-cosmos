@@ -439,6 +439,79 @@ def run_all():
     return jsonify({"message": "Pipeline complete.", "steps": steps})
 
 
+# ── Train from seed dataset ────────────────────────────────────────────────────
+
+@pipeline_bp.route("/pipeline/train-from-seed", methods=["POST"])
+@admin_required
+def train_from_seed():
+    """
+    Train CorEx + SVM from seed_dataset.json, then re-classify all real DB posts.
+
+    The seed posts are never written to the database — training only.
+    Call this once after a fresh deploy to restore accurate categorization.
+
+    Returns: { f1_macro, corex_coherence, posts_reclassified }
+    """
+    import json
+    from pathlib import Path
+    from preprocessing import preprocess_record
+
+    seed_path = Path(__file__).parent.parent / "seed_dataset.json"
+    if not seed_path.exists():
+        return jsonify({"error": "seed_dataset.json not found. Ensure it is committed to the repo."}), 404
+
+    with seed_path.open(encoding="utf-8") as f:
+        seed_posts = json.load(f)
+
+    raw_texts = [(p.get("text") or p.get("caption") or "").strip() for p in seed_posts]
+    seed_labels = [[p["_seed_cluster_id"]] for p in seed_posts]
+
+    # Preprocess seed texts using the same pipeline as real posts.
+    processed_texts = []
+    for i, text in enumerate(raw_texts):
+        try:
+            result = preprocess_record(raw_id=f"seed_{i:04d}", item={"text": text}, record_type="post")
+            final = result.get("final_tokens") or []
+            processed_texts.append(" ".join(final) if final else text.lower())
+        except Exception:
+            processed_texts.append(text.lower())
+
+    # Train CorEx
+    try:
+        corex_result = train_corex(processed_texts)
+    except Exception as exc:
+        return jsonify({"error": f"CorEx training failed: {exc}"}), 500
+
+    # Train SVM
+    try:
+        svm_result = train_svm(processed_texts, seed_labels)
+    except Exception as exc:
+        return jsonify({"error": f"SVM training failed: {exc}"}), 500
+
+    # Re-classify all real DB posts immediately.
+    from services.classification.refine import refine_labels
+    all_post_ids = [
+        row.raw_id for row in (
+            PreprocessedText.query
+            .filter_by(record_type="post", preprocessing_status="processed", is_relevant=True)
+            .filter(PreprocessedText.final_tokens_json != "[]")
+            .all()
+        )
+    ]
+    refine_metrics = refine_labels(all_post_ids)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Training complete. All DB posts re-classified.",
+        "f1_macro": svm_result["f1_macro"],
+        "corpus_size": svm_result["corpus_size"],
+        "corex_coherence": corex_result.get("overall_coherence"),
+        "posts_reclassified": refine_metrics.get("posts_processed", 0),
+        "corex_relabeled": refine_metrics.get("corex_relabeled", 0),
+        "svm_updated": refine_metrics.get("post_cluster_id_updated", 0),
+    })
+
+
 # ── Combined model status ──────────────────────────────────────────────────────
 
 @pipeline_bp.route("/pipeline/status", methods=["GET"])

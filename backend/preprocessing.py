@@ -245,7 +245,12 @@ PUBLIC_SERVICE_MAINTENANCE_TERMS = {
     "fiesta", "pista", "parade", "festival", "float", "carnival",
     "concert", "sports event", "basketball", "pba", "uaap",
     "award ceremony", "awarding", "recognition ceremony", "graduation",
-    "inauguration", "ribbon cutting", "groundbreaking ceremony",
+    "inauguration", "ribbon cutting", "groundbreaking ceremony", "groundbreaking",
+    # School construction / inspection PR — not disaster-related school closure
+    "school building", "school construction", "construksiyon", "konstruksiyon",
+    "gusali", "palapag", "fully air-conditioned", "air-conditioned classrooms",
+    "e-library", "learning environment", "inspeksiyunin", "progreso ng konstruksiyon",
+    "modernong pasilidad", "auditorium", "gymnasium", "laborator",
 }
 
 

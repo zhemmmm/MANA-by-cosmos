@@ -18,7 +18,8 @@
     "shares": 58,
     "comments": 13,
     "viewsCount": 2761,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0294_f1dfe921",
@@ -39,7 +40,8 @@
     "shares": 54,
     "comments": 22,
     "viewsCount": 1728,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0529_f45878bd",
@@ -60,7 +62,8 @@
     "shares": 74,
     "comments": 38,
     "viewsCount": 2973,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0037_dd81e5ed",
@@ -81,7 +84,8 @@
     "shares": 36,
     "comments": 25,
     "viewsCount": 2811,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0045_38fda1fb",
@@ -102,7 +106,8 @@
     "shares": 119,
     "comments": 52,
     "viewsCount": 3521,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0322_06f220d0",
@@ -123,7 +128,8 @@
     "shares": 20,
     "comments": 26,
     "viewsCount": 1031,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0141_e9716aff",
@@ -144,7 +150,8 @@
     "shares": 59,
     "comments": 44,
     "viewsCount": 582,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0364_0901c2fe",
@@ -165,7 +172,8 @@
     "shares": 66,
     "comments": 45,
     "viewsCount": 2587,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0000_303e1c8e",
@@ -186,7 +194,8 @@
     "shares": 29,
     "comments": 23,
     "viewsCount": 1578,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0198_81d53078",
@@ -207,7 +216,8 @@
     "shares": 73,
     "comments": 49,
     "viewsCount": 1756,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0329_f50a3939",
@@ -228,7 +238,8 @@
     "shares": 52,
     "comments": 42,
     "viewsCount": 2025,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0461_dfeab4a7",
@@ -249,7 +260,8 @@
     "shares": 65,
     "comments": 44,
     "viewsCount": 521,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0058_b9b3b752",
@@ -270,7 +282,8 @@
     "shares": 69,
     "comments": 43,
     "viewsCount": 1758,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0152_300079c4",
@@ -291,7 +304,8 @@
     "shares": 22,
     "comments": 46,
     "viewsCount": 650,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0112_f398f111",
@@ -312,7 +326,8 @@
     "shares": 24,
     "comments": 31,
     "viewsCount": 587,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0229_fc4f1dae",
@@ -333,7 +348,8 @@
     "shares": 77,
     "comments": 16,
     "viewsCount": 773,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0380_165190fd",
@@ -354,7 +370,8 @@
     "shares": 49,
     "comments": 50,
     "viewsCount": 793,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0342_4568cddd",
@@ -375,7 +392,8 @@
     "shares": 77,
     "comments": 47,
     "viewsCount": 1391,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0367_e0b8b19d",
@@ -396,7 +414,8 @@
     "shares": 44,
     "comments": 50,
     "viewsCount": 1102,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0450_9e87c02a",
@@ -417,7 +436,8 @@
     "shares": 580,
     "comments": 128,
     "viewsCount": 39149,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0138_556d1388",
@@ -438,7 +458,8 @@
     "shares": 72,
     "comments": 46,
     "viewsCount": 502,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0156_340364d2",
@@ -459,7 +480,8 @@
     "shares": 72,
     "comments": 32,
     "viewsCount": 799,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0271_464a7e34",
@@ -480,7 +502,8 @@
     "shares": 117,
     "comments": 80,
     "viewsCount": 16714,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0071_e31e89db",
@@ -501,7 +524,8 @@
     "shares": 287,
     "comments": 147,
     "viewsCount": 14651,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0010_a5807a04",
@@ -522,7 +546,8 @@
     "shares": 102,
     "comments": 30,
     "viewsCount": 1201,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0443_d9021687",
@@ -543,7 +568,8 @@
     "shares": 250,
     "comments": 197,
     "viewsCount": 11779,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0048_2f3edd4a",
@@ -564,7 +590,8 @@
     "shares": 92,
     "comments": 33,
     "viewsCount": 4051,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0044_83748927",
@@ -585,7 +612,8 @@
     "shares": 80,
     "comments": 25,
     "viewsCount": 1016,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0469_a996b9a8",
@@ -606,7 +634,8 @@
     "shares": 362,
     "comments": 253,
     "viewsCount": 42373,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0407_3d4f7e8b",
@@ -627,7 +656,8 @@
     "shares": 55,
     "comments": 45,
     "viewsCount": 1900,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0028_819a36f1",
@@ -648,7 +678,8 @@
     "shares": 115,
     "comments": 51,
     "viewsCount": 2685,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0070_b66bf944",
@@ -669,7 +700,8 @@
     "shares": 221,
     "comments": 189,
     "viewsCount": 14360,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0212_c3be7af9",
@@ -690,7 +722,8 @@
     "shares": 115,
     "comments": 197,
     "viewsCount": 14573,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0358_e04d9e82",
@@ -711,7 +744,8 @@
     "shares": 47,
     "comments": 47,
     "viewsCount": 1238,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0370_f497255f",
@@ -732,7 +766,8 @@
     "shares": 107,
     "comments": 80,
     "viewsCount": 4571,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0537_e9ed6a1e",
@@ -753,7 +788,8 @@
     "shares": 74,
     "comments": 26,
     "viewsCount": 867,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0164_fefe5430",
@@ -774,7 +810,8 @@
     "shares": 272,
     "comments": 118,
     "viewsCount": 12801,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0290_b848ff75",
@@ -795,7 +832,8 @@
     "shares": 36,
     "comments": 47,
     "viewsCount": 1404,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0499_95c1ddf0",
@@ -816,7 +854,8 @@
     "shares": 232,
     "comments": 106,
     "viewsCount": 4067,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0495_b2b5fbfd",
@@ -837,7 +876,8 @@
     "shares": 22,
     "comments": 22,
     "viewsCount": 303,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0047_11f46813",
@@ -858,7 +898,8 @@
     "shares": 280,
     "comments": 60,
     "viewsCount": 13377,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0122_3e00a4ae",
@@ -879,7 +920,8 @@
     "shares": 266,
     "comments": 185,
     "viewsCount": 15869,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0404_08767085",
@@ -900,7 +942,8 @@
     "shares": 103,
     "comments": 69,
     "viewsCount": 4513,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0193_f1e33712",
@@ -921,7 +964,8 @@
     "shares": 43,
     "comments": 16,
     "viewsCount": 574,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0314_d52ffd2b",
@@ -942,7 +986,8 @@
     "shares": 83,
     "comments": 25,
     "viewsCount": 1509,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0442_0eabe970",
@@ -963,7 +1008,8 @@
     "shares": 203,
     "comments": 225,
     "viewsCount": 40870,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0130_ec12aa84",
@@ -984,7 +1030,8 @@
     "shares": 38,
     "comments": 30,
     "viewsCount": 620,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0336_7dfd7502",
@@ -1005,7 +1052,8 @@
     "shares": 49,
     "comments": 45,
     "viewsCount": 499,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0287_cb854d54",
@@ -1026,7 +1074,8 @@
     "shares": 78,
     "comments": 36,
     "viewsCount": 1857,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0516_725b5510",
@@ -1047,7 +1096,8 @@
     "shares": 65,
     "comments": 23,
     "viewsCount": 766,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0132_907c4a77",
@@ -1068,7 +1118,8 @@
     "shares": 285,
     "comments": 90,
     "viewsCount": 3020,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0259_27145a3c",
@@ -1089,7 +1140,8 @@
     "shares": 69,
     "comments": 17,
     "viewsCount": 2355,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0414_6013e487",
@@ -1110,7 +1162,8 @@
     "shares": 78,
     "comments": 31,
     "viewsCount": 1625,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0041_80e99d8e",
@@ -1131,7 +1184,8 @@
     "shares": 399,
     "comments": 272,
     "viewsCount": 48835,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0422_a3399403",
@@ -1152,7 +1206,8 @@
     "shares": 172,
     "comments": 77,
     "viewsCount": 2625,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0441_ac8b8897",
@@ -1173,7 +1228,8 @@
     "shares": 54,
     "comments": 10,
     "viewsCount": 2690,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0241_e409985a",
@@ -1194,7 +1250,8 @@
     "shares": 219,
     "comments": 112,
     "viewsCount": 6933,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0459_b233d661",
@@ -1215,7 +1272,8 @@
     "shares": 24,
     "comments": 29,
     "viewsCount": 2711,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0431_6c5ac5ad",
@@ -1236,7 +1294,8 @@
     "shares": 440,
     "comments": 291,
     "viewsCount": 17057,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0332_a29a21be",
@@ -1257,7 +1316,8 @@
     "shares": 58,
     "comments": 15,
     "viewsCount": 1353,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0331_53df2e79",
@@ -1278,7 +1338,8 @@
     "shares": 252,
     "comments": 80,
     "viewsCount": 19525,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0001_4a6fa9aa",
@@ -1299,7 +1360,8 @@
     "shares": 54,
     "comments": 17,
     "viewsCount": 1750,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0328_7919771a",
@@ -1320,7 +1382,8 @@
     "shares": 237,
     "comments": 112,
     "viewsCount": 3306,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0085_11012f25",
@@ -1341,7 +1404,8 @@
     "shares": 26,
     "comments": 25,
     "viewsCount": 2401,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0260_f5e9f3ea",
@@ -1362,7 +1426,8 @@
     "shares": 120,
     "comments": 161,
     "viewsCount": 17964,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0335_9797e3d1",
@@ -1383,7 +1448,8 @@
     "shares": 297,
     "comments": 181,
     "viewsCount": 6667,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0162_e6ef2611",
@@ -1404,7 +1470,8 @@
     "shares": 65,
     "comments": 21,
     "viewsCount": 257,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0316_77250fff",
@@ -1425,7 +1492,8 @@
     "shares": 52,
     "comments": 34,
     "viewsCount": 1914,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0454_0ea046c5",
@@ -1446,7 +1514,8 @@
     "shares": 77,
     "comments": 42,
     "viewsCount": 831,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0413_aa180ff4",
@@ -1467,7 +1536,8 @@
     "shares": 66,
     "comments": 30,
     "viewsCount": 2176,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0321_e0a1c1e1",
@@ -1488,7 +1558,8 @@
     "shares": 101,
     "comments": 48,
     "viewsCount": 3685,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0293_4216345b",
@@ -1509,7 +1580,8 @@
     "shares": 68,
     "comments": 20,
     "viewsCount": 2205,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0031_3aace040",
@@ -1530,7 +1602,8 @@
     "shares": 45,
     "comments": 28,
     "viewsCount": 2470,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0003_2877d1dc",
@@ -1551,7 +1624,8 @@
     "shares": 58,
     "comments": 50,
     "viewsCount": 900,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0228_10384daa",
@@ -1572,7 +1646,8 @@
     "shares": 53,
     "comments": 46,
     "viewsCount": 234,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0383_d98ab464",
@@ -1593,7 +1668,8 @@
     "shares": 26,
     "comments": 16,
     "viewsCount": 461,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0216_6c00ae7d",
@@ -1614,7 +1690,8 @@
     "shares": 278,
     "comments": 189,
     "viewsCount": 14021,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0210_eb3b587c",
@@ -1635,7 +1712,8 @@
     "shares": 179,
     "comments": 150,
     "viewsCount": 5743,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0284_58a5632e",
@@ -1656,7 +1734,8 @@
     "shares": 72,
     "comments": 49,
     "viewsCount": 1826,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0528_42ffc327",
@@ -1677,7 +1756,8 @@
     "shares": 42,
     "comments": 15,
     "viewsCount": 1536,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0136_1c6d1952",
@@ -1698,7 +1778,8 @@
     "shares": 54,
     "comments": 28,
     "viewsCount": 1428,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0234_ab214a93",
@@ -1719,7 +1800,8 @@
     "shares": 101,
     "comments": 129,
     "viewsCount": 4589,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0378_5ddeb2a6",
@@ -1740,7 +1822,8 @@
     "shares": 36,
     "comments": 33,
     "viewsCount": 1675,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0434_f8694908",
@@ -1761,7 +1844,8 @@
     "shares": 61,
     "comments": 12,
     "viewsCount": 2332,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0036_2cc7bf18",
@@ -1782,7 +1866,8 @@
     "shares": 71,
     "comments": 39,
     "viewsCount": 2934,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0114_090314b1",
@@ -1803,7 +1888,8 @@
     "shares": 52,
     "comments": 33,
     "viewsCount": 274,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0409_e8603c0a",
@@ -1824,7 +1910,8 @@
     "shares": 68,
     "comments": 50,
     "viewsCount": 1963,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0026_bab58bd1",
@@ -1845,7 +1932,8 @@
     "shares": 498,
     "comments": 382,
     "viewsCount": 14705,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0509_9885046b",
@@ -1866,7 +1954,8 @@
     "shares": 52,
     "comments": 69,
     "viewsCount": 3559,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0008_f6e49baf",
@@ -1887,7 +1976,8 @@
     "shares": 66,
     "comments": 26,
     "viewsCount": 2250,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0429_daf2a4c4",
@@ -1908,7 +1998,8 @@
     "shares": 193,
     "comments": 120,
     "viewsCount": 6979,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0174_d8c129a6",
@@ -1929,7 +2020,8 @@
     "shares": 58,
     "comments": 12,
     "viewsCount": 2028,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0272_56059386",
@@ -1950,7 +2042,8 @@
     "shares": 73,
     "comments": 48,
     "viewsCount": 1256,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0038_a0d17e8f",
@@ -1971,7 +2064,8 @@
     "shares": 41,
     "comments": 30,
     "viewsCount": 2412,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0349_4a95e5f1",
@@ -1992,7 +2086,8 @@
     "shares": 50,
     "comments": 40,
     "viewsCount": 2162,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0403_4d458384",
@@ -2013,7 +2108,8 @@
     "shares": 27,
     "comments": 16,
     "viewsCount": 2343,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0323_401974b6",
@@ -2034,7 +2130,8 @@
     "shares": 265,
     "comments": 99,
     "viewsCount": 11639,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0465_98678b4f",
@@ -2055,7 +2152,8 @@
     "shares": 55,
     "comments": 20,
     "viewsCount": 2175,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0269_5f49f14f",
@@ -2076,7 +2174,8 @@
     "shares": 25,
     "comments": 40,
     "viewsCount": 673,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0420_c5f5ad6e",
@@ -2097,7 +2196,8 @@
     "shares": 479,
     "comments": 367,
     "viewsCount": 21951,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0171_8b1a415a",
@@ -2118,7 +2218,8 @@
     "shares": 48,
     "comments": 34,
     "viewsCount": 1738,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0177_3ebbf5f1",
@@ -2139,7 +2240,8 @@
     "shares": 46,
     "comments": 19,
     "viewsCount": 1428,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0124_1458f517",
@@ -2160,7 +2262,8 @@
     "shares": 250,
     "comments": 71,
     "viewsCount": 19153,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0237_e87ba155",
@@ -2181,7 +2284,8 @@
     "shares": 271,
     "comments": 118,
     "viewsCount": 5868,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0476_283544e5",
@@ -2202,7 +2306,8 @@
     "shares": 240,
     "comments": 172,
     "viewsCount": 39498,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0211_c4e54e62",
@@ -2223,7 +2328,8 @@
     "shares": 268,
     "comments": 260,
     "viewsCount": 12724,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0435_8f7e22a0",
@@ -2244,7 +2350,8 @@
     "shares": 212,
     "comments": 62,
     "viewsCount": 8221,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0312_099f8f0c",
@@ -2265,7 +2372,8 @@
     "shares": 274,
     "comments": 106,
     "viewsCount": 2071,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0426_d7f67c3a",
@@ -2286,7 +2394,8 @@
     "shares": 513,
     "comments": 216,
     "viewsCount": 32350,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0315_ed424e53",
@@ -2307,7 +2416,8 @@
     "shares": 483,
     "comments": 321,
     "viewsCount": 43346,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0458_909fed85",
@@ -2328,7 +2438,8 @@
     "shares": 486,
     "comments": 363,
     "viewsCount": 11709,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0289_3375b108",
@@ -2349,7 +2460,8 @@
     "shares": 66,
     "comments": 45,
     "viewsCount": 949,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0191_d5e7474d",
@@ -2370,7 +2482,8 @@
     "shares": 71,
     "comments": 23,
     "viewsCount": 2739,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0185_6e553dfc",
@@ -2391,7 +2504,8 @@
     "shares": 557,
     "comments": 320,
     "viewsCount": 16748,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0340_56e358c5",
@@ -2412,7 +2526,8 @@
     "shares": 74,
     "comments": 18,
     "viewsCount": 2406,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0374_f556793b",
@@ -2433,7 +2548,8 @@
     "shares": 64,
     "comments": 80,
     "viewsCount": 3310,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0095_df81ae98",
@@ -2454,7 +2570,8 @@
     "shares": 93,
     "comments": 123,
     "viewsCount": 12238,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0384_cbaaff29",
@@ -2475,7 +2592,8 @@
     "shares": 40,
     "comments": 69,
     "viewsCount": 3034,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0265_53cdcc61",
@@ -2496,7 +2614,8 @@
     "shares": 40,
     "comments": 26,
     "viewsCount": 628,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0324_7ddb13de",
@@ -2517,7 +2636,8 @@
     "shares": 84,
     "comments": 55,
     "viewsCount": 2664,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0213_3b493abc",
@@ -2538,7 +2658,8 @@
     "shares": 153,
     "comments": 85,
     "viewsCount": 8130,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0527_2930e2ef",
@@ -2559,7 +2680,8 @@
     "shares": 41,
     "comments": 17,
     "viewsCount": 2161,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0209_65d8f3e3",
@@ -2580,7 +2702,8 @@
     "shares": 56,
     "comments": 16,
     "viewsCount": 2399,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0418_42c39d33",
@@ -2601,7 +2724,8 @@
     "shares": 45,
     "comments": 46,
     "viewsCount": 1003,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0486_bc511d58",
@@ -2622,7 +2746,8 @@
     "shares": 80,
     "comments": 48,
     "viewsCount": 2889,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0242_5c74be8e",
@@ -2643,7 +2768,8 @@
     "shares": 248,
     "comments": 146,
     "viewsCount": 12076,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0518_3588f358",
@@ -2664,7 +2790,8 @@
     "shares": 50,
     "comments": 44,
     "viewsCount": 2978,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0004_ff7cebcf",
@@ -2685,7 +2812,8 @@
     "shares": 34,
     "comments": 12,
     "viewsCount": 1492,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0444_e60c4aa0",
@@ -2706,7 +2834,8 @@
     "shares": 70,
     "comments": 45,
     "viewsCount": 926,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0394_5c9e66d1",
@@ -2727,7 +2856,8 @@
     "shares": 201,
     "comments": 149,
     "viewsCount": 12227,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0488_6f4126b9",
@@ -2748,7 +2878,8 @@
     "shares": 121,
     "comments": 68,
     "viewsCount": 11086,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0153_006f8205",
@@ -2769,7 +2900,8 @@
     "shares": 266,
     "comments": 65,
     "viewsCount": 6524,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0106_38a3319d",
@@ -2790,7 +2922,8 @@
     "shares": 42,
     "comments": 19,
     "viewsCount": 1167,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0163_29adab90",
@@ -2811,7 +2944,8 @@
     "shares": 40,
     "comments": 15,
     "viewsCount": 1841,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0080_07c676b3",
@@ -2832,7 +2966,8 @@
     "shares": 60,
     "comments": 16,
     "viewsCount": 2770,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0110_bf88a2b5",
@@ -2853,7 +2988,8 @@
     "shares": 103,
     "comments": 44,
     "viewsCount": 3133,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0292_5aad472c",
@@ -2874,7 +3010,8 @@
     "shares": 69,
     "comments": 15,
     "viewsCount": 2197,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0257_ee0932c4",
@@ -2895,7 +3032,8 @@
     "shares": 56,
     "comments": 22,
     "viewsCount": 2216,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0077_14fc9524",
@@ -2916,7 +3054,8 @@
     "shares": 204,
     "comments": 338,
     "viewsCount": 23850,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0273_933c0c8d",
@@ -2937,7 +3076,8 @@
     "shares": 70,
     "comments": 49,
     "viewsCount": 2606,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0395_2188be07",
@@ -2958,7 +3098,8 @@
     "shares": 76,
     "comments": 13,
     "viewsCount": 2930,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0368_46a5aeb2",
@@ -2979,7 +3120,8 @@
     "shares": 182,
     "comments": 137,
     "viewsCount": 4491,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0221_808d30cd",
@@ -3000,7 +3142,8 @@
     "shares": 283,
     "comments": 73,
     "viewsCount": 15200,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0121_9da6b8cd",
@@ -3021,7 +3164,8 @@
     "shares": 89,
     "comments": 123,
     "viewsCount": 17481,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0135_7dffb402",
@@ -3042,7 +3186,8 @@
     "shares": 32,
     "comments": 17,
     "viewsCount": 755,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0398_62eb1bb6",
@@ -3063,7 +3208,8 @@
     "shares": 40,
     "comments": 45,
     "viewsCount": 2840,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0517_12a6d2fb",
@@ -3084,7 +3230,8 @@
     "shares": 77,
     "comments": 27,
     "viewsCount": 2262,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0385_63e94456",
@@ -3105,7 +3252,8 @@
     "shares": 75,
     "comments": 30,
     "viewsCount": 2150,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0215_c8411962",
@@ -3126,7 +3274,8 @@
     "shares": 88,
     "comments": 120,
     "viewsCount": 9367,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0222_9147a601",
@@ -3147,7 +3296,8 @@
     "shares": 250,
     "comments": 141,
     "viewsCount": 4075,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0502_7a53867b",
@@ -3168,7 +3318,8 @@
     "shares": 20,
     "comments": 21,
     "viewsCount": 565,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0023_fe157521",
@@ -3189,7 +3340,8 @@
     "shares": 39,
     "comments": 16,
     "viewsCount": 750,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0392_b51b92d1",
@@ -3210,7 +3362,8 @@
     "shares": 117,
     "comments": 64,
     "viewsCount": 10732,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0333_edddbcb0",
@@ -3231,7 +3384,8 @@
     "shares": 180,
     "comments": 189,
     "viewsCount": 11665,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0437_db901574",
@@ -3252,7 +3406,8 @@
     "shares": 46,
     "comments": 30,
     "viewsCount": 2046,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0536_da8bc866",
@@ -3273,7 +3428,8 @@
     "shares": 57,
     "comments": 40,
     "viewsCount": 2516,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0012_7ab7ad22",
@@ -3294,7 +3450,8 @@
     "shares": 38,
     "comments": 63,
     "viewsCount": 672,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0317_0dac93f3",
@@ -3315,7 +3472,8 @@
     "shares": 39,
     "comments": 45,
     "viewsCount": 1485,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0447_21ece7d3",
@@ -3336,7 +3494,8 @@
     "shares": 36,
     "comments": 43,
     "viewsCount": 2555,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0481_942089ff",
@@ -3357,7 +3516,8 @@
     "shares": 23,
     "comments": 26,
     "viewsCount": 675,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0200_11aa24d0",
@@ -3378,7 +3538,8 @@
     "shares": 79,
     "comments": 46,
     "viewsCount": 1018,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0019_d948234b",
@@ -3399,7 +3560,8 @@
     "shares": 24,
     "comments": 48,
     "viewsCount": 478,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0282_9e7b18e2",
@@ -3420,7 +3582,8 @@
     "shares": 63,
     "comments": 23,
     "viewsCount": 1302,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0051_f3fe47eb",
@@ -3441,7 +3604,8 @@
     "shares": 80,
     "comments": 22,
     "viewsCount": 550,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0532_aabc37f3",
@@ -3462,7 +3626,8 @@
     "shares": 58,
     "comments": 15,
     "viewsCount": 788,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0432_80801329",
@@ -3483,7 +3648,8 @@
     "shares": 338,
     "comments": 311,
     "viewsCount": 19585,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0076_83457db7",
@@ -3504,7 +3670,8 @@
     "shares": 59,
     "comments": 34,
     "viewsCount": 2738,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0244_4f6b0db3",
@@ -3525,7 +3692,8 @@
     "shares": 23,
     "comments": 37,
     "viewsCount": 2913,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0377_aa3c3ba0",
@@ -3546,7 +3714,8 @@
     "shares": 55,
     "comments": 46,
     "viewsCount": 395,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0405_e7782f2e",
@@ -3567,7 +3736,8 @@
     "shares": 111,
     "comments": 27,
     "viewsCount": 3456,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0170_ccfe878b",
@@ -3588,7 +3758,8 @@
     "shares": 47,
     "comments": 32,
     "viewsCount": 461,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0310_37ad5052",
@@ -3609,7 +3780,8 @@
     "shares": 82,
     "comments": 24,
     "viewsCount": 4998,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0127_9fe369ee",
@@ -3630,7 +3802,8 @@
     "shares": 65,
     "comments": 39,
     "viewsCount": 351,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0203_3f780e3e",
@@ -3651,7 +3824,8 @@
     "shares": 62,
     "comments": 32,
     "viewsCount": 881,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0339_942d0446",
@@ -3672,7 +3846,8 @@
     "shares": 114,
     "comments": 134,
     "viewsCount": 17727,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0172_64b3497f",
@@ -3693,7 +3868,8 @@
     "shares": 112,
     "comments": 107,
     "viewsCount": 2113,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0274_619eadcb",
@@ -3714,7 +3890,8 @@
     "shares": 279,
     "comments": 75,
     "viewsCount": 11374,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0446_d827e973",
@@ -3735,7 +3912,8 @@
     "shares": 307,
     "comments": 207,
     "viewsCount": 45111,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0125_23aecfd9",
@@ -3756,7 +3934,8 @@
     "shares": 22,
     "comments": 50,
     "viewsCount": 1784,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0025_29be38c1",
@@ -3777,7 +3956,8 @@
     "shares": 266,
     "comments": 234,
     "viewsCount": 15589,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0183_8e77b807",
@@ -3798,7 +3978,8 @@
     "shares": 28,
     "comments": 50,
     "viewsCount": 1147,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0239_936d7304",
@@ -3819,7 +4000,8 @@
     "shares": 269,
     "comments": 180,
     "viewsCount": 2084,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0099_40b0040c",
@@ -3840,7 +4022,8 @@
     "shares": 58,
     "comments": 15,
     "viewsCount": 415,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0146_769179d4",
@@ -3861,7 +4044,8 @@
     "shares": 79,
     "comments": 46,
     "viewsCount": 1480,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0245_2435ff04",
@@ -3882,7 +4066,8 @@
     "shares": 139,
     "comments": 69,
     "viewsCount": 8642,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0081_5bda1cb4",
@@ -3903,7 +4088,8 @@
     "shares": 31,
     "comments": 22,
     "viewsCount": 741,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0190_dd838aba",
@@ -3924,7 +4110,8 @@
     "shares": 41,
     "comments": 34,
     "viewsCount": 773,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0535_40272f3a",
@@ -3945,7 +4132,8 @@
     "shares": 27,
     "comments": 28,
     "viewsCount": 1908,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0120_eb2b1d03",
@@ -3966,7 +4154,8 @@
     "shares": 181,
     "comments": 178,
     "viewsCount": 14253,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0494_72a004aa",
@@ -3987,7 +4176,8 @@
     "shares": 22,
     "comments": 34,
     "viewsCount": 2906,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0201_76ed9295",
@@ -4008,7 +4198,8 @@
     "shares": 63,
     "comments": 41,
     "viewsCount": 770,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0467_f18eec56",
@@ -4029,7 +4220,8 @@
     "shares": 183,
     "comments": 67,
     "viewsCount": 5563,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0487_2abf2377",
@@ -4050,7 +4242,8 @@
     "shares": 77,
     "comments": 17,
     "viewsCount": 954,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0131_91866f42",
@@ -4071,7 +4264,8 @@
     "shares": 194,
     "comments": 60,
     "viewsCount": 13552,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0372_82c2ba37",
@@ -4092,7 +4286,8 @@
     "shares": 202,
     "comments": 188,
     "viewsCount": 3067,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0108_aefa5756",
@@ -4113,7 +4308,8 @@
     "shares": 48,
     "comments": 50,
     "viewsCount": 1440,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0168_53020b02",
@@ -4134,7 +4330,8 @@
     "shares": 96,
     "comments": 76,
     "viewsCount": 1452,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0117_95d4bf4c",
@@ -4155,7 +4352,8 @@
     "shares": 60,
     "comments": 59,
     "viewsCount": 4342,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0280_64cc06d0",
@@ -4176,7 +4374,8 @@
     "shares": 548,
     "comments": 115,
     "viewsCount": 20855,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0083_1be69e32",
@@ -4197,7 +4396,8 @@
     "shares": 63,
     "comments": 26,
     "viewsCount": 2594,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0137_6c0410c6",
@@ -4218,7 +4418,8 @@
     "shares": 86,
     "comments": 142,
     "viewsCount": 14088,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0457_367e79b0",
@@ -4239,7 +4440,8 @@
     "shares": 32,
     "comments": 28,
     "viewsCount": 1333,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0354_1be597c2",
@@ -4260,7 +4462,8 @@
     "shares": 77,
     "comments": 49,
     "viewsCount": 2656,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0338_7873aee8",
@@ -4281,7 +4484,8 @@
     "shares": 29,
     "comments": 46,
     "viewsCount": 2521,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0029_10f685b9",
@@ -4302,7 +4506,8 @@
     "shares": 59,
     "comments": 48,
     "viewsCount": 693,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0425_235f686f",
@@ -4323,7 +4528,8 @@
     "shares": 76,
     "comments": 34,
     "viewsCount": 320,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0268_600badd1",
@@ -4344,7 +4550,8 @@
     "shares": 43,
     "comments": 10,
     "viewsCount": 1951,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0176_a984e311",
@@ -4365,7 +4572,8 @@
     "shares": 39,
     "comments": 27,
     "viewsCount": 449,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0473_85b9797c",
@@ -4386,7 +4594,8 @@
     "shares": 204,
     "comments": 161,
     "viewsCount": 6449,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0236_2c04bee3",
@@ -4407,7 +4616,8 @@
     "shares": 83,
     "comments": 85,
     "viewsCount": 2371,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0079_7b23cf89",
@@ -4428,7 +4638,8 @@
     "shares": 20,
     "comments": 46,
     "viewsCount": 400,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0165_3db4688a",
@@ -4449,7 +4660,8 @@
     "shares": 50,
     "comments": 71,
     "viewsCount": 4616,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0281_76ce5c15",
@@ -4470,7 +4682,8 @@
     "shares": 73,
     "comments": 26,
     "viewsCount": 570,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0391_e82c3793",
@@ -4491,7 +4704,8 @@
     "shares": 29,
     "comments": 10,
     "viewsCount": 2221,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0311_47f70326",
@@ -4512,7 +4726,8 @@
     "shares": 72,
     "comments": 13,
     "viewsCount": 1113,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0169_9d8bbe43",
@@ -4533,7 +4748,8 @@
     "shares": 56,
     "comments": 13,
     "viewsCount": 2488,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0309_ec4bf8fd",
@@ -4554,7 +4770,8 @@
     "shares": 100,
     "comments": 167,
     "viewsCount": 16555,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0231_de4ed620",
@@ -4575,7 +4792,8 @@
     "shares": 206,
     "comments": 148,
     "viewsCount": 5694,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0451_5f04dd2f",
@@ -4596,7 +4814,8 @@
     "shares": 96,
     "comments": 88,
     "viewsCount": 11190,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0299_3ddfbbba",
@@ -4617,7 +4836,8 @@
     "shares": 44,
     "comments": 17,
     "viewsCount": 2441,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0503_b439304d",
@@ -4638,7 +4858,8 @@
     "shares": 35,
     "comments": 21,
     "viewsCount": 2700,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0477_72a3ff42",
@@ -4659,7 +4880,8 @@
     "shares": 63,
     "comments": 50,
     "viewsCount": 2408,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0024_402d87ef",
@@ -4680,7 +4902,8 @@
     "shares": 117,
     "comments": 53,
     "viewsCount": 4640,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0097_55cca314",
@@ -4701,7 +4924,8 @@
     "shares": 248,
     "comments": 118,
     "viewsCount": 2948,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0498_9dc5c9e6",
@@ -4722,7 +4946,8 @@
     "shares": 31,
     "comments": 50,
     "viewsCount": 404,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0424_092252db",
@@ -4743,7 +4968,8 @@
     "shares": 67,
     "comments": 20,
     "viewsCount": 275,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0298_8d0972f2",
@@ -4764,7 +4990,8 @@
     "shares": 69,
     "comments": 44,
     "viewsCount": 2752,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0493_d179c720",
@@ -4785,7 +5012,8 @@
     "shares": 157,
     "comments": 152,
     "viewsCount": 3808,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0149_4c7ce3d8",
@@ -4806,7 +5034,8 @@
     "shares": 55,
     "comments": 28,
     "viewsCount": 501,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0189_adb99468",
@@ -4827,7 +5056,8 @@
     "shares": 79,
     "comments": 30,
     "viewsCount": 264,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0318_20a3d0f4",
@@ -4848,7 +5078,8 @@
     "shares": 52,
     "comments": 84,
     "viewsCount": 4944,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0089_95b6b41b",
@@ -4869,7 +5100,8 @@
     "shares": 74,
     "comments": 19,
     "viewsCount": 732,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0093_0e2f0672",
@@ -4890,7 +5122,8 @@
     "shares": 189,
     "comments": 130,
     "viewsCount": 10352,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0214_7c65a243",
@@ -4911,7 +5144,8 @@
     "shares": 209,
     "comments": 176,
     "viewsCount": 15406,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0032_fc7c72a1",
@@ -4932,7 +5166,8 @@
     "shares": 100,
     "comments": 20,
     "viewsCount": 2989,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0011_109c354f",
@@ -4953,7 +5188,8 @@
     "shares": 107,
     "comments": 74,
     "viewsCount": 2235,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0246_c38ed37f",
@@ -4974,7 +5210,8 @@
     "shares": 42,
     "comments": 23,
     "viewsCount": 2051,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0423_8514c99a",
@@ -4995,7 +5232,8 @@
     "shares": 216,
     "comments": 72,
     "viewsCount": 8108,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0508_0b33b6d4",
@@ -5016,7 +5254,8 @@
     "shares": 82,
     "comments": 45,
     "viewsCount": 3576,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0436_8f961aa8",
@@ -5037,7 +5276,8 @@
     "shares": 64,
     "comments": 43,
     "viewsCount": 782,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0492_c2ead97b",
@@ -5058,7 +5298,8 @@
     "shares": 191,
     "comments": 153,
     "viewsCount": 4297,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0415_366e3716",
@@ -5079,7 +5320,8 @@
     "shares": 22,
     "comments": 30,
     "viewsCount": 2411,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0531_9b2fc860",
@@ -5100,7 +5342,8 @@
     "shares": 75,
     "comments": 45,
     "viewsCount": 558,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0334_02a97145",
@@ -5121,7 +5364,8 @@
     "shares": 20,
     "comments": 46,
     "viewsCount": 2643,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0489_5223a369",
@@ -5142,7 +5386,8 @@
     "shares": 205,
     "comments": 101,
     "viewsCount": 14865,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0361_0ea2c483",
@@ -5163,7 +5408,8 @@
     "shares": 232,
     "comments": 64,
     "viewsCount": 7743,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0151_dcbebb31",
@@ -5184,7 +5430,8 @@
     "shares": 58,
     "comments": 40,
     "viewsCount": 1287,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0126_322802e3",
@@ -5205,7 +5452,8 @@
     "shares": 22,
     "comments": 32,
     "viewsCount": 2436,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0067_921e8a6d",
@@ -5226,7 +5474,8 @@
     "shares": 34,
     "comments": 17,
     "viewsCount": 2090,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0472_a83bebf3",
@@ -5247,7 +5496,8 @@
     "shares": 44,
     "comments": 33,
     "viewsCount": 1908,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0445_11ad1244",
@@ -5268,7 +5518,8 @@
     "shares": 588,
     "comments": 318,
     "viewsCount": 41075,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0462_3257c294",
@@ -5289,7 +5540,8 @@
     "shares": 137,
     "comments": 86,
     "viewsCount": 10455,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0485_fd85b146",
@@ -5310,7 +5562,8 @@
     "shares": 26,
     "comments": 43,
     "viewsCount": 625,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0218_3c026d15",
@@ -5331,7 +5584,8 @@
     "shares": 59,
     "comments": 18,
     "viewsCount": 1046,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0143_b911bd59",
@@ -5352,7 +5606,8 @@
     "shares": 50,
     "comments": 25,
     "viewsCount": 1863,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0320_926e09a9",
@@ -5373,7 +5628,8 @@
     "shares": 117,
     "comments": 52,
     "viewsCount": 1699,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0464_bd4959a2",
@@ -5394,7 +5650,8 @@
     "shares": 289,
     "comments": 77,
     "viewsCount": 12678,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0264_4a5469f8",
@@ -5415,7 +5672,8 @@
     "shares": 51,
     "comments": 34,
     "viewsCount": 1638,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0475_01477667",
@@ -5436,7 +5694,8 @@
     "shares": 140,
     "comments": 178,
     "viewsCount": 10822,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0249_d7cc4d23",
@@ -5457,7 +5716,8 @@
     "shares": 72,
     "comments": 35,
     "viewsCount": 1724,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0199_983e5334",
@@ -5478,7 +5738,8 @@
     "shares": 31,
     "comments": 35,
     "viewsCount": 1507,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0379_30d11166",
@@ -5499,7 +5760,8 @@
     "shares": 246,
     "comments": 187,
     "viewsCount": 7719,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0306_fe9e4382",
@@ -5520,7 +5782,8 @@
     "shares": 96,
     "comments": 116,
     "viewsCount": 12296,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0365_74a024fc",
@@ -5541,7 +5804,8 @@
     "shares": 46,
     "comments": 42,
     "viewsCount": 636,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0286_6da560a0",
@@ -5562,7 +5826,8 @@
     "shares": 53,
     "comments": 25,
     "viewsCount": 432,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0084_71cadae9",
@@ -5583,7 +5848,8 @@
     "shares": 61,
     "comments": 14,
     "viewsCount": 2802,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0295_e01662c7",
@@ -5604,7 +5870,8 @@
     "shares": 39,
     "comments": 18,
     "viewsCount": 620,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0090_2a02ef05",
@@ -5625,7 +5892,8 @@
     "shares": 296,
     "comments": 152,
     "viewsCount": 15968,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0278_33716b23",
@@ -5646,7 +5914,8 @@
     "shares": 70,
     "comments": 20,
     "viewsCount": 468,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0018_4dbb079e",
@@ -5667,7 +5936,8 @@
     "shares": 67,
     "comments": 47,
     "viewsCount": 979,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0235_3bbf98f2",
@@ -5688,7 +5958,8 @@
     "shares": 191,
     "comments": 111,
     "viewsCount": 3897,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0525_1ffc5131",
@@ -5709,7 +5980,8 @@
     "shares": 29,
     "comments": 33,
     "viewsCount": 2036,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0524_c512aae9",
@@ -5730,7 +6002,8 @@
     "shares": 109,
     "comments": 60,
     "viewsCount": 12375,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0161_8b400643",
@@ -5751,7 +6024,8 @@
     "shares": 38,
     "comments": 39,
     "viewsCount": 2826,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0230_99f7cead",
@@ -5772,7 +6046,8 @@
     "shares": 221,
     "comments": 122,
     "viewsCount": 2878,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0196_90d7692a",
@@ -5793,7 +6068,8 @@
     "shares": 39,
     "comments": 27,
     "viewsCount": 2219,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0463_1d9ae663",
@@ -5814,7 +6090,8 @@
     "shares": 201,
     "comments": 78,
     "viewsCount": 13516,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0474_8fd6fc13",
@@ -5835,7 +6112,8 @@
     "shares": 49,
     "comments": 42,
     "viewsCount": 1937,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0470_dcb37339",
@@ -5856,7 +6134,8 @@
     "shares": 298,
     "comments": 125,
     "viewsCount": 4045,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0478_35768797",
@@ -5877,7 +6156,8 @@
     "shares": 90,
     "comments": 93,
     "viewsCount": 3215,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0279_bb49d4f6",
@@ -5898,7 +6178,8 @@
     "shares": 35,
     "comments": 12,
     "viewsCount": 2069,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0276_0b156f3a",
@@ -5919,7 +6200,8 @@
     "shares": 85,
     "comments": 136,
     "viewsCount": 11930,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0504_0ef5b8c6",
@@ -5940,7 +6222,8 @@
     "shares": 35,
     "comments": 22,
     "viewsCount": 681,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0277_37a3160a",
@@ -5961,7 +6244,8 @@
     "shares": 66,
     "comments": 36,
     "viewsCount": 2677,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0133_2a8c119d",
@@ -5982,7 +6266,8 @@
     "shares": 88,
     "comments": 89,
     "viewsCount": 16743,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0410_53f84750",
@@ -6003,7 +6288,8 @@
     "shares": 48,
     "comments": 35,
     "viewsCount": 200,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0483_a311999d",
@@ -6024,7 +6310,8 @@
     "shares": 60,
     "comments": 32,
     "viewsCount": 1968,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0514_a930b95c",
@@ -6045,7 +6332,8 @@
     "shares": 53,
     "comments": 12,
     "viewsCount": 1414,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0150_016330ff",
@@ -6066,7 +6354,8 @@
     "shares": 292,
     "comments": 180,
     "viewsCount": 19443,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0103_205697b7",
@@ -6087,7 +6376,8 @@
     "shares": 300,
     "comments": 60,
     "viewsCount": 16294,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0388_d84a2dc5",
@@ -6108,7 +6398,8 @@
     "shares": 54,
     "comments": 10,
     "viewsCount": 2214,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0375_7a0766c2",
@@ -6129,7 +6420,8 @@
     "shares": 195,
     "comments": 96,
     "viewsCount": 6297,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0416_645c98cf",
@@ -6150,7 +6442,8 @@
     "shares": 52,
     "comments": 15,
     "viewsCount": 1109,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0479_43a67acf",
@@ -6171,7 +6464,8 @@
     "shares": 36,
     "comments": 13,
     "viewsCount": 2777,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0510_e234f402",
@@ -6192,7 +6486,8 @@
     "shares": 40,
     "comments": 37,
     "viewsCount": 2573,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0501_2acb3249",
@@ -6213,7 +6508,8 @@
     "shares": 48,
     "comments": 25,
     "viewsCount": 2583,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0520_ce23c11d",
@@ -6234,7 +6530,8 @@
     "shares": 254,
     "comments": 188,
     "viewsCount": 6326,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0376_696ccaf2",
@@ -6255,7 +6552,8 @@
     "shares": 50,
     "comments": 10,
     "viewsCount": 923,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0195_ba6224fe",
@@ -6276,7 +6574,8 @@
     "shares": 83,
     "comments": 124,
     "viewsCount": 15559,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0526_c717f6bc",
@@ -6297,7 +6596,8 @@
     "shares": 20,
     "comments": 44,
     "viewsCount": 2278,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0538_4c46fbdc",
@@ -6318,7 +6618,8 @@
     "shares": 60,
     "comments": 32,
     "viewsCount": 399,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0327_095c8516",
@@ -6339,7 +6640,8 @@
     "shares": 41,
     "comments": 33,
     "viewsCount": 1402,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0428_5c3a4e1e",
@@ -6360,7 +6662,8 @@
     "shares": 234,
     "comments": 385,
     "viewsCount": 39928,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0027_a2333216",
@@ -6381,7 +6684,8 @@
     "shares": 252,
     "comments": 281,
     "viewsCount": 41692,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0412_9a612c30",
@@ -6402,7 +6706,8 @@
     "shares": 36,
     "comments": 33,
     "viewsCount": 2584,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0015_2fb4210b",
@@ -6423,7 +6728,8 @@
     "shares": 183,
     "comments": 136,
     "viewsCount": 5580,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0068_97e17c9a",
@@ -6444,7 +6750,8 @@
     "shares": 35,
     "comments": 39,
     "viewsCount": 2457,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0118_948d6eb1",
@@ -6465,7 +6772,8 @@
     "shares": 289,
     "comments": 101,
     "viewsCount": 6535,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0254_e15a81f6",
@@ -6486,7 +6794,8 @@
     "shares": 44,
     "comments": 27,
     "viewsCount": 936,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0250_1c2dfb37",
@@ -6507,7 +6816,8 @@
     "shares": 296,
     "comments": 134,
     "viewsCount": 6014,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0128_889f3c21",
@@ -6528,7 +6838,8 @@
     "shares": 22,
     "comments": 22,
     "viewsCount": 1371,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0330_5fe9d14f",
@@ -6549,7 +6860,8 @@
     "shares": 55,
     "comments": 14,
     "viewsCount": 2555,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0521_d53cec5a",
@@ -6570,7 +6882,8 @@
     "shares": 61,
     "comments": 31,
     "viewsCount": 1886,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0232_ddf3296f",
@@ -6591,7 +6904,8 @@
     "shares": 300,
     "comments": 195,
     "viewsCount": 15790,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0075_b027c8a0",
@@ -6612,7 +6926,8 @@
     "shares": 155,
     "comments": 141,
     "viewsCount": 14282,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0326_6587daaf",
@@ -6633,7 +6948,8 @@
     "shares": 53,
     "comments": 14,
     "viewsCount": 2269,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0261_4144116c",
@@ -6654,7 +6970,8 @@
     "shares": 66,
     "comments": 28,
     "viewsCount": 721,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0248_8d42fb82",
@@ -6675,7 +6992,8 @@
     "shares": 80,
     "comments": 35,
     "viewsCount": 2052,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0207_1228679b",
@@ -6696,7 +7014,8 @@
     "shares": 43,
     "comments": 41,
     "viewsCount": 2498,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0511_ea5f0ef4",
@@ -6717,7 +7036,8 @@
     "shares": 47,
     "comments": 43,
     "viewsCount": 1815,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0359_f23a1f5b",
@@ -6738,7 +7058,8 @@
     "shares": 55,
     "comments": 45,
     "viewsCount": 2176,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0182_e67ed34b",
@@ -6759,7 +7080,8 @@
     "shares": 575,
     "comments": 280,
     "viewsCount": 16092,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0204_73d51cbc",
@@ -6780,7 +7102,8 @@
     "shares": 146,
     "comments": 106,
     "viewsCount": 18733,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0139_3b298ec9",
@@ -6801,7 +7124,8 @@
     "shares": 221,
     "comments": 200,
     "viewsCount": 7962,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0466_b525be0d",
@@ -6822,7 +7146,8 @@
     "shares": 31,
     "comments": 14,
     "viewsCount": 2551,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0297_da9460b0",
@@ -6843,7 +7168,8 @@
     "shares": 34,
     "comments": 18,
     "viewsCount": 1065,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0440_80c607e9",
@@ -6864,7 +7190,8 @@
     "shares": 39,
     "comments": 38,
     "viewsCount": 1382,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0255_e0d1bd31",
@@ -6885,7 +7212,8 @@
     "shares": 69,
     "comments": 47,
     "viewsCount": 1153,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0397_15dfa7af",
@@ -6906,7 +7234,8 @@
     "shares": 63,
     "comments": 49,
     "viewsCount": 1586,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0519_95e52968",
@@ -6927,7 +7256,8 @@
     "shares": 38,
     "comments": 14,
     "viewsCount": 647,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0062_19f0fa83",
@@ -6948,7 +7278,8 @@
     "shares": 56,
     "comments": 12,
     "viewsCount": 917,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0206_0d1c6d8e",
@@ -6969,7 +7300,8 @@
     "shares": 50,
     "comments": 32,
     "viewsCount": 2150,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0304_15a3b5d5",
@@ -6990,7 +7322,8 @@
     "shares": 64,
     "comments": 40,
     "viewsCount": 1927,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0449_ff3f4634",
@@ -7011,7 +7344,8 @@
     "shares": 46,
     "comments": 12,
     "viewsCount": 1567,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0173_9fed330a",
@@ -7032,7 +7366,8 @@
     "shares": 42,
     "comments": 19,
     "viewsCount": 1329,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0101_20753100",
@@ -7053,7 +7388,8 @@
     "shares": 34,
     "comments": 35,
     "viewsCount": 2654,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0186_90273ee3",
@@ -7074,7 +7410,8 @@
     "shares": 283,
     "comments": 151,
     "viewsCount": 4589,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0460_b702a13b",
@@ -7095,7 +7432,8 @@
     "shares": 227,
     "comments": 144,
     "viewsCount": 32948,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0086_601f5edd",
@@ -7116,7 +7454,8 @@
     "shares": 515,
     "comments": 308,
     "viewsCount": 23333,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0052_630cbb48",
@@ -7137,7 +7476,8 @@
     "shares": 25,
     "comments": 28,
     "viewsCount": 1107,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0302_3c2e0721",
@@ -7158,7 +7498,8 @@
     "shares": 90,
     "comments": 124,
     "viewsCount": 13803,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0205_9beac376",
@@ -7179,7 +7520,8 @@
     "shares": 86,
     "comments": 173,
     "viewsCount": 5425,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0350_c883a3b0",
@@ -7200,7 +7542,8 @@
     "shares": 28,
     "comments": 50,
     "viewsCount": 2299,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0073_33599e96",
@@ -7221,7 +7564,8 @@
     "shares": 40,
     "comments": 62,
     "viewsCount": 4871,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0061_dcbbd024",
@@ -7242,7 +7586,8 @@
     "shares": 25,
     "comments": 48,
     "viewsCount": 363,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0043_9c399fdd",
@@ -7263,7 +7608,8 @@
     "shares": 37,
     "comments": 36,
     "viewsCount": 1233,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0346_eb057375",
@@ -7284,7 +7630,8 @@
     "shares": 31,
     "comments": 34,
     "viewsCount": 2877,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0468_7bd0c223",
@@ -7305,7 +7652,8 @@
     "shares": 200,
     "comments": 175,
     "viewsCount": 48311,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0507_d2a638c7",
@@ -7326,7 +7674,8 @@
     "shares": 24,
     "comments": 25,
     "viewsCount": 2021,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0224_b6feb413",
@@ -7347,7 +7696,8 @@
     "shares": 192,
     "comments": 166,
     "viewsCount": 2022,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0202_b4b1c268",
@@ -7368,7 +7718,8 @@
     "shares": 202,
     "comments": 199,
     "viewsCount": 15133,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0053_7e058bf7",
@@ -7389,7 +7740,8 @@
     "shares": 100,
     "comments": 62,
     "viewsCount": 3382,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0402_525db337",
@@ -7410,7 +7762,8 @@
     "shares": 62,
     "comments": 44,
     "viewsCount": 1787,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0251_5459d984",
@@ -7431,7 +7784,8 @@
     "shares": 254,
     "comments": 159,
     "viewsCount": 7662,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0345_f08e1daf",
@@ -7452,7 +7806,8 @@
     "shares": 78,
     "comments": 39,
     "viewsCount": 390,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0006_318420f7",
@@ -7473,7 +7828,8 @@
     "shares": 68,
     "comments": 13,
     "viewsCount": 649,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0091_6f8c3855",
@@ -7494,7 +7850,8 @@
     "shares": 150,
     "comments": 199,
     "viewsCount": 19968,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0188_c2a8780d",
@@ -7515,7 +7872,8 @@
     "shares": 56,
     "comments": 16,
     "viewsCount": 2363,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0347_9b57df5a",
@@ -7536,7 +7894,8 @@
     "shares": 42,
     "comments": 32,
     "viewsCount": 2194,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0408_a7291f87",
@@ -7557,7 +7916,8 @@
     "shares": 55,
     "comments": 35,
     "viewsCount": 2267,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0035_819f6fcf",
@@ -7578,7 +7938,8 @@
     "shares": 29,
     "comments": 10,
     "viewsCount": 636,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0096_e03c03c4",
@@ -7599,7 +7960,8 @@
     "shares": 296,
     "comments": 192,
     "viewsCount": 14044,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0219_66291531",
@@ -7620,7 +7982,8 @@
     "shares": 349,
     "comments": 248,
     "viewsCount": 42534,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0148_0f191590",
@@ -7641,7 +8004,8 @@
     "shares": 20,
     "comments": 16,
     "viewsCount": 1965,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0393_4abea519",
@@ -7662,7 +8026,8 @@
     "shares": 276,
     "comments": 113,
     "viewsCount": 14609,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0283_6e119957",
@@ -7683,7 +8048,8 @@
     "shares": 137,
     "comments": 114,
     "viewsCount": 12009,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0115_06186db1",
@@ -7704,7 +8070,8 @@
     "shares": 24,
     "comments": 28,
     "viewsCount": 614,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0227_88e414d7",
@@ -7725,7 +8092,8 @@
     "shares": 138,
     "comments": 148,
     "viewsCount": 4927,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0351_c7d395a6",
@@ -7746,7 +8114,8 @@
     "shares": 111,
     "comments": 22,
     "viewsCount": 2822,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0159_fc67468d",
@@ -7767,7 +8136,8 @@
     "shares": 246,
     "comments": 101,
     "viewsCount": 11412,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0307_53801793",
@@ -7788,7 +8158,8 @@
     "shares": 50,
     "comments": 32,
     "viewsCount": 2918,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0233_cbe44408",
@@ -7809,7 +8180,8 @@
     "shares": 95,
     "comments": 151,
     "viewsCount": 18600,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0145_5c74ffdd",
@@ -7830,7 +8202,8 @@
     "shares": 111,
     "comments": 118,
     "viewsCount": 16732,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0197_21af6f30",
@@ -7851,7 +8224,8 @@
     "shares": 80,
     "comments": 25,
     "viewsCount": 2760,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0059_bb9eb6c9",
@@ -7872,7 +8246,8 @@
     "shares": 56,
     "comments": 100,
     "viewsCount": 2228,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0252_5822a697",
@@ -7893,7 +8268,8 @@
     "shares": 142,
     "comments": 125,
     "viewsCount": 18347,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0167_8f81c208",
@@ -7914,7 +8290,8 @@
     "shares": 428,
     "comments": 370,
     "viewsCount": 28709,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0042_435ee88d",
@@ -7935,7 +8312,8 @@
     "shares": 61,
     "comments": 37,
     "viewsCount": 755,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0020_55a8250d",
@@ -7956,7 +8334,8 @@
     "shares": 62,
     "comments": 47,
     "viewsCount": 2515,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0369_d975533f",
@@ -7977,7 +8356,8 @@
     "shares": 51,
     "comments": 22,
     "viewsCount": 1161,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0285_7d9a94c5",
@@ -7998,7 +8378,8 @@
     "shares": 255,
     "comments": 77,
     "viewsCount": 17785,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0539_9b08ff61",
@@ -8019,7 +8400,8 @@
     "shares": 54,
     "comments": 30,
     "viewsCount": 1495,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0360_0c1078ec",
@@ -8040,7 +8422,8 @@
     "shares": 24,
     "comments": 26,
     "viewsCount": 1108,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0184_7081b565",
@@ -8061,7 +8444,8 @@
     "shares": 449,
     "comments": 108,
     "viewsCount": 5433,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0253_b7a8b1f9",
@@ -8082,7 +8466,8 @@
     "shares": 97,
     "comments": 51,
     "viewsCount": 4953,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0069_a5c2950d",
@@ -8103,7 +8488,8 @@
     "shares": 79,
     "comments": 42,
     "viewsCount": 1294,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0266_3b996f52",
@@ -8124,7 +8510,8 @@
     "shares": 65,
     "comments": 11,
     "viewsCount": 1966,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0056_ae4569d6",
@@ -8145,7 +8532,8 @@
     "shares": 75,
     "comments": 10,
     "viewsCount": 2551,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0238_24a58022",
@@ -8166,7 +8554,8 @@
     "shares": 196,
     "comments": 180,
     "viewsCount": 13800,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0453_3d673496",
@@ -8187,7 +8576,8 @@
     "shares": 135,
     "comments": 184,
     "viewsCount": 11906,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0160_a7a5a3d6",
@@ -8208,7 +8598,8 @@
     "shares": 52,
     "comments": 73,
     "viewsCount": 1940,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0389_fa02d473",
@@ -8229,7 +8620,8 @@
     "shares": 82,
     "comments": 91,
     "viewsCount": 4080,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0480_96ef8fe3",
@@ -8250,7 +8642,8 @@
     "shares": 29,
     "comments": 48,
     "viewsCount": 831,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0208_feceb113",
@@ -8271,7 +8664,8 @@
     "shares": 45,
     "comments": 11,
     "viewsCount": 2715,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0490_7ac31270",
@@ -8292,7 +8686,8 @@
     "shares": 263,
     "comments": 116,
     "viewsCount": 5384,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0263_db136338",
@@ -8313,7 +8708,8 @@
     "shares": 36,
     "comments": 23,
     "viewsCount": 1222,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0411_aff6054b",
@@ -8334,7 +8730,8 @@
     "shares": 74,
     "comments": 30,
     "viewsCount": 288,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0484_7f154b39",
@@ -8355,7 +8752,8 @@
     "shares": 66,
     "comments": 47,
     "viewsCount": 998,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0194_b08cec2f",
@@ -8376,7 +8774,8 @@
     "shares": 55,
     "comments": 45,
     "viewsCount": 2298,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0181_a61b564d",
@@ -8397,7 +8796,8 @@
     "shares": 300,
     "comments": 268,
     "viewsCount": 20074,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0092_f97514e7",
@@ -8418,7 +8818,8 @@
     "shares": 70,
     "comments": 17,
     "viewsCount": 2881,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0054_607e5d44",
@@ -8439,7 +8840,8 @@
     "shares": 80,
     "comments": 21,
     "viewsCount": 984,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0344_897c56e1",
@@ -8460,7 +8862,8 @@
     "shares": 68,
     "comments": 41,
     "viewsCount": 1149,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0225_c3759a9c",
@@ -8481,7 +8884,8 @@
     "shares": 43,
     "comments": 20,
     "viewsCount": 412,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0448_808e2ef1",
@@ -8502,7 +8906,8 @@
     "shares": 53,
     "comments": 98,
     "viewsCount": 2406,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0301_1fbe39ff",
@@ -8523,7 +8928,8 @@
     "shares": 69,
     "comments": 42,
     "viewsCount": 507,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0357_c7b7abcc",
@@ -8544,7 +8950,8 @@
     "shares": 120,
     "comments": 20,
     "viewsCount": 4780,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0187_26256f30",
@@ -8565,7 +8972,8 @@
     "shares": 407,
     "comments": 294,
     "viewsCount": 29718,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0243_2ab8107b",
@@ -8586,7 +8994,8 @@
     "shares": 78,
     "comments": 24,
     "viewsCount": 2328,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0362_4dfc8356",
@@ -8607,7 +9016,8 @@
     "shares": 70,
     "comments": 48,
     "viewsCount": 2291,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0430_7f57a236",
@@ -8628,7 +9038,8 @@
     "shares": 59,
     "comments": 24,
     "viewsCount": 2642,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0109_93bbd08b",
@@ -8649,7 +9060,8 @@
     "shares": 43,
     "comments": 28,
     "viewsCount": 514,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0522_a5792e3e",
@@ -8670,7 +9082,8 @@
     "shares": 39,
     "comments": 46,
     "viewsCount": 740,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0513_e578ea64",
@@ -8691,7 +9104,8 @@
     "shares": 49,
     "comments": 39,
     "viewsCount": 767,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0002_4fe1b569",
@@ -8712,7 +9126,8 @@
     "shares": 25,
     "comments": 24,
     "viewsCount": 613,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0275_3b35511d",
@@ -8733,7 +9148,8 @@
     "shares": 124,
     "comments": 120,
     "viewsCount": 15204,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-g_0456_92d99dc0",
@@ -8754,7 +9170,8 @@
     "shares": 102,
     "comments": 135,
     "viewsCount": 17298,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0087_b0d43b8d",
@@ -8775,7 +9192,8 @@
     "shares": 181,
     "comments": 120,
     "viewsCount": 8219,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0144_e80a01d3",
@@ -8796,7 +9214,8 @@
     "shares": 58,
     "comments": 19,
     "viewsCount": 1480,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0098_af19b8d7",
@@ -8817,7 +9236,8 @@
     "shares": 116,
     "comments": 57,
     "viewsCount": 5006,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0366_38753cdf",
@@ -8838,7 +9258,8 @@
     "shares": 64,
     "comments": 38,
     "viewsCount": 1744,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0111_0a422efe",
@@ -8859,7 +9280,8 @@
     "shares": 35,
     "comments": 38,
     "viewsCount": 1999,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0270_53eb2527",
@@ -8880,7 +9302,8 @@
     "shares": 255,
     "comments": 171,
     "viewsCount": 9721,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0007_a4e1d5c0",
@@ -8901,7 +9324,8 @@
     "shares": 36,
     "comments": 45,
     "viewsCount": 247,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0482_cbc82494",
@@ -8922,7 +9346,8 @@
     "shares": 50,
     "comments": 26,
     "viewsCount": 794,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0439_9f507d8a",
@@ -8943,7 +9368,8 @@
     "shares": 176,
     "comments": 190,
     "viewsCount": 14471,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0419_f39281b4",
@@ -8964,7 +9390,8 @@
     "shares": 82,
     "comments": 74,
     "viewsCount": 3492,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0050_d25cbd2a",
@@ -8985,7 +9412,8 @@
     "shares": 21,
     "comments": 41,
     "viewsCount": 1531,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0034_36779a6e",
@@ -9006,7 +9434,8 @@
     "shares": 90,
     "comments": 98,
     "viewsCount": 1096,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0291_49ce631c",
@@ -9027,7 +9456,8 @@
     "shares": 53,
     "comments": 29,
     "viewsCount": 1892,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0258_2965d5df",
@@ -9048,7 +9478,8 @@
     "shares": 50,
     "comments": 10,
     "viewsCount": 1558,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0123_5109c1c9",
@@ -9069,7 +9500,8 @@
     "shares": 108,
     "comments": 177,
     "viewsCount": 19565,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0313_391aeda0",
@@ -9090,7 +9522,8 @@
     "shares": 271,
     "comments": 309,
     "viewsCount": 12009,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0373_08443d86",
@@ -9111,7 +9544,8 @@
     "shares": 31,
     "comments": 21,
     "viewsCount": 2226,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0399_c3176b43",
@@ -9132,7 +9566,8 @@
     "shares": 65,
     "comments": 38,
     "viewsCount": 2489,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0256_935f4242",
@@ -9153,7 +9588,8 @@
     "shares": 79,
     "comments": 65,
     "viewsCount": 1923,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0082_03b30a36",
@@ -9174,7 +9610,8 @@
     "shares": 24,
     "comments": 19,
     "viewsCount": 1124,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0180_32bf197a",
@@ -9195,7 +9632,8 @@
     "shares": 389,
     "comments": 260,
     "viewsCount": 32127,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0178_c2e63ccb",
@@ -9216,7 +9654,8 @@
     "shares": 223,
     "comments": 155,
     "viewsCount": 15648,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0296_196690d1",
@@ -9237,7 +9676,8 @@
     "shares": 58,
     "comments": 43,
     "viewsCount": 1583,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0512_f3ccc9cd",
@@ -9258,7 +9698,8 @@
     "shares": 171,
     "comments": 125,
     "viewsCount": 9833,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0382_00306a38",
@@ -9279,7 +9720,8 @@
     "shares": 46,
     "comments": 20,
     "viewsCount": 953,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0433_8d9bf677",
@@ -9300,7 +9742,8 @@
     "shares": 76,
     "comments": 25,
     "viewsCount": 1951,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0074_94aac8ea",
@@ -9321,7 +9764,8 @@
     "shares": 67,
     "comments": 15,
     "viewsCount": 1977,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0046_9f610463",
@@ -9342,7 +9786,8 @@
     "shares": 63,
     "comments": 34,
     "viewsCount": 1824,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0500_e8becac6",
@@ -9363,7 +9808,8 @@
     "shares": 40,
     "comments": 23,
     "viewsCount": 386,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0179_5dcdc527",
@@ -9384,7 +9830,8 @@
     "shares": 25,
     "comments": 44,
     "viewsCount": 980,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0343_0c2dd589",
@@ -9405,7 +9852,8 @@
     "shares": 74,
     "comments": 49,
     "viewsCount": 879,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0094_fe1be1e2",
@@ -9426,7 +9874,8 @@
     "shares": 269,
     "comments": 145,
     "viewsCount": 6263,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0102_5dd79300",
@@ -9447,7 +9896,8 @@
     "shares": 81,
     "comments": 177,
     "viewsCount": 16111,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0300_b4c0a3ea",
@@ -9468,7 +9918,8 @@
     "shares": 64,
     "comments": 40,
     "viewsCount": 1554,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0105_c03a8c7e",
@@ -9489,7 +9940,8 @@
     "shares": 100,
     "comments": 151,
     "viewsCount": 12167,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0308_35a1a899",
@@ -9510,7 +9962,8 @@
     "shares": 122,
     "comments": 69,
     "viewsCount": 18110,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0063_0dfdaaeb",
@@ -9531,7 +9984,8 @@
     "shares": 42,
     "comments": 36,
     "viewsCount": 1565,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0400_8a45aa15",
@@ -9552,7 +10006,8 @@
     "shares": 106,
     "comments": 90,
     "viewsCount": 1813,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0049_2489af98",
@@ -9573,7 +10028,8 @@
     "shares": 47,
     "comments": 47,
     "viewsCount": 1299,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0386_5e81021e",
@@ -9594,7 +10050,8 @@
     "shares": 60,
     "comments": 50,
     "viewsCount": 2510,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0005_491819f8",
@@ -9615,7 +10072,8 @@
     "shares": 36,
     "comments": 18,
     "viewsCount": 1210,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0341_bd672cc1",
@@ -9636,7 +10094,8 @@
     "shares": 45,
     "comments": 47,
     "viewsCount": 1071,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0154_8b949f42",
@@ -9657,7 +10116,8 @@
     "shares": 41,
     "comments": 44,
     "viewsCount": 1651,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0033_4fda1a7c",
@@ -9678,7 +10138,8 @@
     "shares": 62,
     "comments": 15,
     "viewsCount": 1362,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0022_4d3b5c9d",
@@ -9699,7 +10160,8 @@
     "shares": 76,
     "comments": 14,
     "viewsCount": 1200,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0129_9fa31b69",
@@ -9720,7 +10182,8 @@
     "shares": 41,
     "comments": 21,
     "viewsCount": 2232,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0497_3f985503",
@@ -9741,7 +10204,8 @@
     "shares": 29,
     "comments": 47,
     "viewsCount": 1154,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-d_0240_774eda74",
@@ -9762,7 +10226,8 @@
     "shares": 49,
     "comments": 10,
     "viewsCount": 1711,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0030_2c38cb08",
@@ -9783,7 +10248,8 @@
     "shares": 47,
     "comments": 14,
     "viewsCount": 2920,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0303_a0770949",
@@ -9804,7 +10270,8 @@
     "shares": 41,
     "comments": 32,
     "viewsCount": 1992,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0262_d3f02683",
@@ -9825,7 +10292,8 @@
     "shares": 26,
     "comments": 41,
     "viewsCount": 776,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0337_56d784c2",
@@ -9846,7 +10314,8 @@
     "shares": 112,
     "comments": 110,
     "viewsCount": 5278,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0406_c073b439",
@@ -9867,7 +10336,8 @@
     "shares": 53,
     "comments": 16,
     "viewsCount": 614,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0016_aeb99bdf",
@@ -9888,7 +10358,8 @@
     "shares": 99,
     "comments": 163,
     "viewsCount": 5208,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0055_4c0cca95",
@@ -9909,7 +10380,8 @@
     "shares": 43,
     "comments": 21,
     "viewsCount": 1438,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0100_f07bc085",
@@ -9930,7 +10402,8 @@
     "shares": 46,
     "comments": 27,
     "viewsCount": 1082,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0021_ad7497fc",
@@ -9951,7 +10424,8 @@
     "shares": 40,
     "comments": 14,
     "viewsCount": 238,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0220_0039fad6",
@@ -9972,7 +10446,8 @@
     "shares": 262,
     "comments": 132,
     "viewsCount": 10111,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0387_0bf885b1",
@@ -9993,7 +10468,8 @@
     "shares": 48,
     "comments": 29,
     "viewsCount": 1698,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0247_1dc78139",
@@ -10014,7 +10490,8 @@
     "shares": 73,
     "comments": 30,
     "viewsCount": 807,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0396_d34594b5",
@@ -10035,7 +10512,8 @@
     "shares": 45,
     "comments": 25,
     "viewsCount": 236,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0009_323f2c69",
@@ -10056,7 +10534,8 @@
     "shares": 43,
     "comments": 20,
     "viewsCount": 2409,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0039_bced724d",
@@ -10077,7 +10556,8 @@
     "shares": 41,
     "comments": 44,
     "viewsCount": 2108,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-a_0057_17ca4e5a",
@@ -10098,7 +10578,8 @@
     "shares": 45,
     "comments": 41,
     "viewsCount": 503,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-f_0401_9c90f693",
@@ -10119,7 +10600,8 @@
     "shares": 69,
     "comments": 50,
     "viewsCount": 2272,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0506_5a60d294",
@@ -10140,7 +10622,8 @@
     "shares": 36,
     "comments": 31,
     "viewsCount": 2726,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0353_31d08b96",
@@ -10161,7 +10644,8 @@
     "shares": 28,
     "comments": 16,
     "viewsCount": 267,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0217_b29655b4",
@@ -10182,7 +10666,8 @@
     "shares": 195,
     "comments": 117,
     "viewsCount": 13422,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0040_5e1443f7",
@@ -10203,7 +10688,8 @@
     "shares": 20,
     "comments": 32,
     "viewsCount": 1423,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0066_7d9d6f47",
@@ -10224,7 +10710,8 @@
     "shares": 48,
     "comments": 41,
     "viewsCount": 697,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0107_3fba910d",
@@ -10245,7 +10732,8 @@
     "shares": 49,
     "comments": 46,
     "viewsCount": 2573,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-b_0064_78dac82c",
@@ -10266,7 +10754,8 @@
     "shares": 22,
     "comments": 39,
     "viewsCount": 560,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0157_236ae9cb",
@@ -10287,7 +10776,8 @@
     "shares": 72,
     "comments": 44,
     "viewsCount": 1310,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0523_bd68ada8",
@@ -10308,7 +10798,8 @@
     "shares": 49,
     "comments": 20,
     "viewsCount": 2733,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0352_f57e504a",
@@ -10329,7 +10820,8 @@
     "shares": 104,
     "comments": 43,
     "viewsCount": 4684,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0072_a24bb5a7",
@@ -10350,7 +10842,8 @@
     "shares": 214,
     "comments": 166,
     "viewsCount": 2502,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0355_188fcfa2",
@@ -10371,7 +10864,8 @@
     "shares": 77,
     "comments": 37,
     "viewsCount": 2338,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-g_0438_3d528795",
@@ -10392,7 +10886,8 @@
     "shares": 262,
     "comments": 91,
     "viewsCount": 6048,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0065_1ef4c539",
@@ -10413,7 +10908,8 @@
     "shares": 23,
     "comments": 22,
     "viewsCount": 2323,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0113_cadfd27b",
@@ -10434,7 +10930,8 @@
     "shares": 247,
     "comments": 150,
     "viewsCount": 6225,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0060_b197d7d0",
@@ -10455,7 +10952,8 @@
     "shares": 70,
     "comments": 29,
     "viewsCount": 2637,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0417_ea41d581",
@@ -10476,7 +10974,8 @@
     "shares": 55,
     "comments": 35,
     "viewsCount": 1275,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0534_c2cb245d",
@@ -10497,7 +10996,8 @@
     "shares": 22,
     "comments": 29,
     "viewsCount": 2597,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0014_a351ea02",
@@ -10518,7 +11018,8 @@
     "shares": 90,
     "comments": 72,
     "viewsCount": 2059,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0155_6c0b301f",
@@ -10539,7 +11040,8 @@
     "shares": 65,
     "comments": 23,
     "viewsCount": 2202,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0363_fbf633a9",
@@ -10560,7 +11062,8 @@
     "shares": 37,
     "comments": 35,
     "viewsCount": 1646,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0088_60745115",
@@ -10581,7 +11084,8 @@
     "shares": 35,
     "comments": 18,
     "viewsCount": 2512,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0175_7dfeefa0",
@@ -10602,7 +11106,8 @@
     "shares": 38,
     "comments": 24,
     "viewsCount": 2559,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0533_7ca39b2a",
@@ -10623,7 +11128,8 @@
     "shares": 60,
     "comments": 27,
     "viewsCount": 1897,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0390_70155a1a",
@@ -10644,7 +11150,8 @@
     "shares": 118,
     "comments": 62,
     "viewsCount": 19529,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-d_0267_ff9ace5b",
@@ -10665,7 +11172,8 @@
     "shares": 66,
     "comments": 44,
     "viewsCount": 1286,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-e_0305_4a34ea8f",
@@ -10686,7 +11194,8 @@
     "shares": 192,
     "comments": 96,
     "viewsCount": 14443,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-h_0505_f6c7d80b",
@@ -10707,7 +11216,8 @@
     "shares": 32,
     "comments": 17,
     "viewsCount": 811,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0455_873851e0",
@@ -10728,7 +11238,8 @@
     "shares": 253,
     "comments": 83,
     "viewsCount": 8723,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0452_f1b151fd",
@@ -10749,7 +11260,8 @@
     "shares": 504,
     "comments": 159,
     "viewsCount": 25203,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0142_ade60651",
@@ -10770,7 +11282,8 @@
     "shares": 25,
     "comments": 12,
     "viewsCount": 2827,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-f_0371_556d1de0",
@@ -10791,7 +11304,8 @@
     "shares": 77,
     "comments": 46,
     "viewsCount": 1325,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0319_886ea72e",
@@ -10812,7 +11326,8 @@
     "shares": 38,
     "comments": 37,
     "viewsCount": 252,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-e_0356_4f9beefe",
@@ -10833,7 +11348,8 @@
     "shares": 26,
     "comments": 37,
     "viewsCount": 748,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-h_0491_2c71e765",
@@ -10854,7 +11370,8 @@
     "shares": 527,
     "comments": 100,
     "viewsCount": 7479,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-a_0017_b77bf7d6",
@@ -10875,7 +11392,8 @@
     "shares": 37,
     "comments": 41,
     "viewsCount": 3604,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0134_d1235b18",
@@ -10896,7 +11414,8 @@
     "shares": 27,
     "comments": 11,
     "viewsCount": 962,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0119_a30d4bf9",
@@ -10917,7 +11436,8 @@
     "shares": 68,
     "comments": 20,
     "viewsCount": 1317,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0078_b3655a4e",
@@ -10938,7 +11458,8 @@
     "shares": 354,
     "comments": 201,
     "viewsCount": 30211,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0471_3570910c",
@@ -10959,7 +11480,8 @@
     "shares": 60,
     "comments": 30,
     "viewsCount": 1767,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0427_eac5e850",
@@ -10980,7 +11502,8 @@
     "shares": 497,
     "comments": 377,
     "viewsCount": 49829,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0116_96ed53bc",
@@ -11001,7 +11524,8 @@
     "shares": 277,
     "comments": 92,
     "viewsCount": 16341,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-c_0192_d7d7144f",
@@ -11022,7 +11546,8 @@
     "shares": 277,
     "comments": 125,
     "viewsCount": 10075,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0226_aed80761",
@@ -11043,7 +11568,8 @@
     "shares": 239,
     "comments": 167,
     "viewsCount": 43907,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0515_286f7778",
@@ -11064,7 +11590,8 @@
     "shares": 52,
     "comments": 33,
     "viewsCount": 411,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-c_0158_9fd406ad",
@@ -11085,7 +11612,8 @@
     "shares": 319,
     "comments": 126,
     "viewsCount": 11566,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0223_8a91b6e6",
@@ -11106,7 +11634,8 @@
     "shares": 227,
     "comments": 83,
     "viewsCount": 17903,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0104_3b353b6a",
@@ -11127,7 +11656,8 @@
     "shares": 45,
     "comments": 11,
     "viewsCount": 1530,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-c_0166_e73379b5",
@@ -11148,7 +11678,8 @@
     "shares": 88,
     "comments": 97,
     "viewsCount": 3560,
-    "_seed_cluster_id": "cluster-c"
+    "_seed_cluster_id": "cluster-c",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-e_0348_d3177ecd",
@@ -11169,7 +11700,8 @@
     "shares": 151,
     "comments": 104,
     "viewsCount": 6923,
-    "_seed_cluster_id": "cluster-e"
+    "_seed_cluster_id": "cluster-e",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-g_0421_125ad36b",
@@ -11190,7 +11722,8 @@
     "shares": 287,
     "comments": 130,
     "viewsCount": 23613,
-    "_seed_cluster_id": "cluster-g"
+    "_seed_cluster_id": "cluster-g",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0496_5faee35c",
@@ -11211,7 +11744,8 @@
     "shares": 22,
     "comments": 31,
     "viewsCount": 429,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-f_0381_b7dcf8a7",
@@ -11232,7 +11766,8 @@
     "shares": 40,
     "comments": 30,
     "viewsCount": 2874,
-    "_seed_cluster_id": "cluster-f"
+    "_seed_cluster_id": "cluster-f",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-d_0288_cfda80a2",
@@ -11253,7 +11788,8 @@
     "shares": 251,
     "comments": 141,
     "viewsCount": 18623,
-    "_seed_cluster_id": "cluster-d"
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-h_0530_f2bcf176",
@@ -11274,7 +11810,8 @@
     "shares": 172,
     "comments": 151,
     "viewsCount": 6847,
-    "_seed_cluster_id": "cluster-h"
+    "_seed_cluster_id": "cluster-h",
+    "_seed_priority": "High"
   },
   {
     "postId": "seed_cluster-b_0140_1cb1347c",
@@ -11295,7 +11832,8 @@
     "shares": 30,
     "comments": 30,
     "viewsCount": 1123,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
   },
   {
     "postId": "seed_cluster-a_0013_1ca32768",
@@ -11316,7 +11854,8 @@
     "shares": 75,
     "comments": 31,
     "viewsCount": 490,
-    "_seed_cluster_id": "cluster-a"
+    "_seed_cluster_id": "cluster-a",
+    "_seed_priority": "Medium"
   },
   {
     "postId": "seed_cluster-b_0147_5abe8bda",
@@ -11337,6 +11876,667 @@
     "shares": 52,
     "comments": 39,
     "viewsCount": 1186,
-    "_seed_cluster_id": "cluster-b"
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
+  },
+  {
+    "postId": "seed_cluster-b_0148_18fd8768",
+    "text": "SERVICE ADVISORY: Emergency repair and maintenance activities scheduled May 14-19 affecting Pasig, Taguig, Quezon City, Manila, Marikina, Rizal. Expect water interruption in affected areas. Manila Water regulated and monitored by MWSS Regulatory Office.",
+    "pageName": "Manila Water",
+    "facebookUrl": "https://www.facebook.com/page/4775",
+    "url": "https://www.facebook.com/post/805211",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 121,
+    "topReactionsCount": 137,
+    "reactionLikeCount": 121,
+    "reactionLoveCount": 7,
+    "reactionCareCount": 6,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 5,
+    "reactionSadCount": 4,
+    "reactionAngryCount": 9,
+    "shares": 20,
+    "comments": 33,
+    "viewsCount": 363,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
+  },
+  {
+    "postId": "seed_cluster-b_0149_19c3448c",
+    "text": "WATER INTERRUPTION NOTICE: Maynilad scheduled emergency pipeline repair on May 15 will affect Caloocan, Malabon, Navotas, and Valenzuela. Water supply cut from 10PM to 6AM. Residents advised to store water in advance.",
+    "pageName": "Maynilad Water Services",
+    "facebookUrl": "https://www.facebook.com/page/3945",
+    "url": "https://www.facebook.com/post/601272",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 134,
+    "topReactionsCount": 142,
+    "reactionLikeCount": 134,
+    "reactionLoveCount": 10,
+    "reactionCareCount": 2,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 5,
+    "reactionSadCount": 5,
+    "reactionAngryCount": 11,
+    "shares": 44,
+    "comments": 45,
+    "viewsCount": 536,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0150_24200c12",
+    "text": "ADVISORY: Emergency repair of burst main pipeline in Quezon City. Water supply unavailable in Batasan Hills, Commonwealth, and nearby barangays today. Estimated restoration by 8PM. Water rationing trucks deployed.",
+    "pageName": "Manila Water",
+    "facebookUrl": "https://www.facebook.com/page/4429",
+    "url": "https://www.facebook.com/post/849762",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 91,
+    "topReactionsCount": 103,
+    "reactionLikeCount": 91,
+    "reactionLoveCount": 4,
+    "reactionCareCount": 3,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 2,
+    "reactionSadCount": 8,
+    "reactionAngryCount": 9,
+    "shares": 69,
+    "comments": 15,
+    "viewsCount": 728,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
+  },
+  {
+    "postId": "seed_cluster-b_0151_41c9af48",
+    "text": "WATER SERVICE DISRUPTION: Typhoon damage to water treatment facility in Angat reduced supply by 40%. Affected: Metro Manila and parts of Bulacan. Manila Water implementing zonal rationing. Check website for schedule.",
+    "pageName": "Manila Water",
+    "facebookUrl": "https://www.facebook.com/page/3612",
+    "url": "https://www.facebook.com/post/230761",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 219,
+    "topReactionsCount": 235,
+    "reactionLikeCount": 219,
+    "reactionLoveCount": 2,
+    "reactionCareCount": 4,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 2,
+    "reactionSadCount": 8,
+    "reactionAngryCount": 0,
+    "shares": 20,
+    "comments": 58,
+    "viewsCount": 1752,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0152_bc2a9cbc",
+    "text": "MAYNILAD ADVISORY: Emergency shutdown of Putatan Water Treatment Plant due to turbidity surge caused by heavy rains. Service interruption 24-48 hours for Muntinlupa, Las Pinas, Paranaque, and parts of Cavite.",
+    "pageName": "Maynilad Water Services",
+    "facebookUrl": "https://www.facebook.com/page/1660",
+    "url": "https://www.facebook.com/post/603248",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 190,
+    "topReactionsCount": 199,
+    "reactionLikeCount": 190,
+    "reactionLoveCount": 0,
+    "reactionCareCount": 4,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 5,
+    "reactionAngryCount": 3,
+    "shares": 19,
+    "comments": 23,
+    "viewsCount": 1520,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
+  },
+  {
+    "postId": "seed_cluster-b_0153_cbcee0cc",
+    "text": "URGENT: Contaminated water supply reported in Brgy. Tondo Manila after floodwaters infiltrated distribution line. Residents warned NOT to use tap water for drinking or cooking. Boil water advisory in effect. Tanker trucks dispatched.",
+    "pageName": "Manila City DRRMO",
+    "facebookUrl": "https://www.facebook.com/page/1367",
+    "url": "https://www.facebook.com/post/461250",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 182,
+    "topReactionsCount": 200,
+    "reactionLikeCount": 182,
+    "reactionLoveCount": 0,
+    "reactionCareCount": 8,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 3,
+    "reactionSadCount": 7,
+    "reactionAngryCount": 12,
+    "shares": 70,
+    "comments": 42,
+    "viewsCount": 1092,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0154_638366f0",
+    "text": "Water supply alert: MWSS reports reduction in raw water supply from Angat Dam due to El Nino. Conservation measures in effect. Metro Manila residents urged to limit water use. Supply rotation schedule posted on MWSS website.",
+    "pageName": "MWSS Regulatory Office",
+    "facebookUrl": "https://www.facebook.com/page/7080",
+    "url": "https://www.facebook.com/post/512650",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 174,
+    "topReactionsCount": 186,
+    "reactionLikeCount": 174,
+    "reactionLoveCount": 5,
+    "reactionCareCount": 3,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 3,
+    "reactionSadCount": 7,
+    "reactionAngryCount": 11,
+    "shares": 10,
+    "comments": 29,
+    "viewsCount": 1218,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0155_e1297e07",
+    "text": "NOTICE: Pipe rehabilitation work along EDSA Cubao will interrupt water service for Quezon City zones 1-4 on May 17-18. Affected households advised to store water. Water trucks at Araneta Coliseum parking lot.",
+    "pageName": "Manila Water",
+    "facebookUrl": "https://www.facebook.com/page/3413",
+    "url": "https://www.facebook.com/post/686088",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 70,
+    "topReactionsCount": 79,
+    "reactionLikeCount": 70,
+    "reactionLoveCount": 9,
+    "reactionCareCount": 9,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 1,
+    "reactionSadCount": 9,
+    "reactionAngryCount": 9,
+    "shares": 80,
+    "comments": 60,
+    "viewsCount": 210,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0156_f163f1b3",
+    "text": "Flash flood damage to water mains in Marikina City. Brgy. Sto. Nino, Brgy. Concepcion, Brgy. Tumana affected. Estimated repair: 72 hours. MWSS deploying emergency water tankers to affected communities.",
+    "pageName": "Marikina DRRMO",
+    "facebookUrl": "https://www.facebook.com/page/4002",
+    "url": "https://www.facebook.com/post/702762",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 60,
+    "topReactionsCount": 72,
+    "reactionLikeCount": 60,
+    "reactionLoveCount": 3,
+    "reactionCareCount": 6,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 1,
+    "reactionSadCount": 8,
+    "reactionAngryCount": 3,
+    "shares": 69,
+    "comments": 26,
+    "viewsCount": 300,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0157_d5516b1a",
+    "text": "BOIL WATER ADVISORY: Heavy rainfall caused turbidity in Laguna Lake affecting water treatment in Taguig and Muntinlupa. Water from taps may appear cloudy. Boil all water before consumption until further notice.",
+    "pageName": "DOH Philippines",
+    "facebookUrl": "https://www.facebook.com/page/1775",
+    "url": "https://www.facebook.com/post/409168",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 238,
+    "topReactionsCount": 249,
+    "reactionLikeCount": 238,
+    "reactionLoveCount": 5,
+    "reactionCareCount": 10,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 4,
+    "reactionSadCount": 3,
+    "reactionAngryCount": 8,
+    "shares": 56,
+    "comments": 20,
+    "viewsCount": 1666,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-b_0158_6b46093d",
+    "text": "Maynilad emergency repair sa main pipe sa Valenzuela City. Affected: Parada, Dalandanan, Malinta, Gen. T. De Leon barangays. Walang tubig mula 8PM hanggang 6AM. Mag-imbak ng tubig. Tanker trucks sa barangay halls.",
+    "pageName": "Maynilad Water Services",
+    "facebookUrl": "https://www.facebook.com/page/9799",
+    "url": "https://www.facebook.com/post/633683",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 266,
+    "topReactionsCount": 277,
+    "reactionLikeCount": 266,
+    "reactionLoveCount": 5,
+    "reactionCareCount": 0,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 3,
+    "reactionSadCount": 4,
+    "reactionAngryCount": 12,
+    "shares": 22,
+    "comments": 37,
+    "viewsCount": 1330,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-b_0159_1be1e7a5",
+    "text": "WATER INTERRUPTION: Manila Water emergency pipeline replacement in San Juan City affects Brgy. Addition Hills, Brgy. Batis, Brgy. Corazon de Jesus. Restoration expected 10PM. Store water in advance.",
+    "pageName": "Manila Water",
+    "facebookUrl": "https://www.facebook.com/page/2229",
+    "url": "https://www.facebook.com/post/824451",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 148,
+    "topReactionsCount": 165,
+    "reactionLikeCount": 148,
+    "reactionLoveCount": 4,
+    "reactionCareCount": 7,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 1,
+    "reactionSadCount": 3,
+    "reactionAngryCount": 8,
+    "shares": 37,
+    "comments": 51,
+    "viewsCount": 888,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0160_43af6bb2",
+    "text": "Critical water shortage in evacuation centers in Cagayan Valley after Typhoon Pepito. DSWD and LWUA coordinating emergency water supply. 15,000 evacuees without safe drinking water. Tanker trucks en route.",
+    "pageName": "DSWD Philippines",
+    "facebookUrl": "https://www.facebook.com/page/6506",
+    "url": "https://www.facebook.com/post/924907",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 107,
+    "topReactionsCount": 119,
+    "reactionLikeCount": 107,
+    "reactionLoveCount": 8,
+    "reactionCareCount": 8,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 2,
+    "reactionAngryCount": 10,
+    "shares": 70,
+    "comments": 30,
+    "viewsCount": 856,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-b_0161_f037054a",
+    "text": "ADVISORY: Leakage detected in transmission main along C-5 Road affecting water pressure in Pasig, Taguig, and Pateros. Manila Water deploying repair crew. Reduced water pressure for 24 hours while repairs ongoing.",
+    "pageName": "Manila Water",
+    "facebookUrl": "https://www.facebook.com/page/5028",
+    "url": "https://www.facebook.com/post/584640",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 187,
+    "topReactionsCount": 206,
+    "reactionLikeCount": 187,
+    "reactionLoveCount": 6,
+    "reactionCareCount": 4,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 10,
+    "reactionAngryCount": 3,
+    "shares": 54,
+    "comments": 58,
+    "viewsCount": 935,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "Low"
+  },
+  {
+    "postId": "seed_cluster-b_0162_ca89a90a",
+    "text": "Water supply cut sa Paranaque, Las Pinas, Muntinlupa dahil sa emergency maintenance ng Putatan Treatment Plant. Maynilad nagpapadala ng water trucks sa mga barangay. Asahan ang service restoration bukas ng umaga.",
+    "pageName": "Maynilad Water Services",
+    "facebookUrl": "https://www.facebook.com/page/9264",
+    "url": "https://www.facebook.com/post/786182",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 233,
+    "topReactionsCount": 240,
+    "reactionLikeCount": 233,
+    "reactionLoveCount": 9,
+    "reactionCareCount": 3,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 4,
+    "reactionSadCount": 5,
+    "reactionAngryCount": 15,
+    "shares": 42,
+    "comments": 35,
+    "viewsCount": 932,
+    "_seed_cluster_id": "cluster-b",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0061_79110498",
+    "text": "ROAD CLOSURE ALERT: Marcos Highway in Marikina impassable due to landslide debris. All vehicles diverted to Sumulong Highway. DPWH crews mobilized for clearing. Estimated clearance: 6-8 hours.",
+    "pageName": "DPWH NCR",
+    "facebookUrl": "https://www.facebook.com/page/3659",
+    "url": "https://www.facebook.com/post/473549",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 300,
+    "topReactionsCount": 309,
+    "reactionLikeCount": 300,
+    "reactionLoveCount": 2,
+    "reactionCareCount": 10,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 2,
+    "reactionSadCount": 4,
+    "reactionAngryCount": 9,
+    "shares": 65,
+    "comments": 21,
+    "viewsCount": 1200,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0062_10f00d4c",
+    "text": "TRAFFIC ADVISORY: MacArthur Bridge connecting Manila and Makati closed due to structural damage from flooding. Heavy vehicles rerouted via Nagtahan Bridge. DPWH assessment team on site.",
+    "pageName": "MMDA",
+    "facebookUrl": "https://www.facebook.com/page/5033",
+    "url": "https://www.facebook.com/post/369814",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 209,
+    "topReactionsCount": 228,
+    "reactionLikeCount": 209,
+    "reactionLoveCount": 5,
+    "reactionCareCount": 0,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 3,
+    "reactionSadCount": 8,
+    "reactionAngryCount": 12,
+    "shares": 57,
+    "comments": 46,
+    "viewsCount": 627,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
+  },
+  {
+    "postId": "seed_cluster-d_0063_45e0e00f",
+    "text": "Relief convoy from Quezon City to Cagayan de Oro delayed due to blocked highway in Nueva Vizcaya. Typhoon Pepito downed trees covering 3km stretch of Maharlika Highway. DPWH clearing operations underway.",
+    "pageName": "DSWD Philippines",
+    "facebookUrl": "https://www.facebook.com/page/3106",
+    "url": "https://www.facebook.com/post/865796",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 87,
+    "topReactionsCount": 98,
+    "reactionLikeCount": 87,
+    "reactionLoveCount": 7,
+    "reactionCareCount": 0,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 0,
+    "reactionAngryCount": 7,
+    "shares": 58,
+    "comments": 38,
+    "viewsCount": 522,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-d_0064_589c449d",
+    "text": "LOGISTICS UPDATE: Calamity goods warehouse in Pasig City damaged by fire. 2,000 sacks of rice and emergency supplies lost. DSWD activating contingency stocks from Laguna and Batangas depots.",
+    "pageName": "DSWD Philippines",
+    "facebookUrl": "https://www.facebook.com/page/8103",
+    "url": "https://www.facebook.com/post/553819",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 63,
+    "topReactionsCount": 71,
+    "reactionLikeCount": 63,
+    "reactionLoveCount": 0,
+    "reactionCareCount": 8,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 10,
+    "reactionAngryCount": 13,
+    "shares": 60,
+    "comments": 27,
+    "viewsCount": 378,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0065_22d4d14e",
+    "text": "ROAD ALERT: Kennon Road and Marcos Highway both blocked due to landslides from heavy rainfall. Baguio City accessible only via Naguilian Road. Long queues expected. DPWH deploying heavy equipment for clearing.",
+    "pageName": "DPWH CAR",
+    "facebookUrl": "https://www.facebook.com/page/8412",
+    "url": "https://www.facebook.com/post/759484",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 193,
+    "topReactionsCount": 209,
+    "reactionLikeCount": 193,
+    "reactionLoveCount": 8,
+    "reactionCareCount": 4,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 5,
+    "reactionSadCount": 9,
+    "reactionAngryCount": 11,
+    "shares": 33,
+    "comments": 34,
+    "viewsCount": 965,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-d_0066_b7dcd683",
+    "text": "Flood closed NLEX northbound in Bulacan from km 37 to km 43. Vehicles rerouted via SCTEX. Stranded motorists being assisted by NLEX crew. DPWH monitoring flood levels.",
+    "pageName": "NLEX Corporation",
+    "facebookUrl": "https://www.facebook.com/page/1755",
+    "url": "https://www.facebook.com/post/492724",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 231,
+    "topReactionsCount": 243,
+    "reactionLikeCount": 231,
+    "reactionLoveCount": 7,
+    "reactionCareCount": 8,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 1,
+    "reactionSadCount": 5,
+    "reactionAngryCount": 3,
+    "shares": 18,
+    "comments": 41,
+    "viewsCount": 924,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0067_4e097d0b",
+    "text": "TYPHOON LOGISTICS BRIEF: Port of Manila suspended all cargo and passenger operations due to Typhoon Signal No. 3. Stranded vessels sheltering in Manila Bay. MARINA coordinating with PCG for vessel monitoring.",
+    "pageName": "Philippine Ports Authority",
+    "facebookUrl": "https://www.facebook.com/page/1665",
+    "url": "https://www.facebook.com/post/497868",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 221,
+    "topReactionsCount": 239,
+    "reactionLikeCount": 221,
+    "reactionLoveCount": 9,
+    "reactionCareCount": 10,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 2,
+    "reactionSadCount": 0,
+    "reactionAngryCount": 12,
+    "shares": 61,
+    "comments": 31,
+    "viewsCount": 1768,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0068_d349ec1d",
+    "text": "Relief operations in Catanduanes hampered by runway damage at Virac Airport after typhoon. Military C-130 unable to land. Sea transport only option. PCG coordinating vessels for relief goods delivery.",
+    "pageName": "PCG Philippines",
+    "facebookUrl": "https://www.facebook.com/page/4901",
+    "url": "https://www.facebook.com/post/385289",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 196,
+    "topReactionsCount": 213,
+    "reactionLikeCount": 196,
+    "reactionLoveCount": 4,
+    "reactionCareCount": 1,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 5,
+    "reactionSadCount": 5,
+    "reactionAngryCount": 5,
+    "shares": 66,
+    "comments": 15,
+    "viewsCount": 588,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-d_0069_1669042f",
+    "text": "ADVISORY: Quirino Highway in Rizal impassable due to rockfall from Sierra Madre slopes. No estimated clearing time due to continuous rain. Alternative via Marikina-Infanta Road recommended for relief convoys.",
+    "pageName": "DPWH Region IV-A",
+    "facebookUrl": "https://www.facebook.com/page/1091",
+    "url": "https://www.facebook.com/post/898375",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 231,
+    "topReactionsCount": 242,
+    "reactionLikeCount": 231,
+    "reactionLoveCount": 3,
+    "reactionCareCount": 4,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 2,
+    "reactionAngryCount": 15,
+    "shares": 49,
+    "comments": 51,
+    "viewsCount": 924,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-d_0070_668197ba",
+    "text": "Landslide blocks access road to 3 barangays in Benguet. Around 500 residents isolated. DSWD pre-positioned relief goods but delivery impossible. Helicopter extraction being considered for medical cases.",
+    "pageName": "Benguet PDRRMO",
+    "facebookUrl": "https://www.facebook.com/page/7657",
+    "url": "https://www.facebook.com/post/463879",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 115,
+    "topReactionsCount": 131,
+    "reactionLikeCount": 115,
+    "reactionLoveCount": 1,
+    "reactionCareCount": 6,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 0,
+    "reactionSadCount": 4,
+    "reactionAngryCount": 12,
+    "shares": 65,
+    "comments": 33,
+    "viewsCount": 690,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0071_f430586a",
+    "text": "Tulay sa Ilocos Norte bumagsak dahil sa malakas na baha. Mga residente ng dalawang barangay walang access sa bayan. DPWH nagtatayo ng bailey bridge. Asahang matatapus sa loob ng 3 araw.",
+    "pageName": "DPWH Region I",
+    "facebookUrl": "https://www.facebook.com/page/6498",
+    "url": "https://www.facebook.com/post/247415",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 296,
+    "topReactionsCount": 312,
+    "reactionLikeCount": 296,
+    "reactionLoveCount": 5,
+    "reactionCareCount": 4,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 3,
+    "reactionSadCount": 3,
+    "reactionAngryCount": 9,
+    "shares": 34,
+    "comments": 38,
+    "viewsCount": 2368,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0072_a76808a1",
+    "text": "LOGISTICS ALERT: Fuel depot in Leyte flooded after Typhoon Uring. Gasoline supply critically low across Eastern Visayas. DOE coordinating emergency fuel delivery via sea. Generators at hospitals and evacuation centers prioritized.",
+    "pageName": "DOE Philippines",
+    "facebookUrl": "https://www.facebook.com/page/8814",
+    "url": "https://www.facebook.com/post/830603",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 203,
+    "topReactionsCount": 221,
+    "reactionLikeCount": 203,
+    "reactionLoveCount": 1,
+    "reactionCareCount": 10,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 2,
+    "reactionSadCount": 9,
+    "reactionAngryCount": 13,
+    "shares": 22,
+    "comments": 59,
+    "viewsCount": 1624,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-d_0073_e75cb75b",
+    "text": "ROAD CONDITION UPDATE: Cagayan Valley Road in Isabela has 15 sections with floodwater depth 0.5m to 1.2m. Heavy vehicles advised to avoid route. DPWH deploying water pumps and warning signs.",
+    "pageName": "DPWH Region II",
+    "facebookUrl": "https://www.facebook.com/page/9904",
+    "url": "https://www.facebook.com/post/973157",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 241,
+    "topReactionsCount": 260,
+    "reactionLikeCount": 241,
+    "reactionLoveCount": 3,
+    "reactionCareCount": 7,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 5,
+    "reactionSadCount": 1,
+    "reactionAngryCount": 7,
+    "shares": 60,
+    "comments": 46,
+    "viewsCount": 723,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "High"
+  },
+  {
+    "postId": "seed_cluster-d_0074_19f7a77e",
+    "text": "Typhoon damaged 3 warehouses at NFA complex in Leyte. Emergency procurement of replacement relief goods underway. NFA and DSWD coordinating resupply from Cebu and Mindanao depots.",
+    "pageName": "NFA Philippines",
+    "facebookUrl": "https://www.facebook.com/page/9586",
+    "url": "https://www.facebook.com/post/449927",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 52,
+    "topReactionsCount": 70,
+    "reactionLikeCount": 52,
+    "reactionLoveCount": 5,
+    "reactionCareCount": 9,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 2,
+    "reactionSadCount": 8,
+    "reactionAngryCount": 5,
+    "shares": 23,
+    "comments": 45,
+    "viewsCount": 416,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Medium"
+  },
+  {
+    "postId": "seed_cluster-d_0075_82567734",
+    "text": "Emergency road clearing on Nagcarlan-Liliw Road in Laguna after rockslide blocked both lanes. Relief vehicles carrying goods to flooded barangays forced to wait. DPWH crew working 24 hours to restore access.",
+    "pageName": "DPWH Region IV-A",
+    "facebookUrl": "https://www.facebook.com/page/4984",
+    "url": "https://www.facebook.com/post/400095",
+    "time": "2025-11-14T08:00:00+00:00",
+    "likes": 132,
+    "topReactionsCount": 147,
+    "reactionLikeCount": 132,
+    "reactionLoveCount": 7,
+    "reactionCareCount": 8,
+    "reactionHahaCount": 0,
+    "reactionWowCount": 5,
+    "reactionSadCount": 8,
+    "reactionAngryCount": 14,
+    "shares": 34,
+    "comments": 37,
+    "viewsCount": 396,
+    "_seed_cluster_id": "cluster-d",
+    "_seed_priority": "Low"
   }
 ]

@@ -71,26 +71,27 @@ DEFAULT_FEATURE_COLUMNS = [
     "engagement_level",
     "keyword_intensity",
     "recurrence_frequency",
-    "topic_flood",
+    "topic_education",
     "topic_evacuation",
     "topic_rescue",
-    "topic_infrastructure_damage",
+    "topic_logistics",
     "topic_relief",
-    "topic_power_outage",
+    "topic_telecom_power",
     "topic_health_medical",
-    "topic_communication",
+    "topic_dead_missing",
 ]
 
-# CorEx topic names in feature-column order
+# CorEx topic names in feature-column order — must match TOPIC_LABELS in
+# services/corex/topic_modeler.py so that PostTopic rows produce non-zero features.
 _TOPIC_NAMES = [
-    "flood",
+    "education",
     "evacuation",
     "rescue",
-    "infrastructure_damage",
+    "logistics",
     "relief",
-    "power_outage",
+    "telecom_power",
     "health_medical",
-    "communication",
+    "dead_missing",
 ]
 
 SENTIMENT_ENCODE = {"Negative": 0, "Neutral": 1, "Positive": 2}

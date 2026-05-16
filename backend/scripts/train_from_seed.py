@@ -111,6 +111,74 @@ def main() -> int:
             print(f"  [error] SVM training failed: {exc}")
             return 1
 
+        # ── RF training ───────────────────────────────────────────────────────
+        print("\nTraining Random Forest...")
+        priority_labels = [p.get("_seed_priority") for p in posts]
+        if not any(priority_labels):
+            print("  [warn] No _seed_priority labels found — skipping RF.")
+            print("         Run: python scripts/label_seed_priorities.py  first.")
+        else:
+            try:
+                from services.vader.sentiment_analyzer import analyze_sentiment
+                from services.corex.topic_modeler import predict_topics_batch
+                from services.random_forest.priority_classifier import (
+                    SENTIMENT_ENCODE, train_rf_from_records,
+                )
+
+                print("  Computing VADER scores for seed posts...")
+                vader_results = []
+                for text in raw_texts:
+                    try:
+                        v = analyze_sentiment(text or "")
+                    except Exception:
+                        v = {"compound": 0.0, "positive": 0.0, "negative": 0.0, "neutral": 1.0}
+                    vader_results.append(v)
+
+                print("  Running CorEx topic inference on seed posts...")
+                topic_batches = predict_topics_batch(processed_texts)
+
+                records = []
+                for i, post in enumerate(posts):
+                    pri = post.get("_seed_priority") or "Medium"
+                    v = vader_results[i]
+                    compound = v.get("compound", 0.0)
+                    sent_label = (
+                        "Positive" if compound >= 0.05
+                        else "Negative" if compound <= -0.05
+                        else "Neutral"
+                    )
+                    topic_list = [t["topic"] for t in (topic_batches[i] if i < len(topic_batches) else [])]
+                    reactions = post.get("reactionLikeCount") or post.get("likes") or 0
+                    comments_count = post.get("comments") or 0
+                    shares_count = post.get("shares") or 0
+                    records.append({
+                        "post_id":         post.get("postId", f"seed_{i}"),
+                        "priority_label":  pri,
+                        "compound":        compound,
+                        "positive":        v.get("positive", 0.0),
+                        "negative":        v.get("negative", 0.0),
+                        "neutral":         v.get("neutral", 1.0),
+                        "sentiment_label": sent_label,
+                        "reactions":       reactions,
+                        "comments":        comments_count,
+                        "shares":          shares_count,
+                        "reposts":         0,
+                        "clean_text":      processed_texts[i],
+                        "topic_labels":    topic_list,
+                    })
+
+                rf_result = train_rf_from_records(records)
+                dist = rf_result["class_distribution"]
+                print(f"  RF trained.")
+                print(f"  Corpus size : {rf_result['corpus_size']}")
+                print(f"  Accuracy    : {rf_result['accuracy']:.4f}")
+                print(f"  Distribution: High={dist.get('High', 0)}  Medium={dist.get('Medium', 0)}  Low={dist.get('Low', 0)}")
+            except Exception as exc:
+                import traceback
+                print(f"  [error] RF training failed: {exc}")
+                traceback.print_exc()
+                return 1
+
     print("\nDone. Model files updated in backend/models/")
     print("Database was NOT modified — no seed posts in the dashboard.")
     print()

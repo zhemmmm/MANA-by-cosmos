@@ -1,20 +1,20 @@
 {
-  "trained_at": "2026-05-14T16:33:52.867351+00:00",
-  "corpus_size": 540,
+  "trained_at": "2026-05-15T08:08:46.645568+00:00",
+  "corpus_size": 570,
   "n_topics": 8,
   "anchor_strength": 3,
   "max_features": 5000,
   "coherence_scores": {
-    "education": 2.853277750363011,
-    "evacuation": 4.273361487306037,
-    "rescue": 3.1764235610578906,
-    "logistics": 3.481445079226467,
-    "relief": 3.0727481243316577,
-    "telecom_power": 2.366295862394617,
-    "health_medical": 3.231757939640492,
-    "dead_missing": 3.242103473965263
+    "education": 2.787279067176856,
+    "evacuation": 4.340144027048575,
+    "rescue": 2.8536836095803433,
+    "logistics": 3.5531095628756604,
+    "relief": 2.6581378699649623,
+    "telecom_power": 2.185565312564101,
+    "health_medical": 3.32965878208264,
+    "dead_missing": 3.252383360214402
   },
-  "overall_coherence": 3.2121766597856793,
+  "overall_coherence": 3.119995198938443,
   "low_coherence_topics": [
     "telecom_power"
   ],
