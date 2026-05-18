@@ -191,5 +191,13 @@ function showToast(title, message) {
 
 // ─── Clock ────────────────────────────────────────────────────────────────────
 function updateClock() {
-  document.getElementById("topbarClock").textContent = "Updated 26 Apr 2026";
+  const el = document.getElementById("topbarClock");
+  if (!el) return;
+  const formattedDate = new Intl.DateTimeFormat("en-PH", {
+    timeZone: "Asia/Manila",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date());
+  el.textContent = `Updated ${formattedDate}`;
 }
