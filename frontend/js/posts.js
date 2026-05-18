@@ -464,16 +464,7 @@ async function renderClusterDetail() {
       return true;
     })
     .sort((a, b) => f.severity === "Trending" ? getEngagement(b) - getEngagement(a) : sortPostsByPriority(a, b));
-  const resolvedClusterPosts = filterPosts(clusterPosts, f.dateRange, f.source, state.globalSearch, { includeResolved: true })
-    .filter(isResolvedPost)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
   document.getElementById("clusterPostGrid").innerHTML = renderPostCards(filteredPosts);
-  document.getElementById("clusterResolvedPostsPanel").innerHTML = renderResolvedPostsPanel(
-    resolvedClusterPosts,
-    "No resolved posts in this cluster right now.",
-    "cluster"
-  );
   renderClusterNav();
   applySeverityStyle(document.getElementById("clusterSeverityFilter"), f.severity);
 }
