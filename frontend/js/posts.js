@@ -136,6 +136,11 @@ const PostsService = {
 
 // ─── Toggle Pin ───────────────────────────────────────────────────────────────
 async function togglePin(postId) {
+  if (typeof isViewerMode === "function" && isViewerMode()) {
+    showViewerReadOnlyToast("Managing saved posts");
+    return;
+  }
+
   if (state.pinned.has(postId)) {
     state.pinned.delete(postId);
     const result = await PostsService.unpinPost(postId).catch(() => null);
@@ -168,6 +173,7 @@ function renderPostCards(postList, options = {}) {
   if (!postList.length) return `<div class="watch-empty"><strong>No posts match the selected filters.</strong>Try a broader source selection or a wider date range.</div>`;
 
   return postList.map(post => {
+    const viewerMode = typeof isViewerMode === "function" && isViewerMode();
     const cluster = state.clusters.find(c => c.id === post.clusterId) || {};
     const isFB = post.source === "Facebook";
     const pinned = state.pinned.has(post.id);
@@ -224,7 +230,7 @@ function renderPostCards(postList, options = {}) {
               </div>
             </div>` : ""}
             ${archiveMode ? "" : `
-            <button class="pin-btn ${pinned ? "pinned" : ""}" type="button" data-pin="${post.id}" aria-label="Pin post">
+            <button class="pin-btn ${pinned ? "pinned" : ""}" type="button" data-pin="${post.id}" aria-label="Pin post" ${viewerMode ? "disabled" : ""}>
               <svg viewBox="0 0 24 24"><path d="M8 3h8l-1 5 3 3v1H6v-1l3-3-1-5z"></path><path d="M12 12v9"></path></svg>
             </button>`}
           </div>
@@ -249,7 +255,7 @@ function renderPostCards(postList, options = {}) {
               <span class="metric-label">${reshareMetric.label}</span>
             </div>
           </div>
-          <select class="status-select status-select-compact ${statusClass(currentStatus)}" data-status-select="${post.id}">
+          <select class="status-select status-select-compact ${statusClass(currentStatus)}" data-status-select="${post.id}" ${viewerMode ? "disabled" : ""}>
             <option value="Monitoring"  ${currentStatus === "Monitoring" ? "selected" : ""}>Monitoring</option>
             <option value="Ongoing"     ${currentStatus === "Ongoing" ? "selected" : ""}>Ongoing</option>
             <option value="Resolved"    ${currentStatus === "Resolved" ? "selected" : ""}>Resolved</option>
@@ -281,19 +287,20 @@ function renderPostCards(postList, options = {}) {
 
 // ─── Render: Verify Box ──────────────────────────────────────────────────────
 function renderVerifyBox(post) {
+  const viewerMode = typeof isViewerMode === "function" && isViewerMode();
   const v = state.verifications?.[post.id] || { status: "auto-unverified", crossRefs: [], matchCount: 0, note: "", markedBy: null };
   const note = v.note || "";
 
   const noteDisplay = note ? `
     <div class="verify-note-display">
       <span>${note}</span>
-      <div class="verify-note-actions">
+      ${viewerMode ? "" : `<div class="verify-note-actions">
         <button class="verify-action-btn" data-edit-note="${post.id}">EDIT</button>
         <button class="verify-action-btn danger" data-delete-note="${post.id}">DLT</button>
-      </div>
+      </div>`}
     </div>` : "";
 
-  const noteEditor = `
+  const noteEditor = viewerMode ? "" : `
     <div class="verify-note-editor hidden" data-note-editor="${post.id}">
       <textarea class="verify-textarea" data-note-input="${post.id}" placeholder="Add a note...">${note}</textarea>
       <div class="verify-note-btn-row">
@@ -313,8 +320,9 @@ function renderVerifyBox(post) {
         ${noteDisplay}
         ${noteEditor}
         <div class="verify-actions">
-          ${!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : ""}
-          <button class="verify-action-btn danger" data-mark-unverified="${post.id}">Mark as Unverified</button>
+          ${viewerMode ? `<span class="verify-readonly-chip">Read-only in viewer mode</span>` : ""}
+          ${viewerMode ? "" : (!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : "")}
+          ${viewerMode ? "" : `<button class="verify-action-btn danger" data-mark-unverified="${post.id}">Mark as Unverified</button>`}
         </div>
       </div>`;
   }
@@ -328,8 +336,9 @@ function renderVerifyBox(post) {
         ${noteDisplay}
         ${noteEditor}
         <div class="verify-actions">
-          ${!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : ""}
-          <button class="verify-action-btn danger" data-unverify-manual="${post.id}">Unverify</button>
+          ${viewerMode ? `<span class="verify-readonly-chip">Read-only in viewer mode</span>` : ""}
+          ${viewerMode ? "" : (!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : "")}
+          ${viewerMode ? "" : `<button class="verify-action-btn danger" data-unverify-manual="${post.id}">Unverify</button>`}
         </div>
       </div>`;
   }
@@ -345,8 +354,9 @@ function renderVerifyBox(post) {
         ${noteDisplay}
         ${noteEditor}
         <div class="verify-actions">
-          ${!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : ""}
-          <button class="verify-action-btn primary" data-reverify="${post.id}">Verify Again</button>
+          ${viewerMode ? `<span class="verify-readonly-chip">Read-only in viewer mode</span>` : ""}
+          ${viewerMode ? "" : (!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : "")}
+          ${viewerMode ? "" : `<button class="verify-action-btn primary" data-reverify="${post.id}">Verify Again</button>`}
         </div>
       </div>`;
   }
@@ -360,8 +370,9 @@ function renderVerifyBox(post) {
       ${noteDisplay}
       ${noteEditor}
       <div class="verify-actions">
-        ${!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : ""}
-        <button class="verify-action-btn primary" data-manually-verify="${post.id}">Manually Verify ▸</button>
+        ${viewerMode ? `<span class="verify-readonly-chip">Read-only in viewer mode</span>` : ""}
+        ${viewerMode ? "" : (!note ? `<button class="verify-action-btn" data-add-note="${post.id}">+ Add Note</button>` : "")}
+        ${viewerMode ? "" : `<button class="verify-action-btn primary" data-manually-verify="${post.id}">Manually Verify ▸</button>`}
       </div>
     </div>`;
 }

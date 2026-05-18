@@ -562,6 +562,19 @@ body.light-theme .hero-kicker {
   transform: translateY(-1px);
 }
 
+.primary-btn:disabled,
+.secondary-btn:disabled,
+.filter-control:disabled,
+.status-select:disabled,
+.pin-btn:disabled,
+.toggle-switch input:disabled + .toggle-slider,
+.icon-toggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
 .secondary-btn {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
@@ -1318,6 +1331,19 @@ body.light-theme .status-strip small {
 .verify-action-btn.primary:hover { background: rgba(88, 166, 255, 0.08); }
 .verify-action-btn.danger { color: #fb7185; border-color: rgba(251, 113, 133, 0.3); }
 .verify-action-btn.danger:hover { background: rgba(251, 113, 133, 0.08); }
+
+.verify-readonly-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
 
 .verify-marked-label { color: var(--text-soft); font-size: 0.65rem; font-style: italic; }
 

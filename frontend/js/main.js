@@ -70,6 +70,54 @@ let deferredDataPromise = null;
 let liveUpdatesChannel = null;
 let liveRefreshTimer = null;
 
+function isViewerMode() {
+  return state.profile?.role === "Viewer";
+}
+
+function showViewerReadOnlyToast(actionLabel = "That action") {
+  showToast(
+    "Viewer mode",
+    `${actionLabel} is disabled in viewer mode. You can still explore search, filters, sections, analytics, and generated outputs.`
+  );
+}
+
+function updateViewerModeUI() {
+  const viewer = isViewerMode();
+  document.body.classList.toggle("viewer-mode", viewer);
+
+  const usernameInput = document.getElementById("profileUsername");
+  if (usernameInput) usernameInput.readOnly = viewer;
+
+  [
+    "newEmailInput",
+    "emailCodeInput",
+    "currentPassword",
+    "newPassword",
+    "confirmPassword",
+  ].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) input.disabled = viewer;
+  });
+
+  [
+    "changeEmailBtn",
+    "cancelEmailBtn",
+    "verifyEmailBtn",
+    "saveProfileBtn",
+    "emailAlertsToggle",
+    "testAlertBtn",
+    "clearPasswordBtn",
+    "savePasswordBtn",
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = viewer;
+  });
+
+  if (viewer) {
+    closeEmailPopover?.();
+  }
+}
+
 function resetDeferredState() {
   criticalDataPromise = null;
   deferredDataPromise = null;
@@ -325,6 +373,12 @@ function getRestoreStatus(postId) {
 }
 
 async function setPostStatus(postId, status, options = {}) {
+  if (isViewerMode()) {
+    renderCurrentPage({ refreshDashboardSummary: false });
+    showViewerReadOnlyToast("Changing post status");
+    return;
+  }
+
   const { silent = false } = options;
   const post = state.posts.find(item => item.id === postId);
   const previousStatus = getPostStatus(post || { id: postId, status: "Monitoring" });
@@ -476,6 +530,11 @@ function bindStaticControls() {
   document.getElementById("themeCheckbox").addEventListener("change", e => applyTheme(e.target.checked ? "dark" : "light"));
 
   document.getElementById("emailAlertsToggle").addEventListener("change", async e => {
+    if (isViewerMode()) {
+      e.target.checked = state.emailAlerts;
+      showViewerReadOnlyToast("Changing email alerts");
+      return;
+    }
     state.emailAlerts = e.target.checked;
     await DashboardService.updateEmailAlerts(state.emailAlerts).catch(() => {});
     persistLocalPreferences();
@@ -488,8 +547,13 @@ function bindStaticControls() {
   document.getElementById("changeEmailBtn").addEventListener("click",   toggleEmailPopover);
   document.getElementById("verifyEmailBtn").addEventListener("click",   verifyEmailChange);
   document.getElementById("cancelEmailBtn").addEventListener("click",   closeEmailPopover);
-  document.getElementById("testAlertBtn").addEventListener("click", () =>
-    showToast("Test alert sent", `A sample email alert was sent to ${state.profile.email}.`));
+  document.getElementById("testAlertBtn").addEventListener("click", () => {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Sending test alerts");
+      return;
+    }
+    showToast("Test alert sent", `A sample email alert was sent to ${state.profile.email}.`);
+  });
   document.getElementById("logoutBtn").addEventListener("click", doLogout);
 
   document.addEventListener("click",  handleDocumentClick);
@@ -520,6 +584,10 @@ function handleDocumentClick(event) {
 
   if (pin) togglePin(pin.dataset.pin);
   if (restorePost) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Restoring resolved posts");
+      return;
+    }
     const postId = restorePost.dataset.restorePost;
     setPostStatus(postId, getRestoreStatus(postId), { silent: false });
   }
@@ -577,6 +645,10 @@ function handleDocumentClick(event) {
 
   const markUnverified = event.target.closest("[data-mark-unverified]");
   if (markUnverified) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Changing verification status");
+      return;
+    }
     const pid = markUnverified.dataset.markUnverified;
     if (state.verifications[pid]) {
       state.verifications[pid].status   = "marked-unverified";
@@ -588,6 +660,10 @@ function handleDocumentClick(event) {
 
   const manualVerify = event.target.closest("[data-manually-verify]");
   if (manualVerify) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Changing verification status");
+      return;
+    }
     const pid = manualVerify.dataset.manuallyVerify;
     if (state.verifications[pid]) {
       state.verifications[pid].status   = "manually-verified";
@@ -599,6 +675,10 @@ function handleDocumentClick(event) {
 
   const reverify = event.target.closest("[data-reverify]");
   if (reverify) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Changing verification status");
+      return;
+    }
     const pid = reverify.dataset.reverify;
     if (state.verifications[pid]) {
       state.verifications[pid].status   = "auto-verified";
@@ -610,6 +690,10 @@ function handleDocumentClick(event) {
 
   const unverifyManual = event.target.closest("[data-unverify-manual]");
   if (unverifyManual) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Changing verification status");
+      return;
+    }
     const pid = unverifyManual.dataset.unverifyManual;
     if (state.verifications[pid]) {
       state.verifications[pid].status   = "auto-unverified";
@@ -621,6 +705,10 @@ function handleDocumentClick(event) {
 
   const addNote = event.target.closest("[data-add-note]");
   if (addNote) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Editing verification notes");
+      return;
+    }
     const editor = addNote.closest(".verify-wrapper")?.querySelector(`[data-note-editor="${addNote.dataset.addNote}"]`);
     if (editor) editor.classList.remove("hidden");
   }
@@ -633,6 +721,10 @@ function handleDocumentClick(event) {
 
   const saveNote = event.target.closest("[data-save-note]");
   if (saveNote) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Editing verification notes");
+      return;
+    }
     const pid   = saveNote.dataset.saveNote;
     const input = saveNote.closest(".verify-wrapper")?.querySelector(`[data-note-input="${pid}"]`);
     if (input && state.verifications[pid]) {
@@ -644,6 +736,10 @@ function handleDocumentClick(event) {
 
   const editNote = event.target.closest("[data-edit-note]");
   if (editNote && editNote.dataset.editNote) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Editing verification notes");
+      return;
+    }
     const pid    = editNote.dataset.editNote;
     const wrapper = editNote.closest(".verify-wrapper");
     const editor = wrapper?.querySelector(`[data-note-editor="${pid}"]`);
@@ -656,6 +752,10 @@ function handleDocumentClick(event) {
 
   const deleteNote = event.target.closest("[data-delete-note]");
   if (deleteNote) {
+    if (isViewerMode()) {
+      showViewerReadOnlyToast("Editing verification notes");
+      return;
+    }
     const pid = deleteNote.dataset.deleteNote;
     if (state.verifications[pid]) {
       state.verifications[pid].note = "";
@@ -684,6 +784,7 @@ async function handleDocumentChange(event) {
 // ─── Render (orchestrates all modules) ───────────────────────────────────────
 function renderAll() {
   renderProfileSettings();
+  updateViewerModeUI();
   renderCurrentPage({ refreshDashboardSummary: true });
 }
 

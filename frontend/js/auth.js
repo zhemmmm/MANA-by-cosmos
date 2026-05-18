@@ -238,6 +238,10 @@ async function checkRememberedSession() {
 
 // ─── Profile & Password UI ────────────────────────────────────────────────────
 async function saveProfile() {
+  if (isViewerMode()) {
+    showViewerReadOnlyToast("Updating the profile");
+    return;
+  }
   const username = document.getElementById("profileUsername").value.trim() || state.profile.username;
   try {
     const profile = await AuthService.updateProfile({ name: username });
@@ -251,6 +255,10 @@ async function saveProfile() {
 }
 
 async function savePassword() {
+  if (isViewerMode()) {
+    showViewerReadOnlyToast("Changing the password");
+    return;
+  }
   const current = document.getElementById("currentPassword").value.trim();
   const next    = document.getElementById("newPassword").value.trim();
   const confirm = document.getElementById("confirmPassword").value.trim();
@@ -270,6 +278,10 @@ async function savePassword() {
 }
 
 function toggleEmailPopover() {
+  if (isViewerMode()) {
+    showViewerReadOnlyToast("Changing the email address");
+    return;
+  }
   const popover = document.getElementById("emailPopover");
   popover.classList.toggle("hidden");
   if (!popover.classList.contains("hidden")) {
@@ -281,6 +293,10 @@ function toggleEmailPopover() {
 function closeEmailPopover() { document.getElementById("emailPopover").classList.add("hidden"); }
 
 async function verifyEmailChange() {
+  if (isViewerMode()) {
+    showViewerReadOnlyToast("Changing the email address");
+    return;
+  }
   const newEmail = document.getElementById("newEmailInput").value.trim();
   const code     = document.getElementById("emailCodeInput").value.trim();
   if (!newEmail) { showToast("New email required", "Enter the new email address first."); return; }
