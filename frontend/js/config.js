@@ -12,8 +12,11 @@
 const SUPABASE_URL = "https://gilmqjaygnkcrabyacnv.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KAreWH4IpJSaSPTMxwT3lQ_dTianTP-";
 
+//FOR DEPLOYMENT 
 const API_BASE = "https://mana-backend-4s1w.onrender.com/api";
-// const API_BASE = "http://localhost:5000/api";
+
+//FOR DEVELOPMENT (LOCAL)
+//const API_BASE = "http://localhost:5000/api";
 
 const USE_MOCK = false;
 

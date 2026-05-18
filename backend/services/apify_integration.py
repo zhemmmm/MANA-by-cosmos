@@ -4,11 +4,15 @@ import os
 from typing import Any
 
 APIFY_FB_ACTOR_TASK_ID_ENV = "APIFY_FB_ACTOR_TASK_ID"
+APIFY_FB_GROUP_ACTOR_TASK_ID_ENV = "APIFY_FB_GROUP_ACTOR_TASK_ID"
+APIFY_X_ACTOR_TASK_ID_ENV = "APIFY_X_ACTOR_TASK_ID"
 APIFY_TOKEN_ENV = "APIFY_TOKEN"
 APIFY_WEBHOOK_SECRET_ENV = "APIFY_WEBHOOK_SECRET"
 
 KIND_FACEBOOK = "facebook"
-VALID_KINDS = {KIND_FACEBOOK}
+KIND_FACEBOOK_GROUP = "facebook_group"
+KIND_X = "x"
+VALID_KINDS = {KIND_FACEBOOK, KIND_FACEBOOK_GROUP, KIND_X}
 
 
 def require_env(name: str) -> str:
@@ -39,6 +43,13 @@ def get_run(run_id: str) -> dict[str, Any]:
 def get_task_id(kind: str) -> str:
     if kind == KIND_FACEBOOK:
         return require_env(APIFY_FB_ACTOR_TASK_ID_ENV)
+    if kind == KIND_FACEBOOK_GROUP:
+        value = (os.environ.get(APIFY_FB_GROUP_ACTOR_TASK_ID_ENV) or "").strip()
+        if value:
+            return value
+        return require_env(APIFY_FB_ACTOR_TASK_ID_ENV)
+    if kind == KIND_X:
+        return require_env(APIFY_X_ACTOR_TASK_ID_ENV)
     raise RuntimeError(f"Unsupported Apify import kind: {kind}")
 
 
@@ -59,14 +70,18 @@ def list_dataset_items(dataset_id: str) -> list[dict[str, Any]]:
 def import_dataset_items(kind: str, dataset_id: str):
     items = list_dataset_items(dataset_id)
 
-    if kind != KIND_FACEBOOK:
+    if kind not in VALID_KINDS:
         raise RuntimeError(f"Unsupported Apify import kind: {kind}")
 
     posts = [item for item in items if item.get("_recordType") == "post"]
     comments = [item for item in items if item.get("_recordType") == "comment"]
 
-    from import_facebook_dataset import import_items as import_post_items
-    from import_facebook_comments_dataset import import_items as import_comment_items
+    if kind in {KIND_FACEBOOK, KIND_FACEBOOK_GROUP}:
+        from import_facebook_dataset import import_items as import_post_items
+        from import_facebook_comments_dataset import import_items as import_comment_items
+    else:
+        from import_x_dataset import import_items as import_post_items
+        from import_x_comments_dataset import import_items as import_comment_items
 
     post_summary = import_post_items(posts) if posts else {"total_records_loaded": 0}
     comment_summary = import_comment_items(comments) if comments else {"total_records_loaded": 0}

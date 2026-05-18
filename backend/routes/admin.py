@@ -16,6 +16,8 @@ from data import now_utc, parse_date_range, priority_label, recommendation_paylo
 from models import ActivityLog, Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, SystemSetting, User, db
 from services.apify_integration import (
     KIND_FACEBOOK,
+    KIND_FACEBOOK_GROUP,
+    KIND_X,
     VALID_KINDS,
     extract_kind,
     get_task_id,
@@ -473,20 +475,19 @@ def update_settings(section):
 @admin_bp.route("/apify/config", methods=["GET"])
 @admin_required
 def get_apify_config():
-    try:
-        configured = {
-            KIND_FACEBOOK: {
-                "taskId": get_task_id(KIND_FACEBOOK),
+    configured = {}
+    for kind in (KIND_FACEBOOK, KIND_FACEBOOK_GROUP, KIND_X):
+        try:
+            task_id = get_task_id(kind)
+            configured[kind] = {
+                "taskId": task_id,
                 "configured": True,
             }
-        }
-    except RuntimeError:
-        configured = {
-            KIND_FACEBOOK: {
+        except RuntimeError:
+            configured[kind] = {
                 "taskId": None,
                 "configured": False,
             }
-        }
 
     return jsonify({"webhookUrl": public_webhook_url(), "tasks": configured})
 

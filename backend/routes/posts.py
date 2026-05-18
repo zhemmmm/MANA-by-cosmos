@@ -14,6 +14,7 @@ from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, now_utc, parse_date_rang
 from facebook_matching import build_post_match_index, find_post_match
 from models import Comment, Post, PostTopic, Watchlist, db
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
+from x_matching import build_post_match_index as build_x_post_match_index, find_post_match as find_x_post_match
 
 posts_bp = Blueprint("posts", __name__)
 
@@ -110,11 +111,26 @@ def get_posts():
             .order_by(Comment.date.desc())
             .all()
         )
-        post_lookup = build_post_match_index(posts)
+        orphan_x_comments = (
+            Comment.query
+            .filter(Comment.post_id.is_(None), Comment.source == "X")
+            .order_by(Comment.date.desc())
+            .all()
+        )
+        fb_posts = [post for post in posts if post.source == "Facebook"]
+        x_posts = [post for post in posts if post.source == "X"]
+        fb_post_lookup = build_post_match_index(fb_posts)
+        x_post_lookup = build_x_post_match_index(x_posts)
         comments = list(linked_comments)
 
         for comment in orphan_facebook_comments:
-            matched_post = find_post_match(post_lookup, url=comment.post_url)
+            matched_post = find_post_match(fb_post_lookup, url=comment.post_url)
+            if matched_post:
+                comment.post = matched_post
+                comments.append(comment)
+
+        for comment in orphan_x_comments:
+            matched_post = find_x_post_match(x_post_lookup, url=comment.post_url)
             if matched_post:
                 comment.post = matched_post
                 comments.append(comment)

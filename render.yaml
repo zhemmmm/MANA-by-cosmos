@@ -18,6 +18,10 @@ services:
         sync: false
       - key: APIFY_FB_ACTOR_TASK_ID
         sync: false
+      - key: APIFY_FB_GROUP_ACTOR_TASK_ID
+        sync: false
+      - key: APIFY_X_ACTOR_TASK_ID
+        sync: false
       - key: APIFY_WEBHOOK_SECRET
         sync: false
 
