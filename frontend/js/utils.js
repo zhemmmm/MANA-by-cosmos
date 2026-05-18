@@ -190,14 +190,24 @@ function showToast(title, message) {
 }
 
 // ─── Clock ────────────────────────────────────────────────────────────────────
+function formatManilaDate(now = new Date()) {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Manila",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }).format(now);
+  } catch (_) {
+    const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+    const manilaDate = new Date(utcMs + 8 * 60 * 60 * 1000);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${manilaDate.getDate()} ${months[manilaDate.getMonth()]} ${manilaDate.getFullYear()}`;
+  }
+}
+
 function updateClock() {
   const el = document.getElementById("topbarClock");
   if (!el) return;
-  const formattedDate = new Intl.DateTimeFormat("en-PH", {
-    timeZone: "Asia/Manila",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date());
-  el.textContent = `Updated ${formattedDate}`;
+  el.textContent = `Updated ${formatManilaDate(new Date())}`;
 }

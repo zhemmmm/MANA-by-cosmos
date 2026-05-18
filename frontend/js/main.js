@@ -69,6 +69,7 @@ let criticalDataPromise = null;
 let deferredDataPromise = null;
 let liveUpdatesChannel = null;
 let liveRefreshTimer = null;
+let clockRefreshTimer = null;
 
 function isViewerMode() {
   return state.profile?.role === "Viewer";
@@ -155,6 +156,9 @@ async function init() {
     generateCaptcha();
     bindStaticControls();
     updateClock();
+    if (!clockRefreshTimer) {
+      clockRefreshTimer = setInterval(updateClock, 60000);
+    }
     await checkRememberedSession();
   })();
 
