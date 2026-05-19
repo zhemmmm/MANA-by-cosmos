@@ -67,6 +67,48 @@ def list_dataset_items(dataset_id: str) -> list[dict[str, Any]]:
     return list(items or [])
 
 
+def infer_kind_from_items(items: list[dict[str, Any]]) -> str | None:
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+
+        x_markers = (
+            item.get("twitterUrl"),
+            item.get("authorUsername"),
+            item.get("reposts"),
+            item.get("replyUrl"),
+            item.get("conversationId"),
+        )
+        if any(x_markers):
+            return KIND_X
+
+        facebook_url = str(
+            item.get("facebookUrl")
+            or item.get("inputUrl")
+            or item.get("url")
+            or item.get("topLevelUrl")
+            or ""
+        )
+        facebook_markers = (
+            item.get("pageName"),
+            item.get("topReactionsCount"),
+            item.get("reactionLikeCount"),
+            item.get("groupName"),
+            "/facebook.com/" in facebook_url,
+            "facebook.com" in facebook_url,
+        )
+        if any(facebook_markers):
+            if "/groups/" in facebook_url or item.get("groupName"):
+                return KIND_FACEBOOK_GROUP
+            return KIND_FACEBOOK
+
+    return None
+
+
+def infer_kind_from_dataset(dataset_id: str) -> str | None:
+    return infer_kind_from_items(list_dataset_items(dataset_id))
+
+
 def import_dataset_items(kind: str, dataset_id: str):
     items = list_dataset_items(dataset_id)
 

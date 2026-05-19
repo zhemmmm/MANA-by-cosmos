@@ -21,6 +21,7 @@ from services.apify_integration import (
     VALID_KINDS,
     extract_kind,
     get_task_id,
+    infer_kind_from_dataset,
     import_dataset_items,
     resolve_dataset_id,
     start_task,
@@ -580,11 +581,18 @@ def repair_apify_post_metrics():
 @admin_bp.route("/apify/webhook", methods=["POST"])
 def apify_webhook():
     payload = get_json()
-    if not validate_webhook_secret(payload.get("secret")):
+    webhook_secret = (
+        payload.get("secret")
+        or request.args.get("secret")
+        or request.headers.get("X-Webhook-Secret")
+    )
+    if not validate_webhook_secret(webhook_secret):
         return jsonify({"message": "Invalid webhook secret."}), 403
 
-    kind = extract_kind(payload)
     dataset_id = resolve_dataset_id(payload)
+    kind = extract_kind(payload)
+    if dataset_id and kind not in VALID_KINDS:
+        kind = infer_kind_from_dataset(dataset_id)
     if kind not in VALID_KINDS or not dataset_id:
         return jsonify({"message": "Webhook payload missing kind or dataset id."}), 400
 
