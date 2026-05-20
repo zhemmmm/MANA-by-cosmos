@@ -262,7 +262,7 @@ function renderPriorityPosts(priority) {
   const posts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch)
     .filter(p => filter === "All" || p.priority === filter)
     .sort((a, b) => b.severityRank - a.severityRank || getEngagement(b) - getEngagement(a))
-    .slice(0, 8);
+    .slice(0, 15);
   const feed = document.getElementById("priorityPostsFeed");
   if (feed) {
     feed.innerHTML = posts.length
