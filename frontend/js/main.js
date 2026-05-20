@@ -26,6 +26,7 @@ const state = {
 
   // Filter state
   dashboardRange:   "30d",
+  dashboardPostsSource: "All",
   dashboardPage:    1,
   dashboardPostsPerPage: 15,
   alerts:           { dateRange: "30d", source: "All" },
@@ -505,6 +506,12 @@ function bindStaticControls() {
     state.dashboardPage = 1;
     state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
     loadDashboardComments(state.dashboardRange);
+    renderDashboard();
+  });
+
+  document.getElementById("dashboardPostsSource").addEventListener("change", e => {
+    state.dashboardPostsSource = e.target.value;
+    state.dashboardPage = 1;
     renderDashboard();
   });
 
