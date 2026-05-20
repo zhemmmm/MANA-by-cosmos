@@ -36,7 +36,9 @@ function anonymizedCommentAuthor(comment = {}) {
     hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
   }
   const suffix = String(Math.abs(hash) % 9000 + 1000);
-  return `facebookuser@${suffix}`;
+  return comment.source === "X"
+    ? `XUsers@${suffix}`
+    : `facebookuser@${suffix}`;
 }
 
 // ─── Post Engagement ──────────────────────────────────────────────────────────
