@@ -26,7 +26,8 @@ const state = {
 
   // Filter state
   dashboardRange:   "30d",
-  dashboardRenderedCount: 0,
+  dashboardPage:    1,
+  dashboardPostsPerPage: 15,
   alerts:           { dateRange: "30d", source: "All" },
   clusterFilters:   { source: "All", severity: "Trending", dateRange: "30d" },
   analyticsRange:   "30d",
@@ -194,7 +195,7 @@ async function loadCriticalAppData() {
       const savedHistory = localStorage.getItem("mana-status-history");
       if (savedHistory) state.statusHistory = { ...state.statusHistory, ...JSON.parse(savedHistory) };
 
-      state.dashboardRenderedCount = 0;
+      state.dashboardPage = 1;
       state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
       initVerifications(state.posts);
       state.loaded.criticalData = true;
@@ -501,7 +502,7 @@ function bindStaticControls() {
 
   document.getElementById("dashboardRange").addEventListener("change", async e => {
     state.dashboardRange  = e.target.value;
-    state.dashboardRenderedCount = 0;
+    state.dashboardPage = 1;
     state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
     loadDashboardComments(state.dashboardRange);
     renderDashboard();
@@ -527,18 +528,13 @@ function bindStaticControls() {
   const globalSearch = document.getElementById("globalSearch");
   const applyGlobalSearch = value => {
     state.globalSearch = value;
-    state.dashboardRenderedCount = 0;
+    state.dashboardPage = 1;
     renderCurrentPage({ refreshDashboardSummary: true });
   };
 
   globalSearch.addEventListener("input", e => applyGlobalSearch(e.target.value));
   globalSearch.addEventListener("search", e => applyGlobalSearch(e.target.value));
   document.querySelector(".search-btn")?.addEventListener("click", () => applyGlobalSearch(globalSearch.value));
-  window.addEventListener("resize", () => {
-    if (state.currentPage === "dashboard") {
-      queueDashboardAutoFill?.(filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch).length);
-    }
-  });
 
   document.getElementById("themeCheckbox").addEventListener("change", e => applyTheme(e.target.checked ? "dark" : "light"));
 
@@ -629,6 +625,15 @@ function handleDocumentClick(event) {
       commentToggle.setAttribute("aria-expanded", String(isOpen));
       const label = commentToggle.querySelector(".comment-toggle-label");
       if (label) label.textContent = isOpen ? "Hide Comments" : "View Comments";
+    }
+  }
+
+  const dashboardPageBtn = event.target.closest("[data-dashboard-page]");
+  if (dashboardPageBtn) {
+    const targetPage = Number(dashboardPageBtn.dataset.dashboardPage);
+    if (Number.isFinite(targetPage) && targetPage > 0 && targetPage !== state.dashboardPage) {
+      state.dashboardPage = targetPage;
+      renderDashboard();
     }
   }
 
