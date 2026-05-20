@@ -96,6 +96,7 @@ async function apiGetPosts(filters = {}) {
   if (filters.source && filters.source !== "All") params.set("source", filters.source);
   if (filters.clusterId) params.set("cluster_id", filters.clusterId);
   if (filters.priority) params.set("priority", filters.priority);
+  if (filters.includeIrrelevant) params.set("include_irrelevant", "true");
   const qs = params.toString();
   return apiFetch(`/posts${qs ? "?" + qs : ""}`);
 }
@@ -119,7 +120,7 @@ async function apiGetKeywords() { const d = await apiFetch("/dashboard/keywords"
 
 // ─── DataService shim ─────────────────────────────────────────────────────────
 const PostsService = {
-  async getPosts() { return USE_MOCK ? MOCK_POSTS : apiGetPosts(); },
+  async getPosts(filters = {}) { return USE_MOCK ? MOCK_POSTS : apiGetPosts(filters); },
   async getWatchlist() { return USE_MOCK ? { pinned: ["p1", "p3", "p9"] } : apiGetWatchlist(); },
   async getKeywords() { return USE_MOCK ? MOCK_KEYWORDS : apiGetKeywords(); },
 
