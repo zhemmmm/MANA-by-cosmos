@@ -634,6 +634,7 @@ function handleDocumentClick(event) {
     if (Number.isFinite(targetPage) && targetPage > 0 && targetPage !== state.dashboardPage) {
       state.dashboardPage = targetPage;
       renderDashboard();
+      document.getElementById("dashboardPosts")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
