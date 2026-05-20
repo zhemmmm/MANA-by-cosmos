@@ -143,6 +143,51 @@ function renderLoadingMessage(message) {
   return `<div class="watch-empty"><strong>${message}</strong></div>`;
 }
 
+function clampDashboardPage(totalPosts) {
+  const perPage = Math.max(1, state.dashboardPostsPerPage || 1);
+  const totalPages = Math.max(1, Math.ceil(totalPosts / perPage));
+  state.dashboardPage = Math.min(Math.max(1, state.dashboardPage || 1), totalPages);
+  return { perPage, totalPages, currentPage: state.dashboardPage };
+}
+
+function buildDashboardPagination(totalPosts) {
+  const { totalPages, currentPage } = clampDashboardPage(totalPosts);
+  if (totalPosts <= 0 || totalPages <= 1) return "";
+
+  const pages = [];
+  const maxVisible = 5;
+  let start = Math.max(1, currentPage - 2);
+  let end = Math.min(totalPages, start + maxVisible - 1);
+  start = Math.max(1, end - maxVisible + 1);
+
+  for (let page = start; page <= end; page += 1) {
+    pages.push(`
+      <button
+        class="dashboard-page-btn ${page === currentPage ? "active" : ""}"
+        type="button"
+        data-dashboard-page="${page}"
+        ${page === currentPage ? "aria-current=\"page\"" : ""}
+      >${page}</button>
+    `);
+  }
+
+  return `
+    <button
+      class="dashboard-nav-btn"
+      type="button"
+      data-dashboard-page="${currentPage - 1}"
+      ${currentPage === 1 ? "disabled" : ""}
+    >Prev</button>
+    <div class="dashboard-page-list">${pages.join("")}</div>
+    <button
+      class="dashboard-nav-btn dashboard-nav-btn-next"
+      type="button"
+      data-dashboard-page="${currentPage + 1}"
+      ${currentPage === totalPages ? "disabled" : ""}
+    >Next</button>
+  `;
+}
+
 function renderResolvedPostsPanel(postList, emptyMessage, scope = "dashboard") {
   if (!postList.length) {
     return `<div class="watch-empty"><strong>${emptyMessage}</strong></div>`;
@@ -156,11 +201,21 @@ function getDashboardViewModel() {
   const sortedTrendingPosts = [...filteredPosts]
     .sort((a, b) => (b.severityRank * 1000 + getEngagement(b)) - (a.severityRank * 1000 + getEngagement(a)));
   const sourceDirectory = [...new Map(filteredPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
+  const { perPage, totalPages, currentPage } = clampDashboardPage(sortedTrendingPosts.length);
+  const startIndex = (currentPage - 1) * perPage;
+  const paginatedPosts = sortedTrendingPosts.slice(startIndex, startIndex + perPage);
 
   return {
     filteredPosts,
     sortedTrendingPosts,
+    paginatedPosts,
     sourceDirectory,
+    pagination: {
+      totalPages,
+      currentPage,
+      totalPosts: sortedTrendingPosts.length,
+      startIndex,
+    },
   };
 }
 
@@ -206,7 +261,7 @@ function renderPriorityPosts(priority) {
 
 // ─── Render: Dashboard ────────────────────────────────────────────────────────
 function renderDashboard() {
-  const { filteredPosts, sortedTrendingPosts, sourceDirectory } = getDashboardViewModel();
+  const { filteredPosts, paginatedPosts, sourceDirectory, pagination } = getDashboardViewModel();
   const summaryCards = Array.isArray(state.dashboardSummary) && state.dashboardSummary.length
     ? state.dashboardSummary
     : buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
@@ -231,8 +286,9 @@ function renderDashboard() {
     : `<div class="watch-empty"><strong>No keywords match the current search.</strong></div>`);
 
   document.getElementById("dashboardPosts").innerHTML = state.loading.criticalData && !filteredPosts.length
-    ? renderLoadingMessage("Loading trending posts...")
-    : renderPostCards(sortedTrendingPosts.slice(0, 4));
+    ? renderLoadingMessage("Loading dashboard posts...")
+    : renderPostCards(paginatedPosts);
+  document.getElementById("dashboardPagination").innerHTML = buildDashboardPagination(pagination.totalPosts);
 
   renderSourceDirectorySection(sourceDirectory);
 
