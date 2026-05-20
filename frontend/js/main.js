@@ -27,7 +27,7 @@ const state = {
   // Filter state
   dashboardRange:   "30d",
   dashboardPage:    1,
-  dashboardPostsPerPage: 6,
+  dashboardPostsPerPage: 8,
   alerts:           { dateRange: "30d", source: "All" },
   clusterFilters:   { source: "All", severity: "Trending", dateRange: "30d" },
   analyticsRange:   "30d",
