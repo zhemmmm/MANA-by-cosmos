@@ -1128,6 +1128,20 @@ body.light-theme .status-strip small {
   min-width: 0;
 }
 
+.dashboard-posts-surface {
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-posts-surface .feed-list {
+  flex: 1;
+  align-content: start;
+}
+
+.dashboard-posts-surface .dashboard-pagination {
+  margin-top: auto;
+}
+
 /* ── Post action buttons ─────────────────────────────────────────────────── */
 .post-actions {
   display: flex;
