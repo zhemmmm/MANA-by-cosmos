@@ -1121,7 +1121,7 @@ body.light-theme .status-strip small {
 /* ── Equal-column grid ───────────────────────────────────────────────────── */
 .dashboard-grid-equal {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: stretch;
+  align-items: start;
 }
 
 .dashboard-grid-equal > .surface {
