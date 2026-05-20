@@ -214,6 +214,18 @@ function renderResolvedPostsPanel(postList, emptyMessage, scope = "dashboard") {
   return renderPostCards(postList, { archiveMode: true });
 }
 
+function renderIrrelevantPostsPanel(postList) {
+  if (state.loading.dashboardIrrelevantPosts && !postList.length) {
+    return renderLoadingMessage("Loading irrelevant posts...");
+  }
+
+  if (!postList.length) {
+    return `<div class="watch-empty"><strong>No irrelevant posts match the current filters.</strong>Irrelevant posts fetched from the backend will appear here for review.</div>`;
+  }
+
+  return renderPostCards(postList, { archiveMode: true });
+}
+
 function getDashboardViewModel() {
   const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch);
   const dashboardSource = state.dashboardPostsSource || "All";
@@ -307,6 +319,15 @@ function renderDashboard() {
   document.getElementById("dashboardPagination").innerHTML = buildDashboardPagination(sortedTrendingPosts.length);
 
   renderSourceDirectorySection(sourceDirectory);
+
+  const irrelevantPosts = filterPosts(
+    state.dashboardIrrelevantPosts || [],
+    state.dashboardRange,
+    "All",
+    state.globalSearch,
+    { includeResolved: true }
+  ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  document.getElementById("dashboardIrrelevantPosts").innerHTML = renderIrrelevantPostsPanel(irrelevantPosts);
 
   const commentCards = Array.isArray(state.dashboardComments) && state.dashboardComments.length
     ? state.dashboardComments

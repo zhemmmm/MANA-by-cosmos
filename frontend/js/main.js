@@ -14,6 +14,7 @@ const state = {
   keywords:         [],
   dashboardSummary: [],
   dashboardComments: [],
+  dashboardIrrelevantPosts: [],
   analytics:        {},
   dashboardCommentsRange: null,
   analyticsLoadedRange:   null,
@@ -45,6 +46,7 @@ const state = {
     criticalData: false,
     keywords: false,
     dashboardComments: false,
+    dashboardIrrelevantPosts: false,
     analytics: false,
     watchlist: false,
   },
@@ -52,6 +54,7 @@ const state = {
     criticalData: false,
     keywords: false,
     dashboardComments: false,
+    dashboardIrrelevantPosts: false,
     analytics: false,
     watchlist: false,
   },
@@ -128,11 +131,13 @@ function resetDeferredState() {
   state.loaded.criticalData = false;
   state.loaded.keywords = false;
   state.loaded.dashboardComments = false;
+  state.loaded.dashboardIrrelevantPosts = false;
   state.loaded.analytics = false;
   state.loaded.watchlist = false;
   state.loading.criticalData = false;
   state.loading.keywords = false;
   state.loading.dashboardComments = false;
+  state.loading.dashboardIrrelevantPosts = false;
   state.loading.analytics = false;
   state.loading.watchlist = false;
   state.dashboardCommentsRange = null;
@@ -142,6 +147,7 @@ function resetDeferredState() {
   state.keywords = [];
   state.dashboardSummary = [];
   state.dashboardComments = [];
+  state.dashboardIrrelevantPosts = [];
   state.analytics = {};
   state.statuses = {};
   state.statusHistory = {};
@@ -222,6 +228,7 @@ async function loadDeferredAppData() {
     await Promise.allSettled([
       loadKeywords(),
       loadDashboardComments(state.dashboardRange),
+      loadDashboardIrrelevantPosts(),
       loadWatchlist(),
       loadAnalytics(state.analyticsRange),
     ]);
@@ -257,6 +264,22 @@ async function loadDashboardComments(range = state.dashboardRange) {
     if (state.currentPage === "dashboard") renderDashboard();
   } finally {
     state.loading.dashboardComments = false;
+  }
+}
+
+async function loadDashboardIrrelevantPosts() {
+  if (state.loaded.dashboardIrrelevantPosts || state.loading.dashboardIrrelevantPosts) {
+    return state.dashboardIrrelevantPosts;
+  }
+
+  state.loading.dashboardIrrelevantPosts = true;
+  try {
+    const posts = await PostsService.getPosts({ includeIrrelevant: true }).catch(() => []);
+    state.dashboardIrrelevantPosts = (posts || []).filter(post => post.isRelevant === false);
+    state.loaded.dashboardIrrelevantPosts = true;
+    if (state.currentPage === "dashboard") renderDashboard();
+  } finally {
+    state.loading.dashboardIrrelevantPosts = false;
   }
 }
 

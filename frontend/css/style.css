@@ -1135,6 +1135,9 @@ body.light-theme .status-strip small {
 
 .dashboard-posts-surface .feed-list {
   flex: 1;
+  align-content: start;
+  align-items: start;
+  grid-auto-rows: max-content;
 }
 
 .dashboard-posts-surface .dashboard-feed-footer {
