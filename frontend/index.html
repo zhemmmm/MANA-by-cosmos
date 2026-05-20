@@ -259,11 +259,14 @@
               <div class="surface-header">
                 <div>
                   <div class="surface-title">Dashboard posts</div>
-                  <div class="surface-subtitle">All matching posts with page navigation</div>
+                  <div class="surface-subtitle">Posts automatically fill available screen space</div>
                 </div>
               </div>
               <div class="feed-list" id="dashboardPosts"></div>
-              <div class="dashboard-pagination" id="dashboardPagination"></div>
+              <div class="dashboard-feed-footer" id="dashboardFeedMeta">
+                <span id="dashboardFeedCount"></span>
+                <div class="dashboard-posts-sentinel" id="dashboardPostsSentinel" aria-hidden="true"></div>
+              </div>
             </div>
             <div class="surface tone-slate">
               <div class="surface-header priority-posts-header">

@@ -1134,18 +1134,11 @@ body.light-theme .status-strip small {
 }
 
 .dashboard-posts-surface .feed-list {
-  display: flex;
-  flex-direction: column;
   flex: 1;
-  justify-content: stretch;
 }
 
-.dashboard-posts-surface .dashboard-pagination {
+.dashboard-posts-surface .dashboard-feed-footer {
   margin-top: auto;
-}
-
-.dashboard-posts-surface .feed-list .post-card {
-  flex: 1 1 0;
 }
 
 /* ── Post action buttons ─────────────────────────────────────────────────── */
@@ -1506,55 +1499,21 @@ body.light-theme .rec-popup-text  { color: #134e4a; }
   padding: 12px 14px 14px;
 }
 
-.dashboard-pagination {
+.dashboard-feed-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
   padding: 0 14px 14px;
   flex-wrap: wrap;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
-.dashboard-page-list {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.dashboard-nav-btn,
-.dashboard-page-btn {
-  min-width: 52px;
-  min-height: 44px;
-  padding: 0 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
-  font-weight: 800;
-  transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
-}
-
-.dashboard-nav-btn:hover,
-.dashboard-page-btn:hover {
-  transform: translateY(-1px);
-  border-color: var(--border-strong);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.dashboard-page-btn.active,
-.dashboard-nav-btn.dashboard-nav-btn-next {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
-  border-color: rgba(245, 158, 11, 0.58);
-  color: #101827;
-}
-
-.dashboard-nav-btn:disabled,
-.dashboard-page-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  pointer-events: none;
-  transform: none;
+.dashboard-posts-sentinel {
+  width: 1px;
+  height: 1px;
 }
 
 .resolved-panel {
@@ -2145,17 +2104,8 @@ body.light-theme .comments-box,
 body.light-theme .verify-popup,
 body.light-theme .post-metric-box { background: #f1f5fb; border-color: #e5e7eb; }
 body.light-theme .comment-entry   { background: #ffffff; border-color: #e5e7eb; }
-body.light-theme .dashboard-nav-btn,
-body.light-theme .dashboard-page-btn {
-  background: #ffffff;
-  border-color: #dbe3ee;
-  color: #0f172a;
-}
-body.light-theme .dashboard-page-btn.active,
-body.light-theme .dashboard-nav-btn.dashboard-nav-btn-next {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
-  border-color: #f59e0b;
-  color: #101827;
+body.light-theme .dashboard-feed-footer {
+  color: #64748b;
 }
 
 body.light-theme .comment-entry strong {

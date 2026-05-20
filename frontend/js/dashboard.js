@@ -66,6 +66,11 @@ const DashboardService = {
   async updateEmailAlerts(en)   { if (!USE_MOCK) return apiUpdateEmailAlerts(en); },
 };
 
+const DASHBOARD_INITIAL_POSTS = 4;
+const DASHBOARD_LOAD_BATCH = 4;
+let dashboardAutoFillRaf = null;
+let dashboardInfiniteObserver = null;
+
 function dashboardMetaLabel(range) {
   return {
     "24h": "Last 24 hours",
@@ -143,49 +148,107 @@ function renderLoadingMessage(message) {
   return `<div class="watch-empty"><strong>${message}</strong></div>`;
 }
 
-function clampDashboardPage(totalPosts) {
-  const perPage = Math.max(1, state.dashboardPostsPerPage || 1);
-  const totalPages = Math.max(1, Math.ceil(totalPosts / perPage));
-  state.dashboardPage = Math.min(Math.max(1, state.dashboardPage || 1), totalPages);
-  return { perPage, totalPages, currentPage: state.dashboardPage };
+function getDashboardRenderedCount(totalPosts) {
+  if (totalPosts <= 0) return 0;
+  if (!state.dashboardRenderedCount) {
+    state.dashboardRenderedCount = Math.min(totalPosts, DASHBOARD_INITIAL_POSTS);
+  }
+  state.dashboardRenderedCount = Math.min(state.dashboardRenderedCount, totalPosts);
+  return state.dashboardRenderedCount;
 }
 
-function buildDashboardPagination(totalPosts) {
-  const { totalPages, currentPage } = clampDashboardPage(totalPosts);
-  if (totalPosts <= 0 || totalPages <= 1) return "";
+function updateDashboardFeedMeta(visibleCount, totalCount) {
+  const label = document.getElementById("dashboardFeedCount");
+  if (!label) return;
+  if (!totalCount) {
+    label.textContent = "No matching posts";
+    return;
+  }
+  label.textContent = visibleCount >= totalCount
+    ? `Showing all ${formatNumber(totalCount)} matching posts`
+    : `Showing ${formatNumber(visibleCount)} of ${formatNumber(totalCount)} matching posts`;
+}
 
-  const pages = [];
-  const maxVisible = 5;
-  let start = Math.max(1, currentPage - 2);
-  let end = Math.min(totalPages, start + maxVisible - 1);
-  start = Math.max(1, end - maxVisible + 1);
+function clearDashboardInfiniteObserver() {
+  if (dashboardInfiniteObserver) {
+    dashboardInfiniteObserver.disconnect();
+    dashboardInfiniteObserver = null;
+  }
+}
 
-  for (let page = start; page <= end; page += 1) {
-    pages.push(`
-      <button
-        class="dashboard-page-btn ${page === currentPage ? "active" : ""}"
-        type="button"
-        data-dashboard-page="${page}"
-        ${page === currentPage ? "aria-current=\"page\"" : ""}
-      >${page}</button>
-    `);
+function setupDashboardInfiniteObserver(totalPosts) {
+  clearDashboardInfiniteObserver();
+
+  const sentinel = document.getElementById("dashboardPostsSentinel");
+  if (!sentinel || state.dashboardRenderedCount >= totalPosts || typeof IntersectionObserver === "undefined") {
+    return;
   }
 
-  return `
-    <button
-      class="dashboard-nav-btn"
-      type="button"
-      data-dashboard-page="${currentPage - 1}"
-      ${currentPage === 1 ? "disabled" : ""}
-    >Prev</button>
-    <div class="dashboard-page-list">${pages.join("")}</div>
-    <button
-      class="dashboard-nav-btn dashboard-nav-btn-next"
-      type="button"
-      data-dashboard-page="${currentPage + 1}"
-      ${currentPage === totalPages ? "disabled" : ""}
-    >Next</button>
-  `;
+  dashboardInfiniteObserver = new IntersectionObserver(entries => {
+    const entry = entries[0];
+    if (!entry?.isIntersecting) return;
+    const nextCount = Math.min(totalPosts, state.dashboardRenderedCount + DASHBOARD_LOAD_BATCH);
+    if (nextCount !== state.dashboardRenderedCount) {
+      state.dashboardRenderedCount = nextCount;
+      renderDashboard();
+    }
+  }, {
+    root: null,
+    rootMargin: "0px 0px 200px 0px",
+    threshold: 0.1,
+  });
+
+  dashboardInfiniteObserver.observe(sentinel);
+}
+
+function queueDashboardAutoFill(totalPosts) {
+  if (typeof window === "undefined") return;
+  if (dashboardAutoFillRaf) {
+    window.cancelAnimationFrame(dashboardAutoFillRaf);
+  }
+
+  dashboardAutoFillRaf = window.requestAnimationFrame(() => {
+    dashboardAutoFillRaf = null;
+    autoFillDashboardPosts(totalPosts);
+  });
+}
+
+function averageDashboardCardHeight(feed) {
+  const cards = [...feed.querySelectorAll(".post-card")];
+  if (!cards.length) return 260;
+  const total = cards.reduce((sum, card) => sum + card.getBoundingClientRect().height, 0);
+  const gap = cards.length > 1 ? 10 : 0;
+  return (total / cards.length) + gap;
+}
+
+function autoFillDashboardPosts(totalPosts) {
+  const surface = document.querySelector(".dashboard-posts-surface");
+  const feed = document.getElementById("dashboardPosts");
+  const footer = document.getElementById("dashboardFeedMeta");
+  const header = surface?.querySelector(".surface-header");
+
+  if (!surface || !feed || !footer || !header || !totalPosts) {
+    setupDashboardInfiniteObserver(totalPosts);
+    return;
+  }
+
+  const availableHeight = surface.clientHeight - header.offsetHeight - footer.offsetHeight - 20;
+  const currentHeight = feed.scrollHeight;
+  const gap = availableHeight - currentHeight;
+
+  if (gap > 80 && state.dashboardRenderedCount < totalPosts) {
+    const avgCardHeight = Math.max(averageDashboardCardHeight(feed), 1);
+    const extraNeeded = Math.max(1, Math.ceil(gap / avgCardHeight));
+    const nextCount = Math.min(totalPosts, state.dashboardRenderedCount + extraNeeded);
+
+    if (nextCount !== state.dashboardRenderedCount) {
+      state.dashboardRenderedCount = nextCount;
+      renderDashboard();
+      return;
+    }
+  }
+
+  setupDashboardInfiniteObserver(totalPosts);
 }
 
 function renderResolvedPostsPanel(postList, emptyMessage, scope = "dashboard") {
@@ -201,21 +264,15 @@ function getDashboardViewModel() {
   const sortedTrendingPosts = [...filteredPosts]
     .sort((a, b) => (b.severityRank * 1000 + getEngagement(b)) - (a.severityRank * 1000 + getEngagement(a)));
   const sourceDirectory = [...new Map(filteredPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
-  const { perPage, totalPages, currentPage } = clampDashboardPage(sortedTrendingPosts.length);
-  const startIndex = (currentPage - 1) * perPage;
-  const paginatedPosts = sortedTrendingPosts.slice(startIndex, startIndex + perPage);
+  const renderedCount = getDashboardRenderedCount(sortedTrendingPosts.length);
+  const visiblePosts = sortedTrendingPosts.slice(0, renderedCount);
 
   return {
     filteredPosts,
     sortedTrendingPosts,
-    paginatedPosts,
+    visiblePosts,
     sourceDirectory,
-    pagination: {
-      totalPages,
-      currentPage,
-      totalPosts: sortedTrendingPosts.length,
-      startIndex,
-    },
+    renderedCount,
   };
 }
 
@@ -261,7 +318,7 @@ function renderPriorityPosts(priority) {
 
 // ─── Render: Dashboard ────────────────────────────────────────────────────────
 function renderDashboard() {
-  const { filteredPosts, paginatedPosts, sourceDirectory, pagination } = getDashboardViewModel();
+  const { filteredPosts, visiblePosts, sourceDirectory, renderedCount, sortedTrendingPosts } = getDashboardViewModel();
   const summaryCards = Array.isArray(state.dashboardSummary) && state.dashboardSummary.length
     ? state.dashboardSummary
     : buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
@@ -287,8 +344,9 @@ function renderDashboard() {
 
   document.getElementById("dashboardPosts").innerHTML = state.loading.criticalData && !filteredPosts.length
     ? renderLoadingMessage("Loading dashboard posts...")
-    : renderPostCards(paginatedPosts);
-  document.getElementById("dashboardPagination").innerHTML = buildDashboardPagination(pagination.totalPosts);
+    : renderPostCards(visiblePosts);
+  updateDashboardFeedMeta(renderedCount, sortedTrendingPosts.length);
+  queueDashboardAutoFill(sortedTrendingPosts.length);
 
   renderSourceDirectorySection(sourceDirectory);
 
