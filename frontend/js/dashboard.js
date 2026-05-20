@@ -226,6 +226,16 @@ function renderIrrelevantPostsPanel(postList) {
   return renderPostCards(postList, { archiveMode: true });
 }
 
+function getIrrelevantPostsViewModel() {
+  return filterPosts(
+    state.dashboardIrrelevantPosts || [],
+    state.dashboardRange,
+    "All",
+    state.globalSearch,
+    { includeResolved: true }
+  ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
+
 function getDashboardViewModel() {
   const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch);
   const dashboardSource = state.dashboardPostsSource || "All";
@@ -320,15 +330,6 @@ function renderDashboard() {
 
   renderSourceDirectorySection(sourceDirectory);
 
-  const irrelevantPosts = filterPosts(
-    state.dashboardIrrelevantPosts || [],
-    state.dashboardRange,
-    "All",
-    state.globalSearch,
-    { includeResolved: true }
-  ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  document.getElementById("dashboardIrrelevantPosts").innerHTML = renderIrrelevantPostsPanel(irrelevantPosts);
-
   const commentCards = Array.isArray(state.dashboardComments) && state.dashboardComments.length
     ? state.dashboardComments
     : buildMockDashboardComments(state.posts, state.dashboardRange);
@@ -357,6 +358,11 @@ function renderResolvedArchivePage() {
     "No resolved posts yet. Resolved items will appear here after they are marked resolved.",
     "resolved"
   );
+}
+
+function renderIrrelevantArchivePage() {
+  const irrelevantPosts = getIrrelevantPostsViewModel();
+  document.getElementById("irrelevantPostsPanel").innerHTML = renderIrrelevantPostsPanel(irrelevantPosts);
 }
 
 // ─── Render: Source Directory ─────────────────────────────────────────────────

@@ -62,6 +62,7 @@ const state = {
 
 const pageTitles = {
   dashboard:       { eyebrow:"Dashboard",        title:"MANA command overview" },
+  irrelevant:      { eyebrow:"Irrelevant Posts", title:"Irrelevant post review queue" },
   resolved:        { eyebrow:"Resolved Posts",   title:"Resolved archive and restore queue" },
   analytics:       { eyebrow:"Analytics",        title:"Trend and sentiment analysis" },
   alerts:          { eyebrow:"Live Alerts",      title:"Priority cluster and severity watch" },
@@ -844,6 +845,10 @@ function renderCurrentPage({ refreshDashboardSummary = false } = {}) {
 
   if (state.currentPage === "dashboard") {
     renderDashboard();
+    return;
+  }
+  if (state.currentPage === "irrelevant") {
+    renderIrrelevantArchivePage();
     return;
   }
   if (state.currentPage === "analytics") {
