@@ -268,7 +268,6 @@ function renderPostCards(postList, options = {}) {
           <div class="comment-action-group">
             <button class="post-action-btn" type="button" data-toggle-comments="${post.id}" aria-expanded="false">
               <span class="comment-toggle-label">View Comments</span>
-              <span class="comment-count-inline">${toCount(post.comments)}</span>
             </button>
           </div>
           <button class="post-action-btn post-action-open" type="button" data-open-post="${post.id}">Open on ${post.source}</button>
@@ -277,7 +276,7 @@ function renderPostCards(postList, options = {}) {
         <div class="comments-box" data-comments-box="${post.id}">
           ${previewComments.length ? previewComments.map(c => `
               <div class="comment-entry">
-                <strong>${anonymizedCommentAuthor(c)}</strong>
+                <strong>${anonymizedCommentAuthor({ ...c, source: post.source })}</strong>
                 <span>${c.text}</span>
               </div>
             `).join("") : `<div class="comment-entry empty-comment">No preview comments are available for this post yet.</div>`}

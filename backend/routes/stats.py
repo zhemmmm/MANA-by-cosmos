@@ -174,17 +174,20 @@ def posts_over_time():
 @jwt_required(optional=True)
 def priority_distribution():
     date_range = request.args.get("date_range", "14d")
-    counts = {"Low": 0, "Medium": 0, "High": 0, "Critical": 0}
-    colors = {"Low": "#34d399", "Medium": "#38bdf8", "High": "#f59e0b", "Critical": "#fb7185"}
+    counts = {"Low": 0, "Medium": 0, "High": 0}
+    colors = {"Low": "#34d399", "Medium": "#38bdf8", "High": "#f59e0b"}
 
     for post in filtered_posts(date_range):
-        counts[priority_label(post.priority)] += 1
+        label = priority_label(post.priority)
+        if label == "Critical":
+            label = "High"
+        counts[label] += 1
 
     return jsonify(
         {
             "priority": [
                 {"label": label, "value": counts[label], "color": colors[label]}
-                for label in ["Low", "Medium", "High", "Critical"]
+                for label in ["Low", "Medium", "High"]
             ]
         }
     )
