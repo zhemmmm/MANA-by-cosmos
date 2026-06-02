@@ -181,7 +181,7 @@ function renderPostCards(postList, options = {}) {
     const sentiment = getDominantSentiment(post.sentimentScore);
     const verifyStatus = state.verifications?.[post.id]?.status || "auto-unverified";
     const initials = getInitials(post.author);
-    const timeLabel = timeAgo(getPostTimestamp(post) || post.date);
+    const timeLabel = timeAgo(post.date);
     const priorityKey = normalizePriority(post.priority).toLowerCase();
 
     const primaryMetric = isFB

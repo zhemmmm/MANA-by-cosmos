@@ -14,7 +14,7 @@ function getPostTimestamp(post) {
   const candidates = [post?.date, post?.createdAt]
     .map(value => new Date(value).getTime())
     .filter(Number.isFinite);
-  return candidates.length ? Math.max(...candidates) : 0;
+  return candidates[0] || candidates[1] || 0;
 }
 
 function timeAgo(date) {
