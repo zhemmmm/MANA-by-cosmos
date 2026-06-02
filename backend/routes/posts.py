@@ -95,7 +95,7 @@ def apply_post_filters(query):
 def get_posts():
     posts = (
         apply_post_filters(Post.query)
-        .order_by(Post.date.desc())
+        .order_by(Post.created_at.desc())
         .all()
     )
     post_ids = [post.id for post in posts]
