@@ -13,7 +13,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_label, now_utc, parse_date_range, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
-from models import Comment, Post, PostTopic, Watchlist, db
+from models import Comment, Post, PostTopic, Watchlist, db, utc_iso
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
 from x_matching import build_post_match_index as build_x_post_match_index, find_post_match as find_x_post_match
 
@@ -151,7 +151,7 @@ def get_posts():
                     "author": comment.author,
                     "text": comment.text,
                     "likes": comment.likes,
-                    "date": comment.date.isoformat() if comment.date else None,
+                    "date": utc_iso(comment.date),
                 }
                 for comment in sorted(post_comments, key=comment_rank, reverse=True)[:3]
             ]

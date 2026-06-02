@@ -11,7 +11,7 @@ function formatDate(d)    { return new Date(d).toLocaleString("en-US", { month:"
 function toCount(value)   { return Number.isFinite(Number(value)) ? Number(value) : 0; }
 
 function getPostTimestamp(post) {
-  const candidates = [post?.date, post?.createdAt, post?.updatedAt]
+  const candidates = [post?.date, post?.createdAt]
     .map(value => new Date(value).getTime())
     .filter(Number.isFinite);
   return candidates.length ? Math.max(...candidates) : 0;
