@@ -50,6 +50,7 @@ function getEngagement(post) {
 
 // ─── Post Filtering & Sorting ─────────────────────────────────────────────────
 function matchesDateRange(postDate, range) {
+  if (range === "all") return true;
   const diffDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 60 * 60 * 24);
   if (range === "24h") return diffDays <= 1;
   if (range === "3d")  return diffDays <= 3;

@@ -10,7 +10,7 @@ from collections import defaultdict
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, now_utc, parse_date_range, top_keywords_from_posts
+from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_label, now_utc, parse_date_range, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
 from models import Comment, Post, PostTopic, Watchlist, db
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
@@ -82,8 +82,10 @@ def apply_post_filters(query):
         mapped = "Moderate" if priority == "Medium" else ("Monitoring" if priority == "Low" else priority)
         query = query.filter(Post.priority == mapped)
     if date_range:
-        cutoff = now_utc() - parse_date_range(date_range)
-        query = query.filter(Post.date >= cutoff)
+        delta = parse_date_range(date_range)
+        if delta is not None:
+            cutoff = now_utc() - delta
+            query = query.filter(Post.date >= cutoff)
     return query
 
 
@@ -216,8 +218,11 @@ def get_clusters():
 @jwt_required(optional=True)
 def get_dashboard_summary():
     date_range = request.args.get("date_range", "7d")
-    cutoff = now_utc() - parse_date_range(date_range)
-    posts = Post.query.filter(Post.date >= cutoff).all()
+    delta = parse_date_range(date_range)
+    query = Post.query.filter(Post.is_relevant == True)
+    if delta is not None:
+        query = query.filter(Post.date >= now_utc() - delta)
+    posts = query.all()
     total = len(posts)
     fb_posts = sum(1 for post in posts if post.source == "Facebook")
     x_posts = sum(1 for post in posts if post.source == "X")
@@ -233,8 +238,7 @@ def get_dashboard_summary():
     def pct(count, ceiling):
         return round((count / ceiling) * 100) if ceiling else 0
 
-    label_map = {"24h": "Last 24 hours", "7d": "Last 7 days", "14d": "Last 14 days", "30d": "Last 30 days"}
-    meta = label_map.get(date_range, "Recent")
+    meta = date_range_label(date_range)
     kpis = [
         {"label": "High Priority Count", "value": f"{high_priority:,}", "meta": meta, "bar": pct(high_priority, total)},
         {"label": "Total Posts Analyzed", "value": f"{total:,}", "meta": meta, "bar": pct(total, max(total, 1))},
@@ -279,13 +283,13 @@ def get_keywords():
 def get_dashboard_comments():
     date_range = request.args.get("date_range", "7d")
     limit = max(1, min(int(request.args.get("limit", 6)), 24))
-    cutoff = now_utc() - parse_date_range(date_range)
+    delta = parse_date_range(date_range)
 
-    comments = (
-        Comment.query.filter(Comment.date >= cutoff)
-        .order_by(Comment.date.desc())
-        .all()
-    )
+    query = Comment.query
+    if delta is not None:
+        query = query.filter(Comment.date >= now_utc() - delta)
+
+    comments = query.order_by(Comment.date.desc()).all()
 
     ranked = sorted(comments, key=lambda comment: (comment_rank(comment), comment.likes, comment.date), reverse=True)
     return jsonify({"comments": [comment.to_api_dict() for comment in ranked[:limit]]})

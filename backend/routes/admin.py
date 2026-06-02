@@ -385,8 +385,11 @@ def get_logs():
 @admin_required
 def get_stats():
     date_range = request.args.get("date_range", "7d")
-    cutoff = now_utc() - parse_date_range(date_range)
-    posts = Post.query.filter(Post.is_relevant == True, Post.date >= cutoff).order_by(Post.date.asc()).all()
+    delta = parse_date_range(date_range)
+    query = Post.query.filter(Post.is_relevant == True)
+    if delta is not None:
+        query = query.filter(Post.date >= now_utc() - delta)
+    posts = query.order_by(Post.date.asc()).all()
 
     total_posts = len(posts)
     fb_posts = sum(1 for post in posts if post.source == "Facebook")

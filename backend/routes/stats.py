@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from datetime import timedelta
+from math import ceil
 
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
@@ -26,8 +27,11 @@ def comparable_dt(value):
 
 
 def filtered_posts(date_range: str):
-    cutoff = now_utc() - parse_date_range(date_range)
-    return Post.query.filter(Post.date >= cutoff).order_by(Post.date.asc()).all()
+    delta = parse_date_range(date_range)
+    query = Post.query.filter(Post.is_relevant == True)
+    if delta is not None:
+        query = query.filter(Post.date >= now_utc() - delta)
+    return query.order_by(Post.date.asc()).all()
 
 
 @stats_bp.route("/analytics/sentiment-histogram", methods=["GET"])
@@ -64,20 +68,32 @@ def sentiment_histogram():
 @jwt_required(optional=True)
 def sentiment_trend():
     date_range = request.args.get("date_range", "14d")
-    days = {"7d": 7, "14d": 7, "30d": 7}.get(date_range, 7)
-    window = {"7d": 1, "14d": 2, "30d": 4}.get(date_range, 2)
-    start = now_utc() - timedelta(days=days * window - 1)
+    posts = filtered_posts(date_range)
+    days = 7
+
+    if date_range == "all" and posts:
+        dated_posts = [comparable_dt(post.date) for post in posts if comparable_dt(post.date)]
+        first_date = min(dated_posts) if dated_posts else comparable_dt(now_utc())
+        last_date = max(dated_posts) if dated_posts else comparable_dt(now_utc())
+        span_days = max((last_date.date() - first_date.date()).days + 1, 1)
+        window = max(1, ceil(span_days / days))
+        start = first_date.replace(hour=0, minute=0, second=0, microsecond=0)
+    else:
+        window = {"7d": 1, "14d": 2, "30d": 4}.get(date_range, 2)
+        start = comparable_dt(now_utc()) - timedelta(days=days * window - 1)
 
     labels = []
     rows = []
     for i in range(days):
         bucket_start = start + timedelta(days=i * window)
         bucket_end = bucket_start + timedelta(days=window)
-        labels.append(bucket_start.strftime("%b %d") if date_range == "7d" else f"W{i + 1}")
+        if date_range in {"7d", "all"}:
+            labels.append(bucket_start.strftime("%b %d"))
+        else:
+            labels.append(f"W{i + 1}")
         rows.append((bucket_start, bucket_end))
 
     positive, neutral, negative = [], [], []
-    posts = filtered_posts(date_range)
     for bucket_start, bucket_end in rows:
         bucket_start_cmp = comparable_dt(bucket_start)
         bucket_end_cmp = comparable_dt(bucket_end)

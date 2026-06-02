@@ -549,9 +549,26 @@ def now_utc():
     return datetime.now(timezone.utc)
 
 
-def parse_date_range(date_range: str) -> timedelta:
+def is_all_date_range(date_range: str | None) -> bool:
+    return (date_range or "").strip().lower() == "all"
+
+
+def parse_date_range(date_range: str) -> timedelta | None:
+    if is_all_date_range(date_range):
+        return None
     mapping = {"24h": timedelta(days=1), "3d": timedelta(days=3), "7d": timedelta(days=7), "14d": timedelta(days=14), "30d": timedelta(days=30)}
     return mapping.get(date_range, timedelta(days=7))
+
+
+def date_range_label(date_range: str) -> str:
+    return {
+        "all": "All scraped data",
+        "24h": "Last 24 hours",
+        "3d": "Last 3 days",
+        "7d": "Last 7 days",
+        "14d": "Last 14 days",
+        "30d": "Last 30 days",
+    }.get((date_range or "").strip().lower(), "Recent")
 
 
 def seed_clusters():

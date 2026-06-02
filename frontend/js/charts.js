@@ -41,7 +41,7 @@ async function apiGetPriorityDistribution(r) { return apiFetch(`/analytics/prior
 // ─── DataService shim ─────────────────────────────────────────────────────────
 const ChartsService = {
   async getAnalytics(dateRange) {
-    if (USE_MOCK) return MOCK_ANALYTICS[dateRange] || MOCK_ANALYTICS["14d"];
+    if (USE_MOCK) return MOCK_ANALYTICS[dateRange] || MOCK_ANALYTICS["30d"];
     const [h, t, c, p] = await Promise.all([
       apiGetSentimentHistogram(dateRange),
       apiGetSentimentTrend(dateRange),

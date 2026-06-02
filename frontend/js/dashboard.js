@@ -68,6 +68,7 @@ const DashboardService = {
 
 function dashboardMetaLabel(range) {
   return {
+    "all": "All scraped data",
     "24h": "Last 24 hours",
     "3d": "Last 3 days",
     "7d": "Last 7 days",
