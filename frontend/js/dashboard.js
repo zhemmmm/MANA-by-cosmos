@@ -234,7 +234,7 @@ function getIrrelevantPostsViewModel() {
     "All",
     state.globalSearch,
     { includeResolved: true }
-  ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  ).sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a));
 }
 
 function getDashboardViewModel() {
@@ -242,8 +242,12 @@ function getDashboardViewModel() {
   const dashboardSource = state.dashboardPostsSource || "All";
   const dashboardPanelPosts = filteredPosts
     .filter(post => dashboardSource === "All" || post.source === dashboardSource);
-  const sortedTrendingPosts = [...dashboardPanelPosts]
-    .sort((a, b) => (b.severityRank * 1000 + getEngagement(b)) - (a.severityRank * 1000 + getEngagement(a)));
+  const sortedTrendingPosts = [...dashboardPanelPosts].sort((a, b) => {
+    if (state.dashboardRange === "all") {
+      return getPostTimestamp(b) - getPostTimestamp(a);
+    }
+    return (b.severityRank * 1000 + getEngagement(b)) - (a.severityRank * 1000 + getEngagement(a));
+  });
   const sourceDirectory = [...new Map(filteredPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
   const pagination = getDashboardPagination(sortedTrendingPosts.length);
   const visiblePosts = sortedTrendingPosts.slice(pagination.startIndex, pagination.endIndex);
@@ -352,7 +356,7 @@ function renderDashboard() {
 function renderResolvedArchivePage() {
   const resolvedPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { includeResolved: true })
     .filter(isResolvedPost)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a));
 
   document.getElementById("resolvedPostsPanel").innerHTML = renderResolvedPostsPanel(
     resolvedPosts,

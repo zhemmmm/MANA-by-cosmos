@@ -190,6 +190,8 @@ class Post(TimestampMixin, db.Model):
             "clusterLabelSource": self.cluster_label_source,
             "isRelevant": self.is_relevant,
             "date": self.date.isoformat(),
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
             "keywords": self.keywords,
             "location": self.location,
             "severityRank": self.severity_rank,

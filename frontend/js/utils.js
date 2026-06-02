@@ -10,6 +10,13 @@ function formatCompact(n) { return new Intl.NumberFormat("en-US", { notation:"co
 function formatDate(d)    { return new Date(d).toLocaleString("en-US", { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" }); }
 function toCount(value)   { return Number.isFinite(Number(value)) ? Number(value) : 0; }
 
+function getPostTimestamp(post) {
+  const candidates = [post?.date, post?.createdAt, post?.updatedAt]
+    .map(value => new Date(value).getTime())
+    .filter(Number.isFinite);
+  return candidates.length ? Math.max(...candidates) : 0;
+}
+
 function timeAgo(date) {
   const diff = Date.now() - new Date(date).getTime();
   const h = Math.floor(diff / 3600000);
@@ -49,9 +56,10 @@ function getEngagement(post) {
 }
 
 // ─── Post Filtering & Sorting ─────────────────────────────────────────────────
-function matchesDateRange(postDate, range) {
+function matchesDateRange(postDate, range, post = null) {
   if (range === "all") return true;
-  const diffDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 60 * 60 * 24);
+  const timestamp = post ? getPostTimestamp(post) : new Date(postDate).getTime();
+  const diffDays = (Date.now() - timestamp) / (1000 * 60 * 60 * 24);
   if (range === "24h") return diffDays <= 1;
   if (range === "3d")  return diffDays <= 3;
   if (range === "7d")  return diffDays <= 7;
@@ -109,7 +117,7 @@ function filterPosts(sourcePosts, dateRange, source, searchTerm = "", options = 
   const { includeResolved = false } = options;
   return sourcePosts
     .filter(p => includeResolved || !isResolvedPost(p))
-    .filter(p => matchesDateRange(p.date, dateRange))
+    .filter(p => matchesDateRange(p.date, dateRange, p))
     .filter(p => source === "All" ? true : p.source === source)
     .filter(p => matchesPostSearch(p, searchTerm));
 }

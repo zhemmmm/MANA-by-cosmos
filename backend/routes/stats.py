@@ -8,6 +8,7 @@ from collections import defaultdict
 from datetime import timedelta
 from math import ceil
 
+from sqlalchemy import or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 
@@ -26,11 +27,18 @@ def comparable_dt(value):
     return value
 
 
+def effective_post_dt(post):
+    dates = [comparable_dt(post.date), comparable_dt(post.created_at)]
+    dates = [date for date in dates if date is not None]
+    return max(dates) if dates else None
+
+
 def filtered_posts(date_range: str):
     delta = parse_date_range(date_range)
     query = Post.query.filter(Post.is_relevant == True)
     if delta is not None:
-        query = query.filter(Post.date >= now_utc() - delta)
+        cutoff = now_utc() - delta
+        query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     return query.order_by(Post.date.asc()).all()
 
 
@@ -72,7 +80,7 @@ def sentiment_trend():
     days = 7
 
     if date_range == "all" and posts:
-        dated_posts = [comparable_dt(post.date) for post in posts if comparable_dt(post.date)]
+        dated_posts = [effective_post_dt(post) for post in posts if effective_post_dt(post)]
         first_date = min(dated_posts) if dated_posts else comparable_dt(now_utc())
         last_date = max(dated_posts) if dated_posts else comparable_dt(now_utc())
         span_days = max((last_date.date() - first_date.date()).days + 1, 1)
@@ -99,7 +107,7 @@ def sentiment_trend():
         bucket_end_cmp = comparable_dt(bucket_end)
         pos = neu = neg = 0
         for post in posts:
-            post_date_cmp = comparable_dt(post.date)
+            post_date_cmp = effective_post_dt(post)
             if post_date_cmp and bucket_start_cmp <= post_date_cmp < bucket_end_cmp:
                 tone = score_tone(post.sentiment_score)
                 if tone == "positive":

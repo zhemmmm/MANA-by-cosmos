@@ -181,7 +181,7 @@ function renderPostCards(postList, options = {}) {
     const sentiment = getDominantSentiment(post.sentimentScore);
     const verifyStatus = state.verifications?.[post.id]?.status || "auto-unverified";
     const initials = getInitials(post.author);
-    const timeLabel = timeAgo(post.date);
+    const timeLabel = timeAgo(getPostTimestamp(post) || post.date);
     const priorityKey = normalizePriority(post.priority).toLowerCase();
 
     const primaryMetric = isFB
@@ -463,7 +463,10 @@ async function renderClusterDetail() {
       if (f.severity === "Low") return normalizePriority(p.priority) === "Low";
       return true;
     })
-    .sort((a, b) => f.severity === "Trending" ? getEngagement(b) - getEngagement(a) : sortPostsByPriority(a, b));
+    .sort((a, b) => {
+      if (f.dateRange === "all") return getPostTimestamp(b) - getPostTimestamp(a);
+      return f.severity === "Trending" ? getEngagement(b) - getEngagement(a) : sortPostsByPriority(a, b);
+    });
   document.getElementById("clusterPostGrid").innerHTML = renderPostCards(filteredPosts);
   renderClusterNav();
   applySeverityStyle(document.getElementById("clusterSeverityFilter"), f.severity);
