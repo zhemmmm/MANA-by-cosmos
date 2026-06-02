@@ -10,11 +10,21 @@ function formatCompact(n) { return new Intl.NumberFormat("en-US", { notation:"co
 function formatDate(d)    { return new Date(d).toLocaleString("en-US", { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" }); }
 function toCount(value)   { return Number.isFinite(Number(value)) ? Number(value) : 0; }
 
-function getPostTimestamp(post) {
-  const candidates = [post?.date, post?.createdAt]
-    .map(value => new Date(value).getTime())
-    .filter(Number.isFinite);
-  return candidates[0] || candidates[1] || 0;
+function toTimestamp(value) {
+  const timestamp = new Date(value).getTime();
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+function getPostDisplayTimestamp(post) {
+  return toTimestamp(post?.date);
+}
+
+function getPostScrapeTimestamp(post) {
+  return toTimestamp(post?.createdAt) || getPostDisplayTimestamp(post);
+}
+
+function getPostFilterTimestamp(post) {
+  return Math.max(getPostDisplayTimestamp(post), getPostScrapeTimestamp(post));
 }
 
 function timeAgo(date) {
@@ -58,7 +68,7 @@ function getEngagement(post) {
 // ─── Post Filtering & Sorting ─────────────────────────────────────────────────
 function matchesDateRange(postDate, range, post = null) {
   if (range === "all") return true;
-  const timestamp = post ? getPostTimestamp(post) : new Date(postDate).getTime();
+  const timestamp = post ? getPostFilterTimestamp(post) : toTimestamp(postDate);
   const diffDays = (Date.now() - timestamp) / (1000 * 60 * 60 * 24);
   if (range === "24h") return diffDays <= 1;
   if (range === "3d")  return diffDays <= 3;
