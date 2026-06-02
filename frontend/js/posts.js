@@ -464,7 +464,7 @@ async function renderClusterDetail() {
       return true;
     })
     .sort((a, b) => {
-      if (f.dateRange === "all") return getPostTimestamp(b) - getPostTimestamp(a);
+      if (f.dateRange === "all") return getPostScrapeTimestamp(b) - getPostScrapeTimestamp(a);
       return f.severity === "Trending" ? getEngagement(b) - getEngagement(a) : sortPostsByPriority(a, b);
     });
   document.getElementById("clusterPostGrid").innerHTML = renderPostCards(filteredPosts);

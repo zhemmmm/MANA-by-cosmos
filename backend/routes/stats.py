@@ -8,6 +8,7 @@ from collections import defaultdict
 from datetime import timedelta
 from math import ceil
 
+from sqlalchemy import or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 
@@ -31,7 +32,7 @@ def filtered_posts(date_range: str):
     query = Post.query.filter(Post.is_relevant == True)
     if delta is not None:
         cutoff = now_utc() - delta
-        query = query.filter(Post.date >= cutoff)
+        query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     return query.order_by(Post.date.asc()).all()
 
 

@@ -7,6 +7,7 @@ from __future__ import annotations
 from datetime import timedelta
 from collections import defaultdict
 
+from sqlalchemy import or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -85,7 +86,7 @@ def apply_post_filters(query):
         delta = parse_date_range(date_range)
         if delta is not None:
             cutoff = now_utc() - delta
-            query = query.filter(Post.date >= cutoff)
+            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     return query
 
 
@@ -222,7 +223,7 @@ def get_dashboard_summary():
     query = Post.query.filter(Post.is_relevant == True)
     if delta is not None:
         cutoff = now_utc() - delta
-        query = query.filter(Post.date >= cutoff)
+        query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     posts = query.all()
     total = len(posts)
     fb_posts = sum(1 for post in posts if post.source == "Facebook")
@@ -289,7 +290,7 @@ def get_dashboard_comments():
     query = Comment.query
     if delta is not None:
         cutoff = now_utc() - delta
-        query = query.filter(Comment.date >= cutoff)
+        query = query.filter(or_(Comment.date >= cutoff, Comment.created_at >= cutoff))
 
     comments = query.order_by(Comment.date.desc()).all()
 

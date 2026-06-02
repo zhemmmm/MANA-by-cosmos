@@ -11,6 +11,7 @@ import traceback
 
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required
+from sqlalchemy import or_
 
 from data import now_utc, parse_date_range, priority_label, recommendation_payload_for, score_tone
 from models import ActivityLog, Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, SystemSetting, User, db
@@ -389,7 +390,7 @@ def get_stats():
     query = Post.query.filter(Post.is_relevant == True)
     if delta is not None:
         cutoff = now_utc() - delta
-        query = query.filter(Post.date >= cutoff)
+        query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     posts = query.order_by(Post.date.asc()).all()
 
     total_posts = len(posts)
