@@ -16,6 +16,16 @@ from services.rules.decision_engine import compute_engagement_score, evaluate_fr
 db = SQLAlchemy()
 
 
+def utc_iso(value):
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    else:
+        value = value.astimezone(timezone.utc)
+    return value.isoformat().replace("+00:00", "Z")
+
+
 class TimestampMixin:
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = db.Column(
@@ -54,9 +64,9 @@ class User(TimestampMixin, db.Model):
             "email": self.email,
             "role": self.role,
             "status": self.status,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "last_login_at": self.last_login_at.isoformat() if self.last_login_at else None,
+            "created_at": utc_iso(self.created_at),
+            "updated_at": utc_iso(self.updated_at),
+            "last_login_at": utc_iso(self.last_login_at),
             "login_count": self.login_count or 0,
         }
 
@@ -79,7 +89,7 @@ class ActivityLog(TimestampMixin, db.Model):
             "action": self.action,
             "detail": self.detail,
             "type": self.type,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "created_at": utc_iso(self.created_at),
         }
 
 
@@ -189,9 +199,9 @@ class Post(TimestampMixin, db.Model):
             "reviewedClusterId": self.reviewed_cluster_id,
             "clusterLabelSource": self.cluster_label_source,
             "isRelevant": self.is_relevant,
-            "date": self.date.isoformat(),
-            "createdAt": self.created_at.isoformat() if self.created_at else None,
-            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
+            "date": utc_iso(self.date),
+            "createdAt": utc_iso(self.created_at),
+            "updatedAt": utc_iso(self.updated_at),
             "keywords": self.keywords,
             "location": self.location,
             "severityRank": self.severity_rank,
@@ -235,7 +245,7 @@ class Comment(TimestampMixin, db.Model):
             "postUrl": self.post_url,
             "clusterId": self.cluster_id,
             "location": self.location,
-            "date": self.date.isoformat() if self.date else None,
+            "date": utc_iso(self.date),
         }
 
 
@@ -344,7 +354,7 @@ class PostTopic(TimestampMixin, db.Model):
             "post_id": self.post_id,
             "topic_label": self.topic_label,
             "confidence": self.confidence,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "created_at": utc_iso(self.created_at),
         }
 
 
@@ -365,7 +375,7 @@ class PostCluster(TimestampMixin, db.Model):
             "post_id": self.post_id,
             "cluster_id": self.cluster_id,
             "confidence": self.confidence,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "created_at": utc_iso(self.created_at),
         }
 
 
@@ -394,7 +404,7 @@ class PostSentiment(TimestampMixin, db.Model):
             "negative":     self.negative,
             "neutral":      self.neutral,
             "sarcasm_flag": self.sarcasm_flag,
-            "created_at":   self.created_at.isoformat() if self.created_at else None,
+            "created_at":   utc_iso(self.created_at),
         }
 
 
@@ -424,5 +434,5 @@ class PostPriority(TimestampMixin, db.Model):
             "high_probability":   self.high_probability,
             "medium_probability": self.medium_probability,
             "low_probability":    self.low_probability,
-            "created_at":         self.created_at.isoformat() if self.created_at else None,
+            "created_at":         utc_iso(self.created_at),
         }
