@@ -209,8 +209,8 @@ function renderPostCards(postList, options = {}) {
                 ${post.location ? `<span class="post-location">${post.location}</span>` : ""}
               </div>
               <div class="author-badge-row">
-                <span class="badge ${priorityClass(post.priority)}">${normalizePriority(post.priority)} · ${priorityPercent(post)}%</span>
-                <span class="badge sentiment-badge sentiment-${sentiment.tone}">${sentiment.label} · ${sentiment.percent}%</span>
+                <span class="badge ${priorityClass(post.priority)}">${normalizePriority(post.priority)}</span>
+                <span class="badge sentiment-badge sentiment-${sentiment.tone}">${sentiment.label}</span>
                 ${cluster.short ? `<span class="cluster-pill">${cluster.short}</span>` : ""}
               </div>
             </div>
