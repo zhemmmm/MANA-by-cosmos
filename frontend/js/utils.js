@@ -7,7 +7,7 @@
 // ─── Number & Date Formatting ─────────────────────────────────────────────────
 function formatNumber(n)  { return new Intl.NumberFormat("en-US").format(n); }
 function formatCompact(n) { return new Intl.NumberFormat("en-US", { notation:"compact", maximumFractionDigits:1 }).format(n); }
-function formatDate(d)    { return new Date(d).toLocaleString("en-US", { timeZone:"Asia/Manila", month:"short", day:"numeric", hour:"numeric", minute:"2-digit" }); }
+function formatDate(d)    { return new Date(d).toLocaleString("en-US", { timeZone:"Asia/Manila", month:"short", day:"numeric", year:"numeric", hour:"numeric", minute:"2-digit" }); }
 function toCount(value)   { return Number.isFinite(Number(value)) ? Number(value) : 0; }
 
 function toTimestamp(value) {
