@@ -7,7 +7,7 @@ from __future__ import annotations
 from datetime import timedelta
 from collections import defaultdict
 
-from sqlalchemy import or_
+from sqlalchemy import func, or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
@@ -213,6 +213,26 @@ def unpin_post(post_id):
 @jwt_required(optional=True)
 def get_clusters():
     return jsonify(CLUSTER_DEFINITIONS)
+
+
+@posts_bp.route("/live/version", methods=["GET"])
+@jwt_required(optional=True)
+def get_live_version():
+    latest_post_change = db.session.query(func.max(func.coalesce(Post.updated_at, Post.created_at))).scalar()
+    latest_comment_change = db.session.query(func.max(func.coalesce(Comment.updated_at, Comment.created_at))).scalar()
+    post_count = Post.query.count()
+    comment_count = Comment.query.count()
+    latest_change = max(
+        [value for value in (latest_post_change, latest_comment_change) if value],
+        default=None,
+    )
+
+    return jsonify({
+        "version": f"{utc_iso(latest_change) or 'empty'}:{post_count}:{comment_count}",
+        "latestChange": utc_iso(latest_change),
+        "postCount": post_count,
+        "commentCount": comment_count,
+    })
 
 
 @posts_bp.route("/dashboard/summary", methods=["GET"])

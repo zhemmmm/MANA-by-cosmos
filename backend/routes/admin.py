@@ -7,6 +7,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from datetime import timedelta
 from functools import wraps
+import threading
 import traceback
 
 from flask import Blueprint, jsonify, request
@@ -21,6 +22,7 @@ from services.apify_integration import (
     KIND_X,
     VALID_KINDS,
     extract_kind,
+    get_run,
     get_task_id,
     infer_kind_from_dataset,
     import_dataset_items,
@@ -159,10 +161,36 @@ def _auto_classify_new_posts(app) -> None:
 
 
 def _start_auto_classify() -> None:
-    import threading
     from flask import current_app
     app = current_app._get_current_object()
     threading.Thread(target=_auto_classify_new_posts, args=(app,), daemon=True).start()
+
+
+def _queue_apify_import(kind: str, dataset_id: str, *, source: str) -> None:
+    """Import an Apify dataset in the background so the HTTP request returns quickly."""
+
+    from flask import current_app
+    app = current_app._get_current_object()
+
+    def _worker():
+        try:
+            with app.app_context():
+                result = import_dataset_items(kind, dataset_id)
+                log_activity(
+                    f"Apify {source} import",
+                    f"Imported {kind} dataset {dataset_id} ({result['item_count']} items)",
+                    "system",
+                    actor=None,
+                )
+                db.session.commit()
+                _start_auto_classify()
+        except Exception as exc:
+            with app.app_context():
+                db.session.rollback()
+            print(f"[apify-import] {source} import failed for {kind} dataset {dataset_id}: {exc}")
+            traceback.print_exc()
+
+    threading.Thread(target=_worker, daemon=True).start()
 
 
 def admin_required(fn):
@@ -537,20 +565,45 @@ def import_apify_dataset():
     if not dataset_id:
         return jsonify({"message": "datasetId is required."}), 400
 
+    _queue_apify_import(kind, dataset_id, source="manual")
+    return jsonify({
+        "queued": True,
+        "kind": kind,
+        "dataset_id": dataset_id,
+        "message": "Import queued in background.",
+    }), 202
+
+
+@admin_bp.route("/apify/recover-run", methods=["POST"])
+@admin_required
+def recover_apify_run():
+    data = get_json()
+    run_id = (data.get("runId") or data.get("run_id") or "").strip()
+    kind = (data.get("kind") or "").strip().lower()
+
+    if not run_id:
+        return jsonify({"message": "runId is required."}), 400
+    if kind and kind not in VALID_KINDS:
+        return jsonify({"message": f"kind must be one of: {sorted(VALID_KINDS)}"}), 400
+
     try:
-        result = import_dataset_items(kind, dataset_id)
+        run = get_run(run_id)
+        dataset_id = run.get("defaultDatasetId") or run.get("datasetId")
+        if not dataset_id:
+            return jsonify({"message": "No dataset id found for that run."}), 404
+        if not kind:
+            kind = infer_kind_from_dataset(str(dataset_id)) or KIND_FACEBOOK
     except Exception as exc:
-        db.session.rollback()
         return jsonify({"message": str(exc)}), 500
 
-    log_activity(
-        "Apify dataset imported",
-        f"Imported {kind} dataset {dataset_id} ({result['item_count']} items)",
-        "system",
-    )
-    db.session.commit()
-    _start_auto_classify()
-    return jsonify(result)
+    _queue_apify_import(kind, str(dataset_id), source=f"recovery run {run_id}")
+    return jsonify({
+        "queued": True,
+        "run_id": run_id,
+        "kind": kind,
+        "dataset_id": dataset_id,
+        "message": "Recovery import queued in background.",
+    }), 202
 
 
 @admin_bp.route("/apify/repair-post-metrics", methods=["POST"])
@@ -601,19 +654,11 @@ def apify_webhook():
     if kind not in VALID_KINDS or not dataset_id:
         return jsonify({"message": "Webhook payload missing kind or dataset id."}), 400
 
-    try:
-        result = import_dataset_items(kind, dataset_id)
-        log_activity(
-            "Apify webhook import",
-            f"Imported {kind} dataset {dataset_id} ({result['item_count']} items)",
-            "system",
-            actor=None,
-        )
-        db.session.commit()
-    except Exception as exc:
-        db.session.rollback()
-        traceback.print_exc()
-        return jsonify({"message": str(exc), "error_type": type(exc).__name__}), 500
-
-    _start_auto_classify()
-    return jsonify({"success": True, **result})
+    _queue_apify_import(kind, dataset_id, source="webhook")
+    return jsonify({
+        "success": True,
+        "queued": True,
+        "kind": kind,
+        "dataset_id": dataset_id,
+        "message": "Import queued in background.",
+    }), 202

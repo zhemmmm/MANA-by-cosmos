@@ -76,6 +76,8 @@ let criticalDataPromise = null;
 let deferredDataPromise = null;
 let liveUpdatesChannel = null;
 let liveRefreshTimer = null;
+let livePollingTimer = null;
+let lastLiveVersion = null;
 let clockRefreshTimer = null;
 
 function isViewerMode() {
@@ -471,8 +473,49 @@ function scheduleLiveRefresh() {
   }, 2000);
 }
 
+async function fetchLiveVersion() {
+  if (USE_MOCK) return null;
+  const res = await fetch(`${API_BASE}/live/version`, {
+    headers: getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
+  });
+  if (!res.ok) throw new Error(`Live version check failed (${res.status})`);
+  return res.json();
+}
+
+async function checkLiveVersion() {
+  try {
+    const data = await fetchLiveVersion();
+    if (!data?.version) return;
+    if (lastLiveVersion === null) {
+      lastLiveVersion = data.version;
+      return;
+    }
+    if (data.version !== lastLiveVersion) {
+      lastLiveVersion = data.version;
+      scheduleLiveRefresh();
+    }
+  } catch (err) {
+    console.warn("Live version check failed:", err);
+  }
+}
+
+function startLivePolling() {
+  if (USE_MOCK || livePollingTimer) return;
+  checkLiveVersion();
+  livePollingTimer = setInterval(checkLiveVersion, LIVE_POLL_INTERVAL_MS || 30000);
+}
+
+function stopLivePolling() {
+  clearInterval(livePollingTimer);
+  livePollingTimer = null;
+  lastLiveVersion = null;
+}
+
 function startLiveUpdates() {
-  if (USE_MOCK || !window.supabase || liveUpdatesChannel) return;
+  if (USE_MOCK) return;
+
+  startLivePolling();
+  if (!window.supabase || liveUpdatesChannel) return;
 
   liveUpdatesChannel = window.supabase
     .channel("mana-live-updates")
@@ -518,6 +561,7 @@ function stopLiveUpdates() {
     window.supabase.removeChannel(liveUpdatesChannel);
   }
   liveUpdatesChannel = null;
+  stopLivePolling();
   clearTimeout(liveRefreshTimer);
 }
 

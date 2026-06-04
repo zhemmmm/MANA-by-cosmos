@@ -19,6 +19,7 @@ const API_BASE = "https://mana-backend-4s1w.onrender.com/api";
 //const API_BASE = "http://localhost:5000/api";
 
 const USE_MOCK = false;
+const LIVE_POLL_INTERVAL_MS = 15000;
 
 // ─── JWT Helpers ──────────────────────────────────────────────────────────────
 function getToken() { return localStorage.getItem("mana-token"); }
