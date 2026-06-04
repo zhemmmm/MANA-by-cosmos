@@ -18,6 +18,7 @@ except ModuleNotFoundError:
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
 
@@ -67,6 +68,7 @@ except ModuleNotFoundError:
     rules_bp = None
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "CHANGE_THIS_IN_PRODUCTION_SECRET_32B")
