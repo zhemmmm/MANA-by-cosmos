@@ -126,6 +126,9 @@ def import_items(payload: list[dict]):
     with app.app_context():
         for item in payload:
             normalized = normalize_item(item)
+            if normalized is None:
+                skipped += 1
+                continue
             post = db.session.get(Post, normalized["id"])
             if post:
                 for field, value in normalized.items():

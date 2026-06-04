@@ -104,6 +104,8 @@ def parse_iso_datetime(value: str):
 
 def normalize_item(item: dict):
     text = (item.get("text") or item.get("caption") or item.get("content") or "").strip()
+    if not text:
+        return None
     cluster, keywords = infer_cluster(text)
     if cluster is None:
         # Keep the import running even when a post has too little signal to classify.
@@ -168,6 +170,9 @@ def import_items(payload: list[dict]):
     with app.app_context():
         for item in payload:
             normalized = normalize_item(item)
+            if normalized is None:
+                skipped += 1
+                continue
             post = db.session.get(Post, normalized["id"])
             if post:
                 for field, value in normalized.items():
