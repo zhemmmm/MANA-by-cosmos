@@ -24,6 +24,8 @@ services:
         sync: false
       - key: APIFY_WEBHOOK_SECRET
         sync: false
+      - key: PUBLIC_URL
+        sync: false                  # e.g. https://mana-backend.onrender.com
 
 # NOTE: The frontend (static site) cannot be declared in render.yaml.
 # Create it manually: Render dashboard → New → Static Site → connect the same repo,

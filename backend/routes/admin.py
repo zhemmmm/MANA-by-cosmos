@@ -7,6 +7,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from datetime import timedelta
 from functools import wraps
+import os
 import traceback
 
 from flask import Blueprint, jsonify, request
@@ -227,7 +228,10 @@ def username_from_email(email: str):
 
 
 def public_webhook_url():
-    return request.host_url.rstrip("/") + "/api/admin/apify/webhook"
+    base = (os.environ.get("PUBLIC_URL") or "").rstrip("/")
+    if not base:
+        base = request.host_url.rstrip("/")
+    return base + "/api/admin/apify/webhook"
 
 
 @admin_bp.route("/users", methods=["GET"])
