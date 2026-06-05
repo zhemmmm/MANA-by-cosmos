@@ -24,7 +24,7 @@ function getPostScrapeTimestamp(post) {
 }
 
 function getPostFilterTimestamp(post) {
-  return Math.max(getPostDisplayTimestamp(post), getPostScrapeTimestamp(post));
+  return getPostDisplayTimestamp(post);
 }
 
 function getPostChronologyTimestamp(post) {
