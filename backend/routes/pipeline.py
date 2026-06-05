@@ -87,9 +87,27 @@ def run_all():
             "error": "No preprocessed posts found. Import and preprocess data first."
         }), 400
 
+    # Drop orphaned preprocessed records whose parent post no longer exists in the
+    # posts table.  Without this filter every downstream INSERT (post_topics,
+    # post_clusters, post_sentiments, post_priorities) would hit a FK violation.
+    raw_ids = [r.raw_id for r in rows]
+    existing_post_ids = {
+        pid for (pid,) in db.session.query(Post.id).filter(Post.id.in_(raw_ids)).all()
+    }
+    rows = [r for r in rows if r.raw_id in existing_post_ids]
+    orphan_count = len(raw_ids) - len(rows)
+
+    if not rows:
+        return jsonify({
+            "error": "No valid posts found — all preprocessed records are orphaned."
+        }), 400
+
     post_ids = [row.raw_id for row in rows]
     texts = [" ".join(row.final_tokens) for row in rows]
-    steps["preprocessing"] = {"posts_available": len(rows)}
+    steps["preprocessing"] = {
+        "posts_available": len(rows),
+        "orphaned_records_skipped": orphan_count,
+    }
 
     # ── Step 2: CorEx train ────────────────────────────────────────────────────
     if corex_trained() and not force:
