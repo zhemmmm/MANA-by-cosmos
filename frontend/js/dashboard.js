@@ -197,8 +197,71 @@ function buildDashboardPagination(totalPosts) {
   `;
 }
 
+function getPagedArchiveView(totalPosts, currentPage, perPage) {
+  const pageSize = Math.max(1, perPage || 15);
+  const totalPages = Math.max(1, Math.ceil(totalPosts / pageSize));
+  const safePage = Math.min(Math.max(1, currentPage || 1), totalPages);
+  const startIndex = (safePage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalPosts);
+
+  return {
+    totalPages,
+    currentPage: safePage,
+    startIndex,
+    endIndex,
+  };
+}
+
+function buildArchivePagination(totalPosts, currentPage, perPage, dataAttr = "irrelevant") {
+  const { totalPages, currentPage: safePage } = getPagedArchiveView(totalPosts, currentPage, perPage);
+  if (totalPosts <= 0 || totalPages <= 1) return "";
+
+  const pages = [];
+  const maxVisible = 5;
+  let start = Math.max(1, safePage - 2);
+  let end = Math.min(totalPages, start + maxVisible - 1);
+  start = Math.max(1, end - maxVisible + 1);
+
+  for (let page = start; page <= end; page += 1) {
+    pages.push(`
+      <button
+        class="dashboard-page-btn ${page === safePage ? "active" : ""}"
+        type="button"
+        data-${dataAttr}-page="${page}"
+        ${page === safePage ? "aria-current=\"page\"" : ""}
+      >${page}</button>
+    `);
+  }
+
+  return `
+    <button
+      class="dashboard-nav-btn"
+      type="button"
+      data-${dataAttr}-page="${safePage - 1}"
+      ${safePage === 1 ? "disabled" : ""}
+    >Prev</button>
+    <div class="dashboard-page-list">${pages.join("")}</div>
+    <button
+      class="dashboard-nav-btn dashboard-nav-btn-next"
+      type="button"
+      data-${dataAttr}-page="${safePage + 1}"
+      ${safePage === totalPages ? "disabled" : ""}
+    >Next</button>
+  `;
+}
+
 function updateDashboardFeedMeta(startIndex, endIndex, totalCount) {
   const label = document.getElementById("dashboardFeedCount");
+  if (!label) return;
+  if (!totalCount) {
+    label.textContent = "No matching posts";
+    return;
+  }
+  label.textContent = `Showing ${formatNumber(startIndex + 1)}-${formatNumber(endIndex)} of ${formatNumber(totalCount)} matching posts`;
+}
+
+function updateArchiveFeedMeta(labelId, startIndex, endIndex, totalCount) {
+  const label = document.getElementById(labelId);
   if (!label) return;
   if (!totalCount) {
     label.textContent = "No matching posts";
@@ -216,7 +279,7 @@ function renderResolvedPostsPanel(postList, emptyMessage, scope = "dashboard") {
 }
 
 function renderIrrelevantPostsPanel(postList) {
-  if (state.loading.dashboardIrrelevantPosts && !postList.length) {
+  if ((!state.loaded.dashboardIrrelevantPosts || state.loading.dashboardIrrelevantPosts) && !postList.length) {
     return renderLoadingMessage("Loading irrelevant posts...");
   }
 
@@ -229,10 +292,10 @@ function renderIrrelevantPostsPanel(postList) {
 
 function renderIrrelevantPostsSummary(postList) {
   const totalIrrelevantPosts = postList.length;
-  const value = state.loading.dashboardIrrelevantPosts && !totalIrrelevantPosts
+  const value = (!state.loaded.dashboardIrrelevantPosts || state.loading.dashboardIrrelevantPosts) && !totalIrrelevantPosts
     ? "..."
     : formatNumber(totalIrrelevantPosts);
-  const meta = state.loading.dashboardIrrelevantPosts && !totalIrrelevantPosts
+  const meta = (!state.loaded.dashboardIrrelevantPosts || state.loading.dashboardIrrelevantPosts) && !totalIrrelevantPosts
     ? "Loading irrelevant records from the backend..."
     : totalIrrelevantPosts === 1
       ? "1 post marked irrelevant"
@@ -260,13 +323,12 @@ function getIrrelevantPostsViewModel() {
 function getDashboardViewModel() {
   const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch);
   const dashboardSource = state.dashboardPostsSource || "All";
+  const dashboardSort = state.dashboardPostsSort || "newest";
   const dashboardPanelPosts = filteredPosts
     .filter(post => dashboardSource === "All" || post.source === dashboardSource);
   const sortedTrendingPosts = [...dashboardPanelPosts].sort((a, b) => {
-    if (state.dashboardRange === "all") {
-      return getPostScrapeTimestamp(b) - getPostScrapeTimestamp(a);
-    }
-    return (b.severityRank * 1000 + getEngagement(b)) - (a.severityRank * 1000 + getEngagement(a));
+    const dateDiff = getPostScrapeTimestamp(a) - getPostScrapeTimestamp(b);
+    return dashboardSort === "oldest" ? dateDiff : -dateDiff;
   });
   const sourceDirectory = [...new Map(filteredPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
   const pagination = getDashboardPagination(sortedTrendingPosts.length);
@@ -387,8 +449,22 @@ function renderResolvedArchivePage() {
 
 function renderIrrelevantArchivePage() {
   const irrelevantPosts = getIrrelevantPostsViewModel();
+  const pagination = getPagedArchiveView(
+    irrelevantPosts.length,
+    state.irrelevantPage,
+    state.irrelevantPostsPerPage
+  );
+  state.irrelevantPage = pagination.currentPage;
+  const visiblePosts = irrelevantPosts.slice(pagination.startIndex, pagination.endIndex);
+
   document.getElementById("irrelevantPostsSummary").innerHTML = renderIrrelevantPostsSummary(irrelevantPosts);
-  document.getElementById("irrelevantPostsPanel").innerHTML = renderIrrelevantPostsPanel(irrelevantPosts);
+  document.getElementById("irrelevantPostsPanel").innerHTML = renderIrrelevantPostsPanel(visiblePosts);
+  updateArchiveFeedMeta("irrelevantFeedCount", pagination.startIndex, pagination.endIndex, irrelevantPosts.length);
+  document.getElementById("irrelevantPagination").innerHTML = buildArchivePagination(
+    irrelevantPosts.length,
+    pagination.currentPage,
+    state.irrelevantPostsPerPage
+  );
 }
 
 // ─── Render: Source Directory ─────────────────────────────────────────────────

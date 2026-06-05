@@ -4,14 +4,13 @@ MANA — Posts, watchlist, and dashboard routes backed by SQLite.
 
 from __future__ import annotations
 
-from datetime import timedelta
 from collections import defaultdict
 
 from sqlalchemy import func, or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_label, now_utc, parse_date_range, top_keywords_from_posts
+from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, now_utc, parse_date_range, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
 from models import Comment, Post, PostTopic, Watchlist, db, utc_iso
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
@@ -85,10 +84,14 @@ def apply_post_filters(query):
         mapped = "Moderate" if priority == "Medium" else ("Monitoring" if priority == "Low" else priority)
         query = query.filter(Post.priority == mapped)
     if date_range:
-        delta = parse_date_range(date_range)
-        if delta is not None:
-            cutoff = now_utc() - delta
+        cutoff = date_range_cutoff(date_range)
+        if cutoff is not None:
             query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+        else:
+            delta = parse_date_range(date_range)
+            if delta is not None:
+                cutoff = now_utc() - delta
+                query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     return query
 
 
@@ -241,11 +244,15 @@ def get_live_version():
 @jwt_required(optional=True)
 def get_dashboard_summary():
     date_range = request.args.get("date_range", "7d")
-    delta = parse_date_range(date_range)
     query = Post.query.filter(Post.is_relevant == True)
-    if delta is not None:
-        cutoff = now_utc() - delta
+    cutoff = date_range_cutoff(date_range)
+    if cutoff is not None:
         query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+    else:
+        delta = parse_date_range(date_range)
+        if delta is not None:
+            cutoff = now_utc() - delta
+            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     posts = query.all()
     total = len(posts)
     fb_posts = sum(1 for post in posts if post.source == "Facebook")
@@ -307,12 +314,15 @@ def get_keywords():
 def get_dashboard_comments():
     date_range = request.args.get("date_range", "7d")
     limit = max(1, min(int(request.args.get("limit", 6)), 24))
-    delta = parse_date_range(date_range)
-
     query = Comment.query
-    if delta is not None:
-        cutoff = now_utc() - delta
+    cutoff = date_range_cutoff(date_range)
+    if cutoff is not None:
         query = query.filter(or_(Comment.date >= cutoff, Comment.created_at >= cutoff))
+    else:
+        delta = parse_date_range(date_range)
+        if delta is not None:
+            cutoff = now_utc() - delta
+            query = query.filter(or_(Comment.date >= cutoff, Comment.created_at >= cutoff))
 
     comments = query.order_by(Comment.date.desc()).all()
 
