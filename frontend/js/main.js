@@ -28,8 +28,11 @@ const state = {
   // Filter state
   dashboardRange:   "30d",
   dashboardPostsSource: "All",
+  dashboardPostsSort: "newest",
   dashboardPage:    1,
   dashboardPostsPerPage: 15,
+  irrelevantPage:   1,
+  irrelevantPostsPerPage: 15,
   alerts:           { dateRange: "30d", source: "All" },
   clusterFilters:   { source: "All", severity: "Trending", dateRange: "30d" },
   analyticsRange:   "30d",
@@ -238,6 +241,32 @@ async function loadDeferredAppData() {
   })();
 
   return deferredDataPromise;
+}
+
+function loadPageData(page = state.currentPage) {
+  if (page === "dashboard") {
+    if (!state.loaded.keywords) loadKeywords();
+    if (state.dashboardCommentsRange !== state.dashboardRange || !state.loaded.dashboardComments) {
+      loadDashboardComments(state.dashboardRange);
+    }
+    return;
+  }
+
+  if (page === "irrelevant") {
+    if (!state.loaded.dashboardIrrelevantPosts) loadDashboardIrrelevantPosts();
+    return;
+  }
+
+  if (page === "analytics") {
+    if (!state.loaded.analytics || state.analyticsLoadedRange !== state.analyticsRange) {
+      loadAnalytics(state.analyticsRange);
+    }
+    return;
+  }
+
+  if (page === "watchlist" && !state.loaded.watchlist) {
+    loadWatchlist();
+  }
 }
 
 async function loadKeywords() {
@@ -572,6 +601,7 @@ function bindStaticControls() {
   document.getElementById("dashboardRange").addEventListener("change", async e => {
     state.dashboardRange  = e.target.value;
     state.dashboardPage = 1;
+    state.irrelevantPage = 1;
     state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
     loadDashboardComments(state.dashboardRange);
     renderDashboard();
@@ -579,6 +609,12 @@ function bindStaticControls() {
 
   document.getElementById("dashboardPostsSource").addEventListener("change", e => {
     state.dashboardPostsSource = e.target.value;
+    state.dashboardPage = 1;
+    renderDashboard();
+  });
+
+  document.getElementById("dashboardPostsSort").addEventListener("change", e => {
+    state.dashboardPostsSort = e.target.value;
     state.dashboardPage = 1;
     renderDashboard();
   });
@@ -604,6 +640,7 @@ function bindStaticControls() {
   const applyGlobalSearch = value => {
     state.globalSearch = value;
     state.dashboardPage = 1;
+    state.irrelevantPage = 1;
     renderCurrentPage({ refreshDashboardSummary: true });
   };
 
@@ -710,6 +747,16 @@ function handleDocumentClick(event) {
       state.dashboardPage = targetPage;
       renderDashboard();
       document.getElementById("dashboardPosts")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  const irrelevantPageBtn = event.target.closest("[data-irrelevant-page]");
+  if (irrelevantPageBtn) {
+    const targetPage = Number(irrelevantPageBtn.dataset.irrelevantPage);
+    if (Number.isFinite(targetPage) && targetPage > 0 && targetPage !== state.irrelevantPage) {
+      state.irrelevantPage = targetPage;
+      renderIrrelevantArchivePage();
+      document.getElementById("irrelevantPostsPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -931,16 +978,8 @@ function setPage(page) {
   const title = pageTitles[page];
   document.getElementById("topbarEyebrow").textContent = title.eyebrow;
   document.getElementById("topbarTitle").textContent   = title.title;
+  loadPageData(page);
   renderCurrentPage({ refreshDashboardSummary: page === "dashboard" });
-  if (page === "analytics" && !state.loaded.analytics) loadAnalytics(state.analyticsRange);
-  if (page === "analytics" && state.analyticsLoadedRange !== state.analyticsRange) loadAnalytics(state.analyticsRange);
-  if (page === "watchlist" && !state.loaded.watchlist) loadWatchlist();
-  if (page === "dashboard") {
-    if (!state.loaded.keywords) loadKeywords();
-    if (state.dashboardCommentsRange !== state.dashboardRange || !state.loaded.dashboardComments) {
-      loadDashboardComments(state.dashboardRange);
-    }
-  }
   document.body.classList.remove("sidebar-open");
 }
 

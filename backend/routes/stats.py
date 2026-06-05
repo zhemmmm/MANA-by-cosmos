@@ -12,7 +12,7 @@ from sqlalchemy import or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 
-from data import CLUSTER_MAP, now_utc, parse_date_range, priority_label, score_tone
+from data import CLUSTER_MAP, date_range_cutoff, now_utc, parse_date_range, priority_label, score_tone
 from models import Post
 
 stats_bp = Blueprint("stats", __name__)
@@ -28,11 +28,15 @@ def comparable_dt(value):
 
 
 def filtered_posts(date_range: str):
-    delta = parse_date_range(date_range)
     query = Post.query.filter(Post.is_relevant == True)
-    if delta is not None:
-        cutoff = now_utc() - delta
+    cutoff = date_range_cutoff(date_range)
+    if cutoff is not None:
         query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+    else:
+        delta = parse_date_range(date_range)
+        if delta is not None:
+            cutoff = now_utc() - delta
+            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     return query.order_by(Post.date.asc()).all()
 
 

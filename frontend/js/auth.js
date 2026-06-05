@@ -136,9 +136,9 @@ async function handleLogin(event) {
     loadCriticalAppData()
       .then(() => {
         startLiveUpdates();
-        return loadDeferredAppData();
       })
       .catch(() => {});
+    if (typeof loadPageData === "function") loadPageData(state.currentPage);
     showToast("Authenticated", "MANA is now ready for dashboard monitoring.");
   } catch (err) {
     showToast("Sign-in failed", err.message || "Invalid credentials. Please try again.");
@@ -223,9 +223,9 @@ async function checkRememberedSession() {
     loadCriticalAppData()
       .then(() => {
         startLiveUpdates();
-        return loadDeferredAppData();
       })
       .catch(() => {});
+    if (typeof loadPageData === "function") loadPageData(state.currentPage);
   } catch (err) {
     if (getToken() !== sessionToken) return;
     localStorage.removeItem("mana-session");

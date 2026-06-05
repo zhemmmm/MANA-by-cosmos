@@ -15,7 +15,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required
 from sqlalchemy import or_
 
-from data import now_utc, parse_date_range, priority_label, recommendation_payload_for, score_tone
+from data import date_range_cutoff, now_utc, parse_date_range, priority_label, recommendation_payload_for, score_tone
 from models import ActivityLog, Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, SystemSetting, User, db
 from services.apify_integration import (
     KIND_FACEBOOK,
@@ -418,11 +418,15 @@ def get_logs():
 @admin_required
 def get_stats():
     date_range = request.args.get("date_range", "7d")
-    delta = parse_date_range(date_range)
     query = Post.query.filter(Post.is_relevant == True)
-    if delta is not None:
-        cutoff = now_utc() - delta
+    cutoff = date_range_cutoff(date_range)
+    if cutoff is not None:
         query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+    else:
+        delta = parse_date_range(date_range)
+        if delta is not None:
+            cutoff = now_utc() - delta
+            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
     posts = query.order_by(Post.date.asc()).all()
 
     total_posts = len(posts)
