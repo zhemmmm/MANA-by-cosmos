@@ -326,10 +326,7 @@ function getDashboardViewModel() {
   const dashboardSort = state.dashboardPostsSort || "newest";
   const dashboardPanelPosts = filteredPosts
     .filter(post => dashboardSource === "All" || post.source === dashboardSource);
-  const sortedTrendingPosts = [...dashboardPanelPosts].sort((a, b) => {
-    const dateDiff = getPostScrapeTimestamp(a) - getPostScrapeTimestamp(b);
-    return dashboardSort === "oldest" ? dateDiff : -dateDiff;
-  });
+  const sortedTrendingPosts = [...dashboardPanelPosts].sort((a, b) => comparePostsByChronology(a, b, dashboardSort));
   const sourceDirectory = [...new Map(filteredPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
   const pagination = getDashboardPagination(sortedTrendingPosts.length);
   const visiblePosts = sortedTrendingPosts.slice(pagination.startIndex, pagination.endIndex);

@@ -27,6 +27,26 @@ function getPostFilterTimestamp(post) {
   return Math.max(getPostDisplayTimestamp(post), getPostScrapeTimestamp(post));
 }
 
+function getPostChronologyTimestamp(post) {
+  return getPostDisplayTimestamp(post) || getPostScrapeTimestamp(post);
+}
+
+function comparePostsByChronology(a, b, order = "newest") {
+  const aTime = getPostChronologyTimestamp(a);
+  const bTime = getPostChronologyTimestamp(b);
+  if (aTime !== bTime) {
+    return order === "oldest" ? aTime - bTime : bTime - aTime;
+  }
+
+  const aCreated = getPostScrapeTimestamp(a);
+  const bCreated = getPostScrapeTimestamp(b);
+  if (aCreated !== bCreated) {
+    return order === "oldest" ? aCreated - bCreated : bCreated - aCreated;
+  }
+
+  return String(a?.id || "").localeCompare(String(b?.id || ""));
+}
+
 function getManilaDateKey(value) {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return null;
