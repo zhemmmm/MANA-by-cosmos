@@ -145,6 +145,9 @@ class Post(TimestampMixin, db.Model):
     sentiment_compound = db.Column(db.Float, nullable=True)
     recommendation = db.Column(db.Text, nullable=False, default="")
     status = db.Column(db.String(32), nullable=False, default="Monitoring")
+    verification_status = db.Column(db.String(32), nullable=True, index=True)
+    verification_note = db.Column(db.Text, nullable=False, default="")
+    verification_marked_by = db.Column(db.String(120), nullable=True)
     cluster_id = db.Column(db.String(32), db.ForeignKey("clusters.id"), nullable=False)
     reviewed_cluster_id = db.Column(db.String(32), db.ForeignKey("clusters.id"), nullable=True, index=True)
     cluster_label_source = db.Column(db.String(32), nullable=False, default="heuristic", index=True)
@@ -195,6 +198,9 @@ class Post(TimestampMixin, db.Model):
                 shares=self.shares or self.reposts,
             ),
             "status": self.status,
+            "verificationStatus": self.verification_status,
+            "verificationNote": self.verification_note,
+            "verificationMarkedBy": self.verification_marked_by,
             "clusterId": self.cluster_id,
             "reviewedClusterId": self.reviewed_cluster_id,
             "clusterLabelSource": self.cluster_label_source,

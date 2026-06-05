@@ -197,6 +197,27 @@ def ensure_post_cluster_label_columns():
     conn.close()
 
 
+def ensure_post_verification_columns():
+    """Add shared verification fields to posts so verification state syncs between users."""
+    db_path = app.instance_path + "\\mana.db"
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    columns = {row[1] for row in cur.execute("PRAGMA table_info(posts)").fetchall()}
+    wanted = {
+        "verification_status": "ALTER TABLE posts ADD COLUMN verification_status VARCHAR(32)",
+        "verification_note": "ALTER TABLE posts ADD COLUMN verification_note TEXT NOT NULL DEFAULT ''",
+        "verification_marked_by": "ALTER TABLE posts ADD COLUMN verification_marked_by VARCHAR(120)",
+    }
+    for column, statement in wanted.items():
+        if column not in columns:
+            cur.execute(statement)
+    cur.execute(
+        "CREATE INDEX IF NOT EXISTS ix_posts_verification_status ON posts(verification_status)"
+    )
+    conn.commit()
+    conn.close()
+
+
 def ensure_preprocessed_text_columns():
     db_path = app.instance_path + "\\mana.db"
     conn = sqlite3.connect(db_path)
@@ -329,6 +350,7 @@ def ensure_database():
             ensure_preprocessed_text_columns()
             ensure_sentiment_columns()
             ensure_post_cluster_label_columns()
+            ensure_post_verification_columns()
             ensure_post_priority_table()
         seed_clusters()
         seed_default_users()

@@ -12,7 +12,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, now_utc, parse_date_range, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
-from models import Comment, Post, PostTopic, Watchlist, db, utc_iso
+from models import ActivityLog, Comment, Post, PostTopic, SystemSetting, User, Watchlist, db, utc_iso
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
 from x_matching import build_post_match_index as build_x_post_match_index, find_post_match as find_x_post_match
 
@@ -42,11 +42,25 @@ def current_username():
     return get_jwt_identity() or "admin_mana"
 
 
+def current_actor_label():
+    username = get_jwt_identity()
+    if not username:
+        return "Unknown"
+    user = db.session.get(User, username)
+    if not user:
+        return username
+    return user.name or user.username
+
+
 def comment_rank(comment: Comment):
     text = (comment.text or "").lower()
     signal_score = sum(weight for term, weight in COMMENT_SIGNAL_TERMS.items() if term in text)
     severity = comment.post.severity_rank if comment.post else 1
     return signal_score + (comment.likes * 4) + (severity * 12) + min(len((comment.text or "").split()), 12)
+
+
+def _latest_timestamp(*values):
+    return max([value for value in values if value], default=None)
 
 
 def apply_post_filters(query):
@@ -180,6 +194,41 @@ def update_post_status(post_id):
     return jsonify({"id": post_id, "status": post.status})
 
 
+@posts_bp.route("/posts/<post_id>/verification", methods=["PATCH"])
+@jwt_required(optional=True)
+def update_post_verification(post_id):
+    data = request.get_json() or {}
+    post = db.session.get(Post, post_id)
+    if not post:
+        return jsonify({"message": "Post not found"}), 404
+
+    status = (data.get("status") or "").strip()
+    note = (data.get("note") or "").strip()
+    marked_by = (data.get("markedBy") or "").strip()
+
+    valid_statuses = {"auto-verified", "auto-unverified", "manually-verified", "marked-unverified"}
+    if status and status not in valid_statuses:
+        return jsonify({"message": "Invalid verification status"}), 400
+
+    if status:
+        post.verification_status = status
+    if note is not None:
+        post.verification_note = note
+
+    if status in {"manually-verified", "marked-unverified"}:
+        post.verification_marked_by = marked_by or current_actor_label()
+    elif status in {"auto-verified", "auto-unverified"}:
+        post.verification_marked_by = None
+
+    db.session.commit()
+    return jsonify({
+        "id": post_id,
+        "verificationStatus": post.verification_status,
+        "verificationNote": post.verification_note,
+        "verificationMarkedBy": post.verification_marked_by,
+    })
+
+
 @posts_bp.route("/watchlist", methods=["GET"])
 @jwt_required(optional=True)
 def get_watchlist():
@@ -225,18 +274,39 @@ def get_clusters():
 def get_live_version():
     latest_post_change = db.session.query(func.max(func.coalesce(Post.updated_at, Post.created_at))).scalar()
     latest_comment_change = db.session.query(func.max(func.coalesce(Comment.updated_at, Comment.created_at))).scalar()
+    latest_activity_change = db.session.query(func.max(func.coalesce(ActivityLog.updated_at, ActivityLog.created_at))).scalar()
+    latest_user_change = db.session.query(func.max(func.coalesce(User.updated_at, User.created_at))).scalar()
+    latest_setting_change = db.session.query(func.max(func.coalesce(SystemSetting.updated_at, SystemSetting.created_at))).scalar()
+    latest_watchlist_change = db.session.query(func.max(func.coalesce(Watchlist.updated_at, Watchlist.created_at))).scalar()
+
     post_count = Post.query.count()
     comment_count = Comment.query.count()
-    latest_change = max(
-        [value for value in (latest_post_change, latest_comment_change) if value],
-        default=None,
+    activity_count = ActivityLog.query.count()
+    user_count = User.query.count()
+    setting_count = SystemSetting.query.count()
+    watchlist_count = Watchlist.query.count()
+
+    latest_change = _latest_timestamp(
+        latest_post_change,
+        latest_comment_change,
+        latest_activity_change,
+        latest_user_change,
+        latest_setting_change,
+        latest_watchlist_change,
     )
 
     return jsonify({
-        "version": f"{utc_iso(latest_change) or 'empty'}:{post_count}:{comment_count}",
+        "version": (
+            f"{utc_iso(latest_change) or 'empty'}:"
+            f"{post_count}:{comment_count}:{activity_count}:{user_count}:{setting_count}:{watchlist_count}"
+        ),
         "latestChange": utc_iso(latest_change),
         "postCount": post_count,
         "commentCount": comment_count,
+        "activityCount": activity_count,
+        "userCount": user_count,
+        "settingCount": setting_count,
+        "watchlistCount": watchlist_count,
     })
 
 
