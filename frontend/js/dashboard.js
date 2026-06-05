@@ -227,6 +227,26 @@ function renderIrrelevantPostsPanel(postList) {
   return renderPostCards(postList, { archiveMode: true });
 }
 
+function renderIrrelevantPostsSummary(postList) {
+  const totalIrrelevantPosts = postList.length;
+  const value = state.loading.dashboardIrrelevantPosts && !totalIrrelevantPosts
+    ? "..."
+    : formatNumber(totalIrrelevantPosts);
+  const meta = state.loading.dashboardIrrelevantPosts && !totalIrrelevantPosts
+    ? "Loading irrelevant records from the backend..."
+    : totalIrrelevantPosts === 1
+      ? "1 post marked irrelevant"
+      : "Posts marked irrelevant in the current view";
+
+  return `
+    <div class="mini-card kpi-red">
+      <div class="mini-card-label">Total irrelevant posts</div>
+      <div class="mini-card-value">${value}</div>
+      <div class="mini-card-meta">${meta}</div>
+    </div>
+  `;
+}
+
 function getIrrelevantPostsViewModel() {
   return filterPosts(
     state.dashboardIrrelevantPosts || [],
@@ -367,6 +387,7 @@ function renderResolvedArchivePage() {
 
 function renderIrrelevantArchivePage() {
   const irrelevantPosts = getIrrelevantPostsViewModel();
+  document.getElementById("irrelevantPostsSummary").innerHTML = renderIrrelevantPostsSummary(irrelevantPosts);
   document.getElementById("irrelevantPostsPanel").innerHTML = renderIrrelevantPostsPanel(irrelevantPosts);
 }
 

@@ -1536,6 +1536,13 @@ body.light-theme .rec-popup-text  { color: #134e4a; }
   padding: 12px 14px 14px;
 }
 
+.irrelevant-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px 14px 0;
+}
+
 .comment-list {
   padding-top: 12px;
 }
