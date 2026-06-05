@@ -550,7 +550,10 @@ def now_utc():
     return datetime.now(timezone.utc)
 
 
-MANILA_TZ = ZoneInfo("Asia/Manila")
+try:
+    MANILA_TZ = ZoneInfo("Asia/Manila")
+except Exception:
+    MANILA_TZ = timezone(timedelta(hours=8))
 
 
 def is_all_date_range(date_range: str | None) -> bool:
@@ -566,8 +569,12 @@ def parse_date_range(date_range: str) -> timedelta | None:
 
 def date_range_cutoff(date_range: str):
     key = (date_range or "").strip().lower()
-    if key != "30d":
+    if is_all_date_range(key):
         return None
+
+    if key != "30d":
+        delta = parse_date_range(key)
+        return now_utc() - delta if delta is not None else None
 
     today_manila = now_utc().astimezone(MANILA_TZ).date()
     start_date = today_manila - timedelta(days=29)

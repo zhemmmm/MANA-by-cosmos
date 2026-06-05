@@ -6,11 +6,11 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from sqlalchemy import func, or_
+from sqlalchemy import func
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, now_utc, parse_date_range, top_keywords_from_posts
+from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
 from models import ActivityLog, Comment, Post, PostTopic, SystemSetting, User, Watchlist, db, utc_iso
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
@@ -100,12 +100,7 @@ def apply_post_filters(query):
     if date_range:
         cutoff = date_range_cutoff(date_range)
         if cutoff is not None:
-            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
-        else:
-            delta = parse_date_range(date_range)
-            if delta is not None:
-                cutoff = now_utc() - delta
-                query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+            query = query.filter(Post.date >= cutoff)
     return query
 
 
@@ -317,12 +312,7 @@ def get_dashboard_summary():
     query = Post.query.filter(Post.is_relevant == True)
     cutoff = date_range_cutoff(date_range)
     if cutoff is not None:
-        query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
-    else:
-        delta = parse_date_range(date_range)
-        if delta is not None:
-            cutoff = now_utc() - delta
-            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+        query = query.filter(Post.date >= cutoff)
     posts = query.all()
     total = len(posts)
     fb_posts = sum(1 for post in posts if post.source == "Facebook")
@@ -387,12 +377,7 @@ def get_dashboard_comments():
     query = Comment.query
     cutoff = date_range_cutoff(date_range)
     if cutoff is not None:
-        query = query.filter(or_(Comment.date >= cutoff, Comment.created_at >= cutoff))
-    else:
-        delta = parse_date_range(date_range)
-        if delta is not None:
-            cutoff = now_utc() - delta
-            query = query.filter(or_(Comment.date >= cutoff, Comment.created_at >= cutoff))
+        query = query.filter(Comment.date >= cutoff)
 
     comments = query.order_by(Comment.date.desc()).all()
 

@@ -8,11 +8,10 @@ from collections import defaultdict
 from datetime import timedelta
 from math import ceil
 
-from sqlalchemy import or_
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 
-from data import CLUSTER_MAP, date_range_cutoff, now_utc, parse_date_range, priority_label, score_tone
+from data import CLUSTER_MAP, date_range_cutoff, now_utc, priority_label, score_tone
 from models import Post
 
 stats_bp = Blueprint("stats", __name__)
@@ -31,12 +30,7 @@ def filtered_posts(date_range: str):
     query = Post.query.filter(Post.is_relevant == True)
     cutoff = date_range_cutoff(date_range)
     if cutoff is not None:
-        query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
-    else:
-        delta = parse_date_range(date_range)
-        if delta is not None:
-            cutoff = now_utc() - delta
-            query = query.filter(or_(Post.date >= cutoff, Post.created_at >= cutoff))
+        query = query.filter(Post.date >= cutoff)
     return query.order_by(Post.date.asc()).all()
 
 
@@ -162,7 +156,7 @@ def cluster_activity():
 def posts_over_time():
     from datetime import datetime, timezone
     date_range = request.args.get("date_range", "24h")
-    cutoff = now_utc() - timedelta(hours=24)
+    cutoff = date_range_cutoff(date_range) or (now_utc() - timedelta(hours=24))
     posts = Post.query.filter(Post.is_relevant == True, Post.date >= cutoff).order_by(Post.date.asc()).all()
 
     hourly_counts = defaultdict(int)
