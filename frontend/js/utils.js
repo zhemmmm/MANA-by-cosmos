@@ -27,6 +27,32 @@ function getPostFilterTimestamp(post) {
   return Math.max(getPostDisplayTimestamp(post), getPostScrapeTimestamp(post));
 }
 
+function getManilaDateKey(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+function getManilaDateKeyDaysAgo(daysAgo) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  }).formatToParts(new Date());
+  const year = Number(parts.find(part => part.type === "year")?.value);
+  const month = Number(parts.find(part => part.type === "month")?.value);
+  const day = Number(parts.find(part => part.type === "day")?.value);
+  const base = new Date(Date.UTC(year, month - 1, day));
+  base.setUTCDate(base.getUTCDate() - daysAgo);
+  return base.toISOString().slice(0, 10);
+}
+
 function timeAgo(date) {
   const diff = Date.now() - new Date(date).getTime();
   const h = Math.floor(diff / 3600000);
@@ -69,12 +95,17 @@ function getEngagement(post) {
 function matchesDateRange(postDate, range, post = null) {
   if (range === "all") return true;
   const timestamp = post ? getPostFilterTimestamp(post) : toTimestamp(postDate);
+  if (!timestamp) return false;
+  if (range === "30d") {
+    const postKey = getManilaDateKey(timestamp);
+    if (!postKey) return false;
+    return postKey >= getManilaDateKeyDaysAgo(29) && postKey <= getManilaDateKey(new Date());
+  }
   const diffDays = (Date.now() - timestamp) / (1000 * 60 * 60 * 24);
   if (range === "24h") return diffDays <= 1;
   if (range === "3d")  return diffDays <= 3;
   if (range === "7d")  return diffDays <= 7;
   if (range === "14d") return diffDays <= 14;
-  if (range === "30d") return diffDays <= 30;
   return true;
 }
 

@@ -9,7 +9,8 @@ import json
 import os
 import re
 from collections import Counter
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, time
+from zoneinfo import ZoneInfo
 
 from models import Cluster, db
 from services.rules.decision_engine import evaluate_from_post
@@ -549,6 +550,9 @@ def now_utc():
     return datetime.now(timezone.utc)
 
 
+MANILA_TZ = ZoneInfo("Asia/Manila")
+
+
 def is_all_date_range(date_range: str | None) -> bool:
     return (date_range or "").strip().lower() == "all"
 
@@ -558,6 +562,17 @@ def parse_date_range(date_range: str) -> timedelta | None:
         return None
     mapping = {"24h": timedelta(days=1), "3d": timedelta(days=3), "7d": timedelta(days=7), "14d": timedelta(days=14), "30d": timedelta(days=30)}
     return mapping.get(date_range, timedelta(days=7))
+
+
+def date_range_cutoff(date_range: str):
+    key = (date_range or "").strip().lower()
+    if key != "30d":
+        return None
+
+    today_manila = now_utc().astimezone(MANILA_TZ).date()
+    start_date = today_manila - timedelta(days=29)
+    start_dt = datetime.combine(start_date, time.min, tzinfo=MANILA_TZ)
+    return start_dt.astimezone(timezone.utc)
 
 
 def date_range_label(date_range: str) -> str:
