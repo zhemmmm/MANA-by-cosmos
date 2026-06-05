@@ -1,39 +1,12 @@
 {
-  "trained_at": "2026-05-16T02:21:36.186947+00:00",
-  "corpus_size": 105,
-  "n_estimators": 100,
-  "accuracy": 0.8095,
-  "precision": 0.8056,
-  "recall": 0.8095,
-  "f1_score": 0.8041,
-  "confusion_matrix": {
-    "labels": [
-      "High",
-      "Medium",
-      "Low"
-    ],
-    "values": [
-      [
-        6,
-        1,
-        0
-      ],
-      [
-        1,
-        2,
-        1
-      ],
-      [
-        1,
-        0,
-        9
-      ]
-    ]
-  },
+  "trained_at": "2026-06-05T11:22:22.194875+00:00",
+  "corpus_size": 1028,
+  "n_estimators": 200,
+  "accuracy": 0.8835,
   "class_distribution": {
-    "High": 34,
-    "Medium": 21,
-    "Low": 50
+    "High": 148,
+    "Medium": 636,
+    "Low": 244
   },
   "feature_columns": [
     "vader_compound",
@@ -57,6 +30,5 @@
     "topic_telecom_power",
     "topic_health_medical",
     "topic_dead_missing"
-  ],
-  "source": "train_from_csv.py"
+  ]
 }
