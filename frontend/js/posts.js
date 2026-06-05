@@ -109,6 +109,14 @@ async function apiUpdatePostStatus(postId, status) {
   });
 }
 
+async function apiUpdatePostVerification(postId, payload) {
+  return apiFetch(`/posts/${postId}/verification`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+    skipAuthRedirect: true,
+  });
+}
+
 async function apiGetWatchlist() { return apiFetch("/watchlist"); }
 async function apiPinPost(postId) {
   return apiFetch(`/watchlist/${postId}`, { method: "POST", skipAuthRedirect: true });
@@ -125,13 +133,20 @@ const PostsService = {
   async getKeywords() { return USE_MOCK ? MOCK_KEYWORDS : apiGetKeywords(); },
 
   async pinPost(postId) {
-    return { postId, pinned: true, localOnly: true };
+    if (USE_MOCK) return { postId, pinned: true, localOnly: true };
+    return apiPinPost(postId);
   },
   async unpinPost(postId) {
-    return { postId, pinned: false, localOnly: true };
+    if (USE_MOCK) return { postId, pinned: false, localOnly: true };
+    return apiUnpinPost(postId);
   },
   async updatePostStatus(postId, status) {
-    return { postId, status, localOnly: true };
+    if (USE_MOCK) return { postId, status, localOnly: true };
+    return apiUpdatePostStatus(postId, status);
+  },
+  async updatePostVerification(postId, payload) {
+    if (USE_MOCK) return { postId, ...payload, localOnly: true };
+    return apiUpdatePostVerification(postId, payload);
   },
 };
 
@@ -144,22 +159,32 @@ async function togglePin(postId) {
 
   if (state.pinned.has(postId)) {
     state.pinned.delete(postId);
-    const result = await PostsService.unpinPost(postId).catch(() => null);
-    showToast(
-      result?.localOnly ? "Removed locally" : "Removed from Saved Intelligence",
-      result?.localOnly
-        ? "The post was removed from the local watchlist in this browser."
-        : "The post has been removed from the pinned watchlist."
-    );
+    try {
+      const result = await PostsService.unpinPost(postId);
+      showToast(
+        result?.localOnly ? "Removed locally" : "Removed from Saved Intelligence",
+        result?.localOnly
+          ? "The post was removed from the local watchlist in this browser."
+          : "The post has been removed from the pinned watchlist."
+      );
+    } catch (err) {
+      state.pinned.add(postId);
+      showToast("Unpin failed", err.message || "The post could not be removed from the backend watchlist.");
+    }
   } else {
     state.pinned.add(postId);
-    const result = await PostsService.pinPost(postId).catch(() => null);
-    showToast(
-      result?.localOnly ? "Pinned locally" : "Pinned to Saved Intelligence",
-      result?.localOnly
-        ? "The post was added to the local watchlist in this browser."
-        : "The post has been added to the watchlist for later review."
-    );
+    try {
+      const result = await PostsService.pinPost(postId);
+      showToast(
+        result?.localOnly ? "Pinned locally" : "Pinned to Saved Intelligence",
+        result?.localOnly
+          ? "The post was added to the local watchlist in this browser."
+          : "The post has been added to the watchlist for later review."
+      );
+    } catch (err) {
+      state.pinned.delete(postId);
+      showToast("Pin failed", err.message || "The post could not be saved to the backend watchlist.");
+    }
   }
   persistLocalPreferences();
   renderDashboard();

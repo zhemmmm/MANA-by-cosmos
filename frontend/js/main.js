@@ -203,10 +203,12 @@ async function loadCriticalAppData() {
       }));
       state.statuses = Object.fromEntries(state.posts.map(p => [p.id, p.status]));
 
-      const saved = localStorage.getItem("mana-statuses");
-      if (saved) state.statuses = { ...state.statuses, ...JSON.parse(saved) };
-      const savedHistory = localStorage.getItem("mana-status-history");
-      if (savedHistory) state.statusHistory = { ...state.statusHistory, ...JSON.parse(savedHistory) };
+      if (USE_MOCK) {
+        const saved = localStorage.getItem("mana-statuses");
+        if (saved) state.statuses = { ...state.statuses, ...JSON.parse(saved) };
+        const savedHistory = localStorage.getItem("mana-status-history");
+        if (savedHistory) state.statusHistory = { ...state.statusHistory, ...JSON.parse(savedHistory) };
+      }
 
       state.dashboardPage = 1;
       state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
@@ -353,23 +355,40 @@ function initVerifications(posts) {
   state.verifications = {};
   for (const post of posts) {
     const ref = MOCK_CROSS_REFS[post.id];
-    state.verifications[post.id] = ref
-      ? { status:"auto-verified",   crossRefs:ref.crossRefs, matchCount:ref.matchCount, note:"", markedBy:null }
-      : { status:"auto-unverified", crossRefs:[],             matchCount:0,              note:"", markedBy:null };
+    const storedStatus = post.verificationStatus || "";
+    const storedNote = post.verificationNote || "";
+    const storedMarkedBy = post.verificationMarkedBy || null;
+    const isManual = storedStatus === "manually-verified" || storedStatus === "marked-unverified";
+    const defaultStatus = ref
+      ? "auto-verified"
+      : "auto-unverified";
+    state.verifications[post.id] = {
+      status: storedStatus || defaultStatus,
+      crossRefs: ref ? ref.crossRefs : [],
+      matchCount: ref ? ref.matchCount : 0,
+      note: storedNote,
+      markedBy: isManual ? storedMarkedBy : null,
+    };
   }
-  const saved = localStorage.getItem("mana-verifications");
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      for (const [id, v] of Object.entries(parsed)) {
-        if (state.verifications[id]) state.verifications[id] = { ...state.verifications[id], ...v };
-      }
-    } catch (_) {}
+  if (USE_MOCK) {
+    const saved = localStorage.getItem("mana-verifications");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        for (const [id, v] of Object.entries(parsed)) {
+          if (state.verifications[id]) state.verifications[id] = { ...state.verifications[id], ...v };
+        }
+      } catch (_) {}
+    }
   }
 }
 
 function persistVerifications() {
-  localStorage.setItem("mana-verifications", JSON.stringify(state.verifications));
+  if (USE_MOCK) {
+    localStorage.setItem("mana-verifications", JSON.stringify(state.verifications));
+  } else {
+    localStorage.removeItem("mana-verifications");
+  }
 }
 
 function refreshVerifyBox(postId) {
@@ -409,6 +428,10 @@ function hydrateLocalPreferences() {
 
     const savedProfile = localStorage.getItem("mana-profile");
     if (savedProfile) state.profile = { ...state.profile, ...JSON.parse(savedProfile) };
+  } else {
+    localStorage.removeItem("mana-statuses");
+    localStorage.removeItem("mana-status-history");
+    localStorage.removeItem("mana-verifications");
   }
 
   const savedAlerts = localStorage.getItem("mana-email-alerts");
@@ -416,11 +439,14 @@ function hydrateLocalPreferences() {
 }
 
 function persistLocalPreferences() {
-  localStorage.setItem("mana-statuses", JSON.stringify(state.statuses));
-  localStorage.setItem("mana-status-history", JSON.stringify(state.statusHistory));
   if (USE_MOCK) {
+    localStorage.setItem("mana-statuses", JSON.stringify(state.statuses));
+    localStorage.setItem("mana-status-history", JSON.stringify(state.statusHistory));
     localStorage.setItem("mana-pinned", JSON.stringify([...state.pinned]));
     localStorage.setItem("mana-profile", JSON.stringify(state.profile));
+  } else {
+    localStorage.removeItem("mana-statuses");
+    localStorage.removeItem("mana-status-history");
   }
   localStorage.setItem("mana-email-alerts", String(state.emailAlerts));
 }
@@ -445,6 +471,7 @@ async function setPostStatus(postId, status, options = {}) {
   const { silent = false } = options;
   const post = state.posts.find(item => item.id === postId);
   const previousStatus = getPostStatus(post || { id: postId, status: "Monitoring" });
+  const previousHistory = state.statusHistory[postId];
 
   if (!isResolvedStatus(previousStatus)) {
     state.statusHistory[postId] = previousStatus;
@@ -473,10 +500,64 @@ async function setPostStatus(postId, status, options = {}) {
       );
     }
   } catch (err) {
+    if (previousStatus === undefined) {
+      delete state.statuses[postId];
+    } else {
+      state.statuses[postId] = previousStatus;
+    }
+    if (previousHistory === undefined) {
+      delete state.statusHistory[postId];
+    } else {
+      state.statusHistory[postId] = previousHistory;
+    }
+    persistLocalPreferences();
+    renderCurrentPage({ refreshDashboardSummary: true });
     if (!silent) {
-      showToast("Status saved locally", "The card updated in the dashboard, but the backend request failed.");
+      showToast("Status update failed", err.message || "The change could not be saved to the backend.");
     }
     console.warn("Status update failed:", err);
+  }
+}
+
+async function setPostVerification(postId, changes, options = {}) {
+  if (isViewerMode()) {
+    showViewerReadOnlyToast("Changing verification status");
+    return;
+  }
+
+  const { silent = false } = options;
+  const previous = state.verifications[postId]
+    ? { ...state.verifications[postId] }
+    : { status: "auto-unverified", crossRefs: [], matchCount: 0, note: "", markedBy: null };
+
+  state.verifications[postId] = {
+    ...previous,
+    ...changes,
+  };
+
+  persistVerifications();
+  refreshVerifyBox(postId);
+
+  try {
+    const result = await PostsService.updatePostVerification(postId, changes);
+    if (result?.verificationStatus && state.verifications[postId]) {
+      state.verifications[postId].status = result.verificationStatus;
+      state.verifications[postId].note = result.verificationNote ?? state.verifications[postId].note;
+      state.verifications[postId].markedBy = result.verificationMarkedBy ?? state.verifications[postId].markedBy;
+    }
+    persistVerifications();
+    refreshVerifyBox(postId);
+    if (!silent) {
+      showToast("Verification updated", "The verification state has been updated.");
+    }
+  } catch (err) {
+    state.verifications[postId] = previous;
+    persistVerifications();
+    refreshVerifyBox(postId);
+    if (!silent) {
+      showToast("Verification update failed", err.message || "The change could not be saved to the backend.");
+    }
+    console.warn("Verification update failed:", err);
   }
 }
 
@@ -577,6 +658,62 @@ function startLiveUpdates() {
       { event: "UPDATE", schema: "public", table: "comments" },
       payload => {
         console.log("Realtime comment update:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "activity_logs" },
+      payload => {
+        console.log("Realtime activity log insert:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "users" },
+      payload => {
+        console.log("Realtime user insert:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "UPDATE", schema: "public", table: "users" },
+      payload => {
+        console.log("Realtime user update:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "system_settings" },
+      payload => {
+        console.log("Realtime system setting insert:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "UPDATE", schema: "public", table: "system_settings" },
+      payload => {
+        console.log("Realtime system setting update:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "watchlists" },
+      payload => {
+        console.log("Realtime watchlist insert:", payload);
+        scheduleLiveRefresh();
+      }
+    )
+    .on(
+      "postgres_changes",
+      { event: "DELETE", schema: "public", table: "watchlists" },
+      payload => {
+        console.log("Realtime watchlist delete:", payload);
         scheduleLiveRefresh();
       }
     )
@@ -681,7 +818,7 @@ function bindStaticControls() {
   document.addEventListener("change", handleDocumentChange);
 }
 
-function handleDocumentClick(event) {
+async function handleDocumentClick(event) {
   const nav           = event.target.closest("[data-nav]");
   const clusterNav    = event.target.closest("[data-cluster-nav]");
   const pwToggle      = event.target.closest("[data-toggle-password]");
@@ -786,62 +923,38 @@ function handleDocumentClick(event) {
 
   const markUnverified = event.target.closest("[data-mark-unverified]");
   if (markUnverified) {
-    if (isViewerMode()) {
-      showViewerReadOnlyToast("Changing verification status");
-      return;
-    }
     const pid = markUnverified.dataset.markUnverified;
-    if (state.verifications[pid]) {
-      state.verifications[pid].status   = "marked-unverified";
-      state.verifications[pid].markedBy = state.profile.username || state.profile.name || "Unknown";
-      persistVerifications();
-      refreshVerifyBox(pid);
-    }
+    await setPostVerification(pid, {
+      status: "marked-unverified",
+      markedBy: state.profile.username || state.profile.name || "Unknown",
+    });
   }
 
   const manualVerify = event.target.closest("[data-manually-verify]");
   if (manualVerify) {
-    if (isViewerMode()) {
-      showViewerReadOnlyToast("Changing verification status");
-      return;
-    }
     const pid = manualVerify.dataset.manuallyVerify;
-    if (state.verifications[pid]) {
-      state.verifications[pid].status   = "manually-verified";
-      state.verifications[pid].markedBy = state.profile.username || state.profile.name || "Unknown";
-      persistVerifications();
-      refreshVerifyBox(pid);
-    }
+    await setPostVerification(pid, {
+      status: "manually-verified",
+      markedBy: state.profile.username || state.profile.name || "Unknown",
+    });
   }
 
   const reverify = event.target.closest("[data-reverify]");
   if (reverify) {
-    if (isViewerMode()) {
-      showViewerReadOnlyToast("Changing verification status");
-      return;
-    }
     const pid = reverify.dataset.reverify;
-    if (state.verifications[pid]) {
-      state.verifications[pid].status   = "auto-verified";
-      state.verifications[pid].markedBy = null;
-      persistVerifications();
-      refreshVerifyBox(pid);
-    }
+    await setPostVerification(pid, {
+      status: "auto-verified",
+      markedBy: null,
+    });
   }
 
   const unverifyManual = event.target.closest("[data-unverify-manual]");
   if (unverifyManual) {
-    if (isViewerMode()) {
-      showViewerReadOnlyToast("Changing verification status");
-      return;
-    }
     const pid = unverifyManual.dataset.unverifyManual;
-    if (state.verifications[pid]) {
-      state.verifications[pid].status   = "auto-unverified";
-      state.verifications[pid].markedBy = null;
-      persistVerifications();
-      refreshVerifyBox(pid);
-    }
+    await setPostVerification(pid, {
+      status: "auto-unverified",
+      markedBy: null,
+    });
   }
 
   const addNote = event.target.closest("[data-add-note]");
@@ -862,16 +975,10 @@ function handleDocumentClick(event) {
 
   const saveNote = event.target.closest("[data-save-note]");
   if (saveNote) {
-    if (isViewerMode()) {
-      showViewerReadOnlyToast("Editing verification notes");
-      return;
-    }
     const pid   = saveNote.dataset.saveNote;
     const input = saveNote.closest(".verify-wrapper")?.querySelector(`[data-note-input="${pid}"]`);
-    if (input && state.verifications[pid]) {
-      state.verifications[pid].note = input.value.trim();
-      persistVerifications();
-      refreshVerifyBox(pid);
+    if (input) {
+      await setPostVerification(pid, { note: input.value.trim() });
     }
   }
 
@@ -893,16 +1000,8 @@ function handleDocumentClick(event) {
 
   const deleteNote = event.target.closest("[data-delete-note]");
   if (deleteNote) {
-    if (isViewerMode()) {
-      showViewerReadOnlyToast("Editing verification notes");
-      return;
-    }
     const pid = deleteNote.dataset.deleteNote;
-    if (state.verifications[pid]) {
-      state.verifications[pid].note = "";
-      persistVerifications();
-      refreshVerifyBox(pid);
-    }
+    await setPostVerification(pid, { note: "" });
   }
 
   if (!event.target.closest(".email-inline")) {

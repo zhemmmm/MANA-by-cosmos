@@ -22,6 +22,10 @@ const adminState = {
   usersPerPage: 6,
 };
 
+let adminLiveVersion = null;
+let adminLiveRefreshTimer = null;
+let adminLivePollingTimer = null;
+
 const PAGE_TITLES = {
   dashboard:   { eyebrow: "Overview",        title: "Dashboard Monitoring"    },
   users:       { eyebrow: "Administration",   title: "User Management"         },
@@ -49,6 +53,7 @@ async function adminInit() {
       };
       showAdminApp();
       await loadAllData();
+      startAdminLivePolling();
       return;
     }
   } catch (err) {}
@@ -66,6 +71,63 @@ async function loadAllData() {
   ]);
 }
 
+async function fetchAdminLiveVersion() {
+  const token = getAdminToken();
+  const res = await fetch(`${API_ROOT}/live/version`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`Live version check failed (${res.status})`);
+  }
+  return res.json();
+}
+
+function scheduleAdminLiveRefresh() {
+  clearTimeout(adminLiveRefreshTimer);
+  adminLiveRefreshTimer = setTimeout(async () => {
+    try {
+      await loadAllData();
+      adminToast("Live update", "Admin data refreshed automatically.");
+    } catch (err) {
+      console.warn("Admin live refresh failed:", err);
+    }
+  }, 1200);
+}
+
+async function checkAdminLiveVersion() {
+  try {
+    const data = await fetchAdminLiveVersion();
+    if (!data?.version) return;
+    if (adminLiveVersion === null) {
+      adminLiveVersion = data.version;
+      return;
+    }
+    if (data.version !== adminLiveVersion) {
+      adminLiveVersion = data.version;
+      scheduleAdminLiveRefresh();
+    }
+  } catch (err) {
+    console.warn("Admin live version check failed:", err);
+  }
+}
+
+function startAdminLivePolling() {
+  if (USE_MOCK || adminLivePollingTimer) return;
+  checkAdminLiveVersion();
+  adminLivePollingTimer = setInterval(checkAdminLiveVersion, 30000);
+}
+
+function stopAdminLivePolling() {
+  clearInterval(adminLivePollingTimer);
+  adminLivePollingTimer = null;
+  clearTimeout(adminLiveRefreshTimer);
+  adminLiveRefreshTimer = null;
+  adminLiveVersion = null;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -74,6 +136,7 @@ function showAdminApp() {
 }
 
 document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
+  stopAdminLivePolling();
   await fetch(`${AUTH_API_BASE}/logout`, {
     method: "POST",
     headers: {
