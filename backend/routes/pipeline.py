@@ -8,10 +8,15 @@ Endpoints:
 
 from __future__ import annotations
 
+import threading
 from functools import wraps
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
 from flask_jwt_extended import get_jwt, jwt_required
+
+# ── Background pipeline state ──────────────────────────────────────────────────
+_pipeline_lock: threading.Lock = threading.Lock()
+_pipeline_state: dict = {"status": "idle", "error": None}
 
 from data import recommendation_payload_for
 from models import Comment, Post, PostCluster, PostPriority, PostSentiment, PostTopic, PreprocessedText, db
@@ -54,24 +59,23 @@ def admin_required(fn):
     return wrapper
 
 
-# ── Run full pipeline ──────────────────────────────────────────────────────────
+# ── Background pipeline worker ─────────────────────────────────────────────────
 
-@pipeline_bp.route("/pipeline/run-all", methods=["POST"])
-@admin_required
-def run_all():
-    """
-    Run the full ML pipeline in order:
-      1. Check preprocessed posts exist
-      2. CorEx train  (skipped if already trained and force_retrain is false)
-      3. CorEx predict-all  → post_topics
-      4. SVM train    (skipped if already trained and force_retrain is false)
-      5. SVM predict-all    → post_clusters
-      6. VADER analyze-all  → sentiments
+def _execute_pipeline_bg(app, force: bool) -> None:
+    """Run the full pipeline in a daemon thread so the HTTP response is not blocked."""
+    global _pipeline_state
+    with app.app_context():
+        try:
+            _run_pipeline_sync(force)
+            _pipeline_state = {"status": "complete", "error": None}
+        except Exception as exc:
+            _pipeline_state = {"status": "failed", "error": str(exc)}
+        finally:
+            db.session.remove()          # release thread-local SQLAlchemy session
 
-    Optional JSON body: { "force_retrain": true }
-    """
-    body = request.get_json(silent=True) or {}
-    force = bool(body.get("force_retrain", False))
+
+def _run_pipeline_sync(force: bool) -> None:
+    """Synchronous pipeline body (called from background thread)."""
 
     steps: dict = {}
 
@@ -83,9 +87,7 @@ def run_all():
         .all()
     )
     if not rows:
-        return jsonify({
-            "error": "No preprocessed posts found. Import and preprocess data first."
-        }), 400
+        raise RuntimeError("No preprocessed posts found. Import and preprocess data first.")
 
     # Drop orphaned preprocessed records whose parent post no longer exists in the
     # posts table.  Without this filter every downstream INSERT (post_topics,
@@ -98,9 +100,7 @@ def run_all():
     orphan_count = len(raw_ids) - len(rows)
 
     if not rows:
-        return jsonify({
-            "error": "No valid posts found — all preprocessed records are orphaned."
-        }), 400
+        raise RuntimeError("No valid posts found — all preprocessed records are orphaned.")
 
     post_ids = [row.raw_id for row in rows]
     texts = [" ".join(row.final_tokens) for row in rows]
@@ -129,7 +129,7 @@ def run_all():
                 "low_coherence_topics": result["low_coherence_topics"],
             }
         except Exception as exc:
-            return jsonify({"error": f"CorEx training failed: {exc}", "steps": steps}), 500
+            raise RuntimeError(f"CorEx training failed: {exc}") from exc
 
     # ── Step 3: CorEx predict-all ──────────────────────────────────────────────
     try:
@@ -155,7 +155,7 @@ def run_all():
         }
     except Exception as exc:
         db.session.rollback()
-        return jsonify({"error": f"CorEx prediction failed: {exc}", "steps": steps}), 500
+        raise RuntimeError(f"CorEx prediction failed: {exc}") from exc
 
     # ── Step 2.5: Re-score heuristic cluster labels using CorEx expanded keywords ─
     # Loads the keywords CorEx just discovered and re-assigns cluster_id for posts
@@ -280,7 +280,7 @@ def run_all():
                 "bootstrap_labels_used": heuristic_count,
             }
         except Exception as exc:
-            return jsonify({"error": f"SVM training failed: {exc}", "steps": steps}), 500
+            raise RuntimeError(f"SVM training failed: {exc}") from exc
 
     # ── Step 5: SVM predict-all ────────────────────────────────────────────────
     try:
@@ -316,7 +316,7 @@ def run_all():
         }
     except Exception as exc:
         db.session.rollback()
-        return jsonify({"error": f"SVM prediction failed: {exc}", "steps": steps}), 500
+        raise RuntimeError(f"SVM prediction failed: {exc}") from exc
 
     # ── Step 6: VADER analyze-all ──────────────────────────────────────────────
     try:
@@ -370,7 +370,7 @@ def run_all():
         }
     except Exception as exc:
         db.session.rollback()
-        return jsonify({"error": f"VADER analysis failed: {exc}", "steps": steps}), 500
+        raise RuntimeError(f"VADER analysis failed: {exc}") from exc
 
     # ── Step 7: RF train ───────────────────────────────────────────────────────
     if rf_trained() and not force:
@@ -392,7 +392,7 @@ def run_all():
                 "class_distribution": result["class_distribution"],
             }
         except Exception as exc:
-            return jsonify({"error": f"RF training failed: {exc}", "steps": steps}), 500
+            raise RuntimeError(f"RF training failed: {exc}") from exc
 
     # ── Step 8: RF predict-all ─────────────────────────────────────────────────
     try:
@@ -445,16 +445,52 @@ def run_all():
         }
     except Exception as exc:
         db.session.rollback()
-        return jsonify({"error": f"RF prediction failed: {exc}", "steps": steps}), 500
+        raise RuntimeError(f"RF prediction failed: {exc}") from exc
 
     # ── Commit everything at once ──────────────────────────────────────────────
     try:
         db.session.commit()
     except Exception as exc:
         db.session.rollback()
-        return jsonify({"error": f"Database commit failed: {exc}", "steps": steps}), 500
+        raise RuntimeError(f"Database commit failed: {exc}") from exc
 
-    return jsonify({"message": "Pipeline complete.", "steps": steps})
+
+# ── Run full pipeline (async) ──────────────────────────────────────────────────
+
+@pipeline_bp.route("/pipeline/run-all", methods=["POST"])
+@admin_required
+def run_all():
+    """
+    Start the full ML pipeline in a background thread and return 202 immediately.
+    Avoids Render's 30-second proxy timeout on long-running pipelines.
+
+    Optional JSON body: { "force_retrain": true }
+      - false (default): skip training, only run predictions + VADER
+      - true: retrain CorEx, SVM, and RF before predicting
+
+    Poll GET /pipeline/status for progress (pipeline.status: idle|running|complete|failed).
+    """
+    global _pipeline_state
+    with _pipeline_lock:
+        if _pipeline_state["status"] == "running":
+            return jsonify({"message": "Pipeline already running."}), 409
+        _pipeline_state = {"status": "running", "error": None}
+
+    body = request.get_json(silent=True) or {}
+    force = bool(body.get("force_retrain", False))
+    app = current_app._get_current_object()
+
+    threading.Thread(
+        target=_execute_pipeline_bg,
+        args=(app, force),
+        daemon=True,
+    ).start()
+
+    return jsonify({
+        "message": "Pipeline started in background.",
+        "force_retrain": force,
+        "poll": "/api/admin/pipeline/status",
+    }), 202
 
 
 # ── Train from seed dataset ────────────────────────────────────────────────────
@@ -547,4 +583,5 @@ def status():
                 record_type="post", preprocessing_status="processed", is_relevant=True
             ).count(),
         },
+        "pipeline": _pipeline_state,
     })
