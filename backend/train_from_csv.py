@@ -119,11 +119,13 @@ CLUSTER_KEYWORDS: dict[str, list[str]] = {
 
     # cluster-a : relief (Food and Non-food Items)
     "cluster-a": [
+        # Relief distribution
         "relief goods","relief donation","food donation","food pack",
         "relief distribution","relief operations","relief convoy",
         "relief pack","relief items","relief package","relief drive",
         "packed relief","aid package","food assistance",
         "non food items","ready to eat",
+        # Food items
         "rice","noodles","sardines","canned goods","water sachet",
         "family pack","drinking water","tarpaulin","sleeping mat",
         "mosquito net","jerry can","water container","blanket",
@@ -131,6 +133,18 @@ CLUSTER_KEYWORDS: dict[str, list[str]] = {
         "soap","toothbrush","feminine hygiene","sanitary napkin",
         "repacking","food distribution","hot meal","community kitchen",
         "supply drop","dswd","red cross",
+        # Food safety / food poisoning — in disaster/evacuation context
+        "food poisoning","food poison","food contamination","food safety",
+        "food borne","foodborne","foodborne illness","contaminated food",
+        "spoiled food","expired food","food complaint","food inspection",
+        "food quality","food hygiene","unsafe food","food recall",
+        "food alert","tainted food","bad food","rotten food",
+        # General food and feeding programs
+        "feeding program","feeding activity","supplementary feeding",
+        "food relief","food aid","food supply","food goods",
+        "grocery pack","aguinaldo","food voucher","food basket",
+        "instant noodles","bottled water","biscuits","crackers",
+        "vitamins","multivitamins",
     ],
 
     # cluster-b : health_medical
@@ -148,6 +162,12 @@ CLUSTER_KEYWORDS: dict[str, list[str]] = {
         # COVID-19 posts → health/medical
         "covid","covid-19","coronavirus","covid case","covid monitoring",
         "covid positive","covid alert","covid update","covid patient",
+        # WASH / Environmental health — waterway pollution, illegal dumping
+        "illegal dumping","littering","anti-littering",
+        "estero","canal","waterway","drain",
+        "flushing operation","canal cleaning","drain cleaning",
+        "environmental violation","solid waste management",
+        "water quality","river pollution",
     ],
 
     # cluster-c : evacuation (CCCM)
@@ -193,6 +213,10 @@ CLUSTER_KEYWORDS: dict[str, list[str]] = {
         "thunderstorm","thunderstorm advisory","thunderstorm watch",
         "thunderstorm warning","thunderstorm watch ncr","rainfall advisory",
         "severe thunderstorm","lightning advisory",
+        # flood / weather advisories
+        "flood advisory","flood bulletin","general flood advisory",
+        "flood warning","regional weather forecast","weather bulletin",
+        "rainfall forecast",
     ],
 
     # cluster-f : education
@@ -294,6 +318,37 @@ _NON_MANILA_REGIONS = frozenset({
     "rizal province","quezon province",
 })
 
+# ---------------------------------------------------------------------------
+# Hard irrelevant filter
+# Posts matching ANY of these terms are excluded before cluster scoring,
+# regardless of their keyword score.  They describe non-disaster government
+# or admin content that can accidentally score ≥ 1 via Manila/MMDA terms.
+# ---------------------------------------------------------------------------
+_HARD_IRRELEVANT_TERMS = frozenset({
+    # Traffic enforcement — not disaster response
+    "ncap", "no contact apprehension",
+    "seatbelt violation", "seat belt violation",
+    "failure to use seatbelt", "failure to wear seatbelt",
+    "anti-illegal parking", "illegal parking operation",
+    "apprehension policy",
+    # Admin / permits — not disaster
+    "business permit renewal", "mayor's permit renewal",
+    "fire safety inspection certificate",
+    # Celebrations / events — not disaster
+    "happy birthday",
+    "eid mubarak", "eid al-adha", "eid al-fitr",
+    "world no tobacco", "anti-tobacco day",
+    "paperless billing",
+    "agri-produce trade fair",
+    "ribbon-cutting ceremony",
+})
+
+
+def is_hard_irrelevant(clean_text: str) -> bool:
+    """Return True if this post is clearly non-disaster content."""
+    t = clean_text.lower()
+    return any(term in t for term in _HARD_IRRELEVANT_TERMS)
+
 
 def is_manila_relevant(clean_text: str) -> bool:
     """Return False only if the post mentions a non-Manila region and NO Manila term."""
@@ -393,6 +448,22 @@ _SYNTHETIC: dict[str, list[str]] = {
         "Dialysis patients in flood area need urgent assistance reaching medical centers.",
         "Water-borne disease alert issued for Sampaloc flood zone. Avoid wading.",
         "Hospital on standby: trauma and orthopedic teams ready for flood-related injuries.",
+        # WASH / Environmental health synthetic templates
+        "Illegal dumping caught on CCTV: individual fined for throwing garbage into Estero de Vitas, Tondo.",
+        "MMDA issues environmental violation receipt for illegal dumping in estero near Barangay 177, Manila.",
+        "Anti-littering enforcement in Binondo: 5 individuals fined for dumping waste in canal.",
+        "Flushing operations conducted along Estero de Paco to clear solid waste before rainy season.",
+        "Canal cleaning operations along C4 Road, Manila. MMDA power washer team deployed.",
+        "Environmental violation issued for illegal garbage dumping in Pasig River tributary near Tondo.",
+        "Waterway pollution alert: garbage clogging drainage canal in Quiapo may worsen flood risk.",
+        "MMDA Health Office cites illegal dumping near Estero de San Lazaro. EVR issued.",
+        "Drain cleaning operations in Sampaloc. Heavy equipment removes silt and solid waste buildup.",
+        "Illegal garbage dumping near Manila Bay shoreline. Violator issued environmental violation receipt.",
+        "Estero de Binondo found clogged with solid waste. MMDA orders immediate canal cleaning.",
+        "Environmental health alert: stagnant water and garbage in estero raise leptospirosis risk in Tondo.",
+        "Canal rehabilitation in Malate to improve drainage and reduce flood risk before typhoon season.",
+        "Anti-littering campaign in Quiapo: residents warned against throwing trash in waterways.",
+        "MMDA flushing operations clear blocked drain in Sampaloc. Residents advised to avoid waterway contact.",
         "DOH health advisory: wash hands frequently, especially in evacuation centers.",
         "Suspected measles case reported in evacuation center. Containment measures activated.",
         "Nurses volunteer overtime at Manila General Hospital during typhoon emergency.",
@@ -898,6 +969,27 @@ _SYNTHETIC: dict[str, list[str]] = {
         "Family food pack includes cooked rice, noodles, sardines, biscuits and mineral water.",
         "DSWD encourages cash donations instead of goods to streamline relief distribution.",
         "Relief operations update: 15,000 families served in Manila since typhoon landfall.",
+        # Food safety / food poisoning in disaster/evacuation context
+        "Food poisoning alert: 12 evacuees at Delpan center hospitalized after eating spoiled relief goods.",
+        "DSWD issues food safety advisory: inspect expiry dates on canned goods before distributing.",
+        "Food contamination reported at evacuation center. All food packs recalled for inspection.",
+        "Food poisoning outbreak: 20 families affected after consuming expired sardines from relief packs.",
+        "Manila Health Office investigates food complaint at Tondo evacuation site. Spoiled rice suspected.",
+        "Food inspection team deployed to all Manila evacuation centers following food poisoning incident.",
+        "Tainted food alert: relief goods donated by unknown source flagged for food safety inspection.",
+        "Food safety reminder: do not distribute relief food items with damaged packaging or expired dates.",
+        "LGU orders food quality check at community kitchen after evacuees reported stomach pain.",
+        "DSWD recalls batch of food packs after food contamination complaint at Navotas relief site.",
+        "Feeding program suspended pending food safety audit. New food packs to arrive tomorrow morning.",
+        "Supplementary feeding for malnourished children at Paco evacuation center. 300 kids served.",
+        "Aguinaldo grocery packs distributed to 500 senior citizens in Manila flood relief program.",
+        "Feeding activity for school-age evacuees: biscuits, juice, and vitamins provided at gymnasium.",
+        "Food voucher system piloted by DSWD: affected families can redeem food goods at partner stores.",
+        "Food aid from partner NGOs: 1,000 food baskets with rice, canned goods, and bottled water.",
+        "Rotten food discovered in storage area. Barangay officials request replacement food supply.",
+        "Food recall issued for canned goods distributed yesterday. Possible food contamination risk.",
+        "Bad food report: evacuees in Malate complain of spoiled noodles in latest relief pack delivery.",
+        "Food hygiene training for community kitchen volunteers to prevent foodborne illness outbreaks.",
     ],
 }
 
@@ -1055,7 +1147,12 @@ def main(csv_path: str) -> None:
 
     n_irrelevant = 0
     n_geo_filtered = 0
+    n_hard_filtered = 0
     for i in range(len(df)):
+        if is_hard_irrelevant(clean_texts[i]):
+            n_irrelevant += 1
+            n_hard_filtered += 1
+            continue
         cid, score = score_and_label(clean_texts[i])
         if cid is None:
             n_irrelevant += 1
@@ -1074,7 +1171,7 @@ def main(csv_path: str) -> None:
         filt_shares.append(int(shares.iloc[i]))
         filt_reposts.append(int(reposts.iloc[i]))
 
-    log.info("  Irrelevant (filtered): %d / %d  (geo-filtered: %d)", n_irrelevant, len(df), n_geo_filtered)
+    log.info("  Irrelevant (filtered): %d / %d  (geo-filtered: %d  hard-filtered: %d)", n_irrelevant, len(df), n_geo_filtered, n_hard_filtered)
     log.info("  Relevant (kept)      : %d", len(filt_clean))
     log.info("  Cluster distribution : %s", dict(Counter(filt_cluster)))
     log.info("  Priority distribution: %s", dict(Counter(filt_priority)))
@@ -1238,8 +1335,8 @@ def main(csv_path: str) -> None:
     log.info("")
     log.info("=" * 64)
     log.info("Training complete.")
-    log.info("  Irrelevant posts filtered : %d / %d (%.1f%%)  geo-filtered=%d",
-             n_irrelevant, len(df), 100*n_irrelevant/len(df), n_geo_filtered)
+    log.info("  Irrelevant posts filtered : %d / %d (%.1f%%)  geo-filtered=%d  hard-filtered=%d",
+             n_irrelevant, len(df), 100*n_irrelevant/len(df), n_geo_filtered, n_hard_filtered)
     log.info("  CorEx overall coherence   : %.4f", corex_result["best_overall_coherence"])
     log.info("  SVM   f1_macro            : %.4f", svm_result["f1_macro"])
     log.info("  RF    accuracy            : %.4f", rf_accuracy)

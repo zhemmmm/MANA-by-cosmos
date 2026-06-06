@@ -1,12 +1,12 @@
 {
-  "trained_at": "2026-06-05T11:22:22.194875+00:00",
-  "corpus_size": 1028,
+  "trained_at": "2026-06-06T03:11:18.117636+00:00",
+  "corpus_size": 1158,
   "n_estimators": 200,
-  "accuracy": 0.8835,
+  "accuracy": 0.9095,
   "class_distribution": {
-    "High": 148,
-    "Medium": 636,
-    "Low": 244
+    "High": 175,
+    "Medium": 719,
+    "Low": 264
   },
   "feature_columns": [
     "vader_compound",
