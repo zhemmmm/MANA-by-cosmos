@@ -1,22 +1,23 @@
 {
-  "trained_at": "2026-06-05T11:22:13.574526+00:00",
-  "corpus_size": 1028,
+  "trained_at": "2026-06-06T03:10:59.415389+00:00",
+  "corpus_size": 1158,
   "n_topics": 8,
   "anchor_strength": 3,
   "max_features": 5000,
   "coherence_scores": {
-    "education": 2.37614,
-    "evacuation": 28.65168,
-    "rescue": 28.227811,
-    "logistics": 3.442367,
-    "relief": 4.164458,
-    "telecom_power": 29.153564,
-    "health_medical": 6.645455,
-    "dead_missing": 5.498922
+    "education": 2.776062,
+    "evacuation": 7.163092,
+    "rescue": 22.537615,
+    "logistics": 2.212007,
+    "relief": 2.224782,
+    "telecom_power": 45.73029,
+    "health_medical": 7.38129,
+    "dead_missing": 5.516937
   },
-  "overall_coherence": 13.520049679051267,
+  "overall_coherence": 11.94275946094729,
   "low_coherence_topics": [
-    "education"
+    "logistics",
+    "relief"
   ],
   "iterative_training": true,
   "best_iteration": 1,
