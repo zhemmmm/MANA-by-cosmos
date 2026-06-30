@@ -85,11 +85,15 @@ const AdminData = {
 
   async getLogs(filters = {}) {
     const params = new URLSearchParams();
-    if (filters.type) params.set("type", filters.type);
+    if (filters.type && filters.type !== "all") params.set("type", filters.type);
     if (filters.user_id) params.set("user_id", filters.user_id);
+    if (filters.search) params.set("search", filters.search);
+    if (filters.date_from) params.set("date_from", filters.date_from);
+    if (filters.date_to) params.set("date_to", filters.date_to);
     if (filters.limit) params.set("limit", filters.limit);
+    if (filters.offset) params.set("offset", filters.offset);
     const data = await adminFetch(`/logs?${params.toString()}`);
-    return (data || []).map(log => ({
+    const mapLog = log => ({
       id: log.id,
       userId: log.user_id,
       user: log.user_name,
@@ -97,7 +101,16 @@ const AdminData = {
       detail: log.detail || "",
       time: new Date(log.created_at).toLocaleString("en-PH", { dateStyle: "short", timeStyle: "short" }),
       type: log.type,
-    }));
+      targetUserId: log.target_user_id || null,
+      targetUserName: log.target_user_name || null,
+    });
+    if (Array.isArray(data)) {
+      return { total: data.length, logs: data.map(mapLog) };
+    }
+    return {
+      total: data.total || 0,
+      logs: (data.logs || []).map(mapLog),
+    };
   },
 
   async getStats(dateRange = "7d") {

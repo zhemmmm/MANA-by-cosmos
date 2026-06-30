@@ -14,6 +14,10 @@ const adminState = {
   userFilters: { search: "", role: "all", status: "all" },
   users: [],
   logs: [],
+  logTotal: 0,
+  logFilters: { type: "all", search: "", date_from: "", date_to: "", user_id: "" },
+  logPage: 1,
+  logsPerPage: 20,
   stats: null,
   settings: null,
   editingUserId: null,
@@ -373,6 +377,9 @@ function renderUsersTable() {
                 : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
               }</svg>
             </button>
+            <button class="btn-icon" title="View audit trail" style="color:var(--cyan);" onclick="viewUserLogs('${u.id}','${u.name}')">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </button>
             <button class="btn-icon" title="Delete user" style="color:var(--red);" onclick="confirmDeleteUser('${u.id}','${u.name}')">
               <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4h6v2"></path></svg>
             </button>
@@ -541,30 +548,146 @@ document.getElementById("confirmActionBtn").addEventListener("click", async () =
 // ═══════════════════════════════════════════════════════════════════════════════
 // ACTIVITY LOGS
 // ═══════════════════════════════════════════════════════════════════════════════
-async function loadLogs() {
+async function loadLogs(resetPage = false) {
+  if (resetPage) adminState.logPage = 1;
   try {
-    adminState.logs = await AdminData.getLogs();
+    const offset = (adminState.logPage - 1) * adminState.logsPerPage;
+    const result = await AdminData.getLogs({
+      ...adminState.logFilters,
+      limit: adminState.logsPerPage,
+      offset,
+    });
+    adminState.logs     = result.logs;
+    adminState.logTotal = result.total;
     renderLogs();
   } catch {}
 }
 
 function renderLogs() {
   const TYPE_COLORS = { auth:"#3b82f6", edit:"#10b981", admin:"#8b5cf6", system:"#f59e0b" };
-  document.getElementById("activityLogList").innerHTML = adminState.logs.map(log => `
-    <div class="activity-item">
-      <div class="activity-dot" style="background:${TYPE_COLORS[log.type] || "var(--text-faint)"};"></div>
-      <div class="activity-body">
-        <strong>${log.user} — ${log.action}</strong>
-        <span>${log.detail}</span>
-      </div>
-      <div class="activity-time">${log.time}</div>
-    </div>
-  `).join("");
+  const TYPE_LABELS = { auth:"Auth", edit:"Edit", admin:"Admin", system:"System" };
+
+  const filterLabel = adminState.logFilters.user_id
+    ? ` · Filtered by user`
+    : "";
+  document.getElementById("logCountLabel").textContent =
+    `${adminState.logTotal} event${adminState.logTotal !== 1 ? "s" : ""}${filterLabel}`;
+
+  if (!adminState.logs.length) {
+    document.getElementById("activityLogList").innerHTML =
+      `<div style="text-align:center;padding:32px;color:var(--text-faint);">No events match the current filters.</div>`;
+  } else {
+    document.getElementById("activityLogList").innerHTML = adminState.logs.map(log => {
+      const targetChip = log.targetUserName
+        ? `<span class="log-target-chip">→ ${log.targetUserName}</span>`
+        : "";
+      return `
+        <div class="activity-item">
+          <div class="activity-dot" style="background:${TYPE_COLORS[log.type] || "var(--text-faint)"};"></div>
+          <div class="activity-body">
+            <strong>${escHtml(log.user)}${targetChip} — ${escHtml(log.action)}</strong>
+            <span class="log-type-badge" style="background:${TYPE_COLORS[log.type]}22;color:${TYPE_COLORS[log.type]};">${TYPE_LABELS[log.type] || log.type}</span>
+            <span>${escHtml(log.detail)}</span>
+          </div>
+          <div class="activity-time">${log.time}</div>
+        </div>`;
+    }).join("");
+  }
+
+  renderLogPagination();
 }
 
-document.getElementById("logTypeFilter").addEventListener("change", async e => {
-  adminState.logs = await AdminData.getLogs({ type: e.target.value });
-  renderLogs();
+function renderLogPagination() {
+  const total     = adminState.logTotal;
+  const perPage   = adminState.logsPerPage;
+  const page      = adminState.logPage;
+  const totalPages = Math.ceil(total / perPage);
+  const start = (page - 1) * perPage + 1;
+  const end   = Math.min(page * perPage, total);
+
+  document.getElementById("logPaginationInfo").textContent =
+    total ? `Showing ${start}–${end} of ${total}` : "Showing 0 of 0";
+
+  const btns = [];
+  if (page > 1) btns.push(`<button class="page-btn" onclick="goToLogPage(${page - 1})">‹ Prev</button>`);
+  const window = 2;
+  for (let i = Math.max(1, page - window); i <= Math.min(totalPages, page + window); i++) {
+    btns.push(`<button class="page-btn ${i === page ? "active" : ""}" onclick="goToLogPage(${i})">${i}</button>`);
+  }
+  if (page < totalPages) btns.push(`<button class="page-btn" onclick="goToLogPage(${page + 1})">Next ›</button>`);
+  document.getElementById("logPaginationBtns").innerHTML = btns.join("");
+}
+
+function goToLogPage(page) {
+  adminState.logPage = page;
+  loadLogs();
+}
+
+function viewUserLogs(userId, userName) {
+  adminState.logFilters.user_id = userId;
+  adminState.logFilters.search  = "";
+  document.getElementById("logSearchInput").value  = "";
+  document.getElementById("logUserFilterChipLabel").textContent = `Showing logs for: ${userName}`;
+  document.getElementById("logUserFilterChip").style.display = "inline-flex";
+  setAdminPage("logs");
+  loadLogs(true);
+}
+
+function clearLogUserFilter() {
+  adminState.logFilters.user_id = "";
+  document.getElementById("logUserFilterChip").style.display = "none";
+  loadLogs(true);
+}
+
+document.getElementById("logTypeFilter").addEventListener("change", e => {
+  adminState.logFilters.type = e.target.value;
+  loadLogs(true);
+});
+
+function escHtml(str) {
+  return (str || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// Log search & date filters — wired after DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  const logSearch = document.getElementById("logSearchInput");
+  if (logSearch) {
+    let debounceTimer;
+    logSearch.addEventListener("input", e => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        adminState.logFilters.search = e.target.value.trim();
+        loadLogs(true);
+      }, 350);
+    });
+  }
+
+  const logDateFrom = document.getElementById("logDateFrom");
+  if (logDateFrom) {
+    logDateFrom.addEventListener("change", e => {
+      adminState.logFilters.date_from = e.target.value;
+      loadLogs(true);
+    });
+  }
+
+  const logDateTo = document.getElementById("logDateTo");
+  if (logDateTo) {
+    logDateTo.addEventListener("change", e => {
+      adminState.logFilters.date_to = e.target.value;
+      loadLogs(true);
+    });
+  }
+
+  const clearDates = document.getElementById("logClearDates");
+  if (clearDates) {
+    clearDates.addEventListener("click", () => {
+      adminState.logFilters.date_from = "";
+      adminState.logFilters.date_to   = "";
+      if (logDateFrom) logDateFrom.value = "";
+      if (logDateTo)   logDateTo.value   = "";
+      loadLogs(true);
+    });
+  }
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════

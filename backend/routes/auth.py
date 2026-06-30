@@ -35,7 +35,13 @@ def find_user(identity: str):
     )
 
 
-def log_activity(action: str, detail: str, log_type: str = "system", actor: User | None = None):
+def log_activity(
+    action: str,
+    detail: str,
+    log_type: str = "system",
+    actor: User | None = None,
+    target: User | None = None,
+):
     actor = actor or current_user()
     actor_name = actor.name or actor.username if actor else "System"
     actor_username = actor.username if actor else None
@@ -46,6 +52,8 @@ def log_activity(action: str, detail: str, log_type: str = "system", actor: User
             action=action,
             detail=detail,
             type=log_type,
+            target_username=target.username if target else None,
+            target_name=(target.name or target.username) if target else None,
         )
     )
 
@@ -126,10 +134,13 @@ def update_profile():
 
     data = get_json()
     name = (data.get("name") or data.get("username") or "").strip()
-    if name:
+    changes = []
+    if name and name != (user.name or user.username):
+        changes.append(f"name '{user.name or user.username}' → '{name}'")
         user.name = name
 
-    log_activity("Profile updated", "Profile details updated", "edit", actor=user)
+    detail = "Updated own profile — " + ("; ".join(changes) if changes else "no field changes")
+    log_activity("Profile updated", detail, "edit", actor=user)
     db.session.commit()
     return jsonify(
         {

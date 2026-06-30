@@ -484,10 +484,83 @@ a { color: inherit; text-decoration: none; }
 .activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
 .activity-item:last-child { border-bottom: none; }
 .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
-.activity-body { flex: 1; min-width: 0; }
+.activity-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .activity-body strong { display: block; font-size: 0.86rem; line-height: 1.4; }
 .activity-body span { color: var(--text-soft); font-size: 0.78rem; }
 .activity-time { color: var(--text-faint); font-size: 0.74rem; white-space: nowrap; }
+
+.log-type-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.log-target-chip {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--cyan);
+  margin-left: 4px;
+}
+
+/* ── Audit Filter Bar ───────────────────────────────────────────────────────── */
+.audit-filter-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 14px 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+.audit-date-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.audit-date-label { font-size: 0.78rem; color: var(--text-faint); font-weight: 600; }
+.audit-date-input {
+  width: 140px;
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  cursor: pointer;
+}
+.audit-date-input:focus { border-color: var(--accent); }
+.btn-sm { padding: 6px 12px; font-size: 0.78rem; }
+
+/* ── Log User Filter Chip ───────────────────────────────────────────────────── */
+.log-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--cyan-soft);
+  border: 1px solid var(--cyan);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+.log-user-chip button {
+  display: grid;
+  place-items: center;
+  color: var(--cyan);
+  opacity: 0.7;
+  transition: opacity var(--ease);
+}
+.log-user-chip button:hover { opacity: 1; }
 
 /* ── Modal ──────────────────────────────────────────────────────────────────── */
 .modal-backdrop {

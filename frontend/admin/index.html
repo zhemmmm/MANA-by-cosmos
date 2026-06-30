@@ -299,20 +299,54 @@
               <h2>Activity Logs</h2>
               <p>Full audit trail of user logins, edits, admin actions, and system events.</p>
             </div>
-            <select class="filter-select" id="logTypeFilter">
-              <option value="all">All types</option>
-              <option value="auth">Authentication</option>
-              <option value="edit">Data edits</option>
-              <option value="admin">Admin actions</option>
-              <option value="system">System events</option>
-            </select>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <select class="filter-select" id="logTypeFilter">
+                <option value="all">All types</option>
+                <option value="auth">Authentication</option>
+                <option value="edit">Data edits</option>
+                <option value="admin">Admin actions</option>
+                <option value="system">System events</option>
+              </select>
+            </div>
           </div>
         </div>
 
+        <!-- Search + Date Filters -->
+        <div class="audit-filter-bar">
+          <div class="search-wrap" style="flex:1;min-width:200px;">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="search-input" id="logSearchInput" placeholder="Search user, action, or detail…">
+          </div>
+          <div class="audit-date-row">
+            <label class="audit-date-label">From</label>
+            <input type="date" class="filter-select audit-date-input" id="logDateFrom">
+            <label class="audit-date-label">To</label>
+            <input type="date" class="filter-select audit-date-input" id="logDateTo">
+            <button class="btn btn-ghost btn-sm" id="logClearDates">Clear dates</button>
+          </div>
+        </div>
+
+        <!-- Active user filter chip -->
+        <div id="logUserFilterChip" class="log-user-chip" style="display:none;">
+          <span id="logUserFilterChipLabel"></span>
+          <button onclick="clearLogUserFilter()" title="Clear user filter">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
         <div class="admin-card">
-          <div class="card-header"><div><h3>Event Log</h3><p>Chronological audit trail</p></div></div>
+          <div class="card-header">
+            <div>
+              <h3>Event Log</h3>
+              <p id="logCountLabel">Loading…</p>
+            </div>
+          </div>
           <div class="card-body">
             <div class="activity-list" id="activityLogList"></div>
+          </div>
+          <div class="pagination" style="border-top:1px solid var(--border);padding:12px 20px;">
+            <div class="pagination-info" id="logPaginationInfo"></div>
+            <div class="pagination-btns" id="logPaginationBtns"></div>
           </div>
         </div>
       </section>
