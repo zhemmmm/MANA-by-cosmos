@@ -579,13 +579,20 @@ function renderLogs() {
   } else {
     document.getElementById("activityLogList").innerHTML = adminState.logs.map(log => {
       const targetChip = log.targetUserName
-        ? `<span class="log-target-chip">→ ${log.targetUserName}</span>`
+        ? `<span class="log-target-chip">→ ${escHtml(log.targetUserName)}</span>`
+        : "";
+      const postTitle = log.targetPostTitle || log.targetPostId || "Open post";
+      const postHref = log.targetPostUrl
+        ? log.targetPostUrl
+        : (log.targetPostId ? `../index.html?focusPost=${encodeURIComponent(log.targetPostId)}` : "");
+      const postChip = log.targetPostId && postHref
+        ? `<a class="log-post-link" href="${escHtml(postHref)}" target="_blank" rel="noopener noreferrer" title="Open tracked post">${escHtml(postTitle)}</a>`
         : "";
       return `
         <div class="activity-item">
           <div class="activity-dot" style="background:${TYPE_COLORS[log.type] || "var(--text-faint)"};"></div>
           <div class="activity-body">
-            <strong>${escHtml(log.user)}${targetChip} — ${escHtml(log.action)}</strong>
+            <strong>${escHtml(log.user)}${targetChip} — ${escHtml(log.action)} ${postChip ? `<span class="log-post-label">·</span> ${postChip}` : ""}</strong>
             <span class="log-type-badge" style="background:${TYPE_COLORS[log.type]}22;color:${TYPE_COLORS[log.type]};">${TYPE_LABELS[log.type] || log.type}</span>
             <span>${escHtml(log.detail)}</span>
           </div>

@@ -397,6 +397,7 @@ a { color: inherit; text-decoration: none; }
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border-mid);
   color: var(--text);
+  color-scheme: dark;
   transition: border-color var(--ease), box-shadow var(--ease);
 }
 .form-field textarea { height: auto; padding: 12px 14px; resize: vertical; line-height: 1.55; }
@@ -404,7 +405,10 @@ a { color: inherit; text-decoration: none; }
   border-color: rgba(59,130,246,0.55);
   box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
 }
-.form-field select option { background: #0d1626; }
+.form-field select option {
+  background-color: #0d1626;
+  color: var(--text);
+}
 .form-help { color: var(--text-faint); font-size: 0.78rem; margin-top: 4px; line-height: 1.5; }
 .input-with-btn { position: relative; }
 .input-with-btn input { width: 100%; padding-right: 52px; }
@@ -448,6 +452,7 @@ a { color: inherit; text-decoration: none; }
   padding: 0 14px 0 38px;
   background: rgba(255,255,255,0.03); border: 1px solid var(--border-mid);
   color: var(--text);
+  color-scheme: dark;
   transition: border-color var(--ease), box-shadow var(--ease);
 }
 .search-input:focus { border-color: rgba(59,130,246,0.5); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
@@ -455,6 +460,11 @@ a { color: inherit; text-decoration: none; }
   height: 38px; border-radius: var(--r-lg); padding: 0 12px;
   background: rgba(255,255,255,0.03); border: 1px solid var(--border-mid);
   color: var(--text); min-width: 140px;
+  color-scheme: dark;
+}
+.filter-select option {
+  background-color: #0d1626;
+  color: var(--text);
 }
 
 /* ── Charts ─────────────────────────────────────────────────────────────────── */
@@ -505,6 +515,26 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   color: var(--cyan);
   margin-left: 4px;
+}
+.log-post-label {
+  color: var(--text-faint);
+  margin: 0 4px;
+}
+.log-post-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  margin-left: 2px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+.log-post-link:hover {
+  color: #69a5ff;
 }
 
 /* ── Audit Filter Bar ───────────────────────────────────────────────────────── */

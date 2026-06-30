@@ -220,6 +220,7 @@ def log_activity(
     log_type: str = "admin",
     actor: User | None = None,
     target: User | None = None,
+    target_post: Post | None = None,
 ):
     if actor is None:
         try:
@@ -235,6 +236,9 @@ def log_activity(
             type=log_type,
             target_username=target.username if target else None,
             target_name=(target.name or target.username) if target else None,
+            target_post_id=target_post.id if target_post else None,
+            target_post_title=(target_post.caption or target_post.page_source or "")[:255] if target_post else None,
+            target_post_url=target_post.source_url if target_post else None,
         )
     )
 
@@ -467,6 +471,9 @@ def get_logs():
             ActivityLog.actor_username.ilike(like) |
             ActivityLog.target_name.ilike(like) |
             ActivityLog.target_username.ilike(like) |
+            ActivityLog.target_post_id.ilike(like) |
+            ActivityLog.target_post_title.ilike(like) |
+            ActivityLog.target_post_url.ilike(like) |
             ActivityLog.action.ilike(like) |
             ActivityLog.detail.ilike(like)
         )

@@ -82,6 +82,9 @@ class ActivityLog(TimestampMixin, db.Model):
     type = db.Column(db.String(32), nullable=False, default="system", index=True)
     target_username = db.Column(db.String(80), nullable=True, index=True)
     target_name = db.Column(db.String(120), nullable=True)
+    target_post_id = db.Column(db.String(128), nullable=True, index=True)
+    target_post_title = db.Column(db.String(255), nullable=True)
+    target_post_url = db.Column(db.String(1024), nullable=True)
 
     def to_api_dict(self):
         return {
@@ -93,6 +96,9 @@ class ActivityLog(TimestampMixin, db.Model):
             "type": self.type,
             "target_user_id": self.target_username,
             "target_user_name": self.target_name,
+            "target_post_id": self.target_post_id,
+            "target_post_title": self.target_post_title,
+            "target_post_url": self.target_post_url,
             "created_at": utc_iso(self.created_at),
         }
 

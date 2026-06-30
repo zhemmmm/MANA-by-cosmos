@@ -32,6 +32,23 @@ def _log_post_activity(action: str, detail: str):
         )
     )
 
+
+def _log_post_activity_for_post(action: str, detail: str, post: Post):
+    username = get_jwt_identity()
+    user = db.session.get(User, username) if username else None
+    db.session.add(
+        ActivityLog(
+            actor_username=user.username if user else None,
+            actor_name=(user.name or user.username) if user else "Unknown",
+            action=action,
+            detail=detail,
+            type="edit",
+            target_post_id=post.id,
+            target_post_title=(post.caption or post.page_source or "")[:255],
+            target_post_url=post.source_url,
+        )
+    )
+
 COMMENT_SIGNAL_TERMS = {
     "urgent": 10,
     "sos": 12,
@@ -200,9 +217,10 @@ def update_post_status(post_id):
 
     old_status = post.status
     post.status = data.get("status", post.status)
-    _log_post_activity(
+    _log_post_activity_for_post(
         "Post status changed",
-        f"Post {post_id[:16]}… status '{old_status}' → '{post.status}'",
+        f"Status '{old_status}' → '{post.status}'",
+        post,
     )
     db.session.commit()
     return jsonify({"id": post_id, "status": post.status})
@@ -238,7 +256,7 @@ def update_post_verification(post_id):
         detail = f"Post {post_id[:16]}… verification set to '{status}'"
         if note:
             detail += f" — note: '{note}'"
-        _log_post_activity("Post verification updated", detail)
+        _log_post_activity_for_post("Post verification updated", detail, post)
 
     db.session.commit()
     return jsonify({

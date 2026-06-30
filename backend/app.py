@@ -210,12 +210,20 @@ def ensure_audit_log_columns():
             conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_username VARCHAR(80)"))
         if "target_name" not in columns:
             conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_name VARCHAR(120)"))
+        if "target_post_id" not in columns:
+            conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_post_id VARCHAR(128)"))
+        if "target_post_title" not in columns:
+            conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_post_title VARCHAR(255)"))
+        if "target_post_url" not in columns:
+            conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_post_url VARCHAR(1024)"))
 
         dialect = db.engine.dialect.name
         if dialect == "sqlite":
             conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_username ON activity_logs(target_username)"))
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_post_id ON activity_logs(target_post_id)"))
         elif dialect == "postgresql":
             conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_username ON activity_logs(target_username)"))
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_post_id ON activity_logs(target_post_id)"))
 
 
 def ensure_post_verification_columns():
