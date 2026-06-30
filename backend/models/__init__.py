@@ -87,15 +87,29 @@ class ActivityLog(TimestampMixin, db.Model):
     target_post_url = db.Column(db.String(1024), nullable=True)
 
     def to_api_dict(self):
+        resolved_actor_name = self.actor_name
+        resolved_target_user_name = self.target_name
+        try:
+            if self.actor_username:
+                actor = db.session.get(User, self.actor_username)
+                if actor:
+                    resolved_actor_name = actor.name or actor.username
+            if self.target_username:
+                target = db.session.get(User, self.target_username)
+                if target:
+                    resolved_target_user_name = target.name or target.username
+        except Exception:
+            pass
+
         return {
             "id": self.id,
             "user_id": self.actor_username,
-            "user_name": self.actor_name,
+            "user_name": resolved_actor_name,
             "action": self.action,
             "detail": self.detail,
             "type": self.type,
             "target_user_id": self.target_username,
-            "target_user_name": self.target_name,
+            "target_user_name": resolved_target_user_name,
             "target_post_id": self.target_post_id,
             "target_post_title": self.target_post_title,
             "target_post_url": self.target_post_url,
