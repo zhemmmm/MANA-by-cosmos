@@ -24,6 +24,7 @@ const state = {
   currentCluster:   "cluster-a",
   currentTheme:     "dark",
   currentCaptcha:   "",
+  pendingFocusPost: null,
 
   // Filter state
   dashboardRange:   "30d",
@@ -173,6 +174,10 @@ async function init() {
     updateClock();
     if (!clockRefreshTimer) {
       clockRefreshTimer = setInterval(updateClock, 60000);
+    }
+    const focusPost = new URLSearchParams(window.location.search).get("focusPost");
+    if (focusPost) {
+      state.pendingFocusPost = focusPost;
     }
     await checkRememberedSession();
   })();
@@ -576,6 +581,7 @@ function scheduleLiveRefresh() {
       await loadCriticalAppData();
       await loadDeferredAppData();
       renderCurrentPage({ refreshDashboardSummary: true });
+      focusPendingPostIfNeeded();
       showToast("Live update received", "New Apify data was loaded automatically.");
     } catch (err) {
       console.warn("Live refresh failed:", err);
@@ -1079,7 +1085,25 @@ function setPage(page) {
   document.getElementById("topbarTitle").textContent   = title.title;
   loadPageData(page);
   renderCurrentPage({ refreshDashboardSummary: page === "dashboard" });
+  focusPendingPostIfNeeded();
   document.body.classList.remove("sidebar-open");
+}
+
+function focusPendingPostIfNeeded() {
+  const postId = state.pendingFocusPost;
+  if (!postId) return;
+
+  const card = document.querySelector(`[data-post-card="${CSS.escape(postId)}"]`);
+  if (!card) return;
+
+  state.pendingFocusPost = null;
+  card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.style.outline = "2px solid rgba(59, 130, 246, 0.8)";
+  card.style.outlineOffset = "4px";
+  window.setTimeout(() => {
+    card.style.outline = "";
+    card.style.outlineOffset = "";
+  }, 2200);
 }
 
 // ─── Theme & Sidebar ─────────────────────────────────────────────────────────

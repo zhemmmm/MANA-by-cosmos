@@ -103,6 +103,9 @@ const AdminData = {
       type: log.type,
       targetUserId: log.target_user_id || null,
       targetUserName: log.target_user_name || null,
+      targetPostId: log.target_post_id || null,
+      targetPostTitle: log.target_post_title || null,
+      targetPostUrl: log.target_post_url || null,
     });
     if (Array.isArray(data)) {
       return { total: data.length, logs: data.map(mapLog) };
