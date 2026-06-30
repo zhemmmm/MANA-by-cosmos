@@ -18,6 +18,20 @@ from x_matching import build_post_match_index as build_x_post_match_index, find_
 
 posts_bp = Blueprint("posts", __name__)
 
+
+def _log_post_activity(action: str, detail: str):
+    username = get_jwt_identity()
+    user = db.session.get(User, username) if username else None
+    db.session.add(
+        ActivityLog(
+            actor_username=user.username if user else None,
+            actor_name=(user.name or user.username) if user else "Unknown",
+            action=action,
+            detail=detail,
+            type="edit",
+        )
+    )
+
 COMMENT_SIGNAL_TERMS = {
     "urgent": 10,
     "sos": 12,
@@ -184,7 +198,12 @@ def update_post_status(post_id):
     if not post:
         return jsonify({"message": "Post not found"}), 404
 
+    old_status = post.status
     post.status = data.get("status", post.status)
+    _log_post_activity(
+        "Post status changed",
+        f"Post {post_id[:16]}… status '{old_status}' → '{post.status}'",
+    )
     db.session.commit()
     return jsonify({"id": post_id, "status": post.status})
 
@@ -214,6 +233,12 @@ def update_post_verification(post_id):
         post.verification_marked_by = marked_by or current_actor_label()
     elif status in {"auto-verified", "auto-unverified"}:
         post.verification_marked_by = None
+
+    if status:
+        detail = f"Post {post_id[:16]}… verification set to '{status}'"
+        if note:
+            detail += f" — note: '{note}'"
+        _log_post_activity("Post verification updated", detail)
 
     db.session.commit()
     return jsonify({
@@ -245,6 +270,7 @@ def pin_post(post_id):
     existing = Watchlist.query.filter_by(username=username, post_id=post_id).first()
     if not existing:
         db.session.add(Watchlist(username=username, post_id=post_id))
+        _log_post_activity("Post pinned", f"Added post {post_id[:16]}… to watchlist")
         db.session.commit()
     return get_watchlist()
 
@@ -254,6 +280,7 @@ def pin_post(post_id):
 def unpin_post(post_id):
     username = current_username()
     Watchlist.query.filter_by(username=username, post_id=post_id).delete()
+    _log_post_activity("Post unpinned", f"Removed post {post_id[:16]}… from watchlist")
     db.session.commit()
     return get_watchlist()
 

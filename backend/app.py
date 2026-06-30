@@ -198,6 +198,26 @@ def ensure_post_cluster_label_columns():
     conn.close()
 
 
+def ensure_audit_log_columns():
+    """Add target tracking columns to activity_logs for full audit trail."""
+    inspector = inspect(db.engine)
+    try:
+        columns = {col["name"] for col in inspector.get_columns("activity_logs")}
+    except Exception:
+        return
+    with db.engine.begin() as conn:
+        if "target_username" not in columns:
+            conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_username VARCHAR(80)"))
+        if "target_name" not in columns:
+            conn.execute(text("ALTER TABLE activity_logs ADD COLUMN target_name VARCHAR(120)"))
+
+        dialect = db.engine.dialect.name
+        if dialect == "sqlite":
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_username ON activity_logs(target_username)"))
+        elif dialect == "postgresql":
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_username ON activity_logs(target_username)"))
+
+
 def ensure_post_verification_columns():
     """Add shared verification fields to posts so verification state syncs between users."""
     inspector = inspect(db.engine)
@@ -350,6 +370,7 @@ def ensure_database():
             ensure_sentiment_columns()
             ensure_post_cluster_label_columns()
             ensure_post_priority_table()
+        ensure_audit_log_columns()
         ensure_post_verification_columns()
         seed_clusters()
         seed_default_users()

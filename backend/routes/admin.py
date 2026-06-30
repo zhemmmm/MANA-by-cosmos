@@ -214,7 +214,13 @@ def get_json():
     return request.get_json() or {}
 
 
-def log_activity(action: str, detail: str, log_type: str = "admin", actor: User | None = None):
+def log_activity(
+    action: str,
+    detail: str,
+    log_type: str = "admin",
+    actor: User | None = None,
+    target: User | None = None,
+):
     if actor is None:
         try:
             actor = current_admin()
@@ -227,6 +233,8 @@ def log_activity(action: str, detail: str, log_type: str = "admin", actor: User 
             action=action,
             detail=detail,
             type=log_type,
+            target_username=target.username if target else None,
+            target_name=(target.name or target.username) if target else None,
         )
     )
 
@@ -311,7 +319,12 @@ def create_user():
     user = User(username=username, name=name, email=email, role=role, status="Active")
     user.set_password(password)
     db.session.add(user)
-    log_activity("User created", f"Created {name} ({role})", "admin")
+    log_activity(
+        "User created",
+        f"Created account for {name} ({username}) with role '{role}'",
+        "admin",
+        target=user,
+    )
     db.session.commit()
     return jsonify(user.to_api_dict()), 201
 
@@ -339,10 +352,25 @@ def update_user(user_id):
     if conflict:
         return jsonify({"message": conflict}), 409
 
+    changes = []
+    if name != (user.name or user.username):
+        changes.append(f"name '{user.name or user.username}' → '{name}'")
+    if email != user.email:
+        changes.append(f"email → '{email}'")
+    if role != user.role:
+        changes.append(f"role '{user.role}' → '{role}'")
+
     user.name = name
     user.email = email
     user.role = role
-    log_activity("User updated", f"Updated {name} ({role})", "admin")
+
+    diff = "; ".join(changes) if changes else "no field changes"
+    log_activity(
+        "User updated",
+        f"Edited {name} ({user.username}) — {diff}",
+        "admin",
+        target=user,
+    )
     db.session.commit()
     return jsonify(user.to_api_dict())
 
@@ -357,9 +385,13 @@ def delete_user(user_id):
         return jsonify({"message": "You cannot delete your own admin account."}), 400
 
     name = user.name or user.username
-    ActivityLog.query.filter_by(actor_username=user.username).delete()
+    username_snap = user.username
     db.session.delete(user)
-    log_activity("User deleted", f"Deleted {name}", "admin")
+    log_activity(
+        "User deleted",
+        f"Permanently deleted account '{username_snap}' ({name})",
+        "admin",
+    )
     db.session.commit()
     return jsonify({"success": True})
 
@@ -374,8 +406,14 @@ def set_user_status(user_id):
     status = (get_json().get("status") or "").strip()
     if status not in {"Active", "Suspended", "Inactive"}:
         return jsonify({"message": "Invalid status."}), 400
+    old_status = user.status
     user.status = status
-    log_activity("User status changed", f"{user.name or user.username} set to {status}", "admin")
+    log_activity(
+        "User status changed",
+        f"Changed {user.name or user.username} ({user.username}) status '{old_status}' → '{status}'",
+        "admin",
+        target=user,
+    )
     db.session.commit()
     return jsonify({"id": user.username, "status": user.status})
 
@@ -391,7 +429,12 @@ def reset_password(user_id):
     if len(new_password) < 8:
         return jsonify({"message": "Password must be at least 8 characters."}), 400
     user.set_password(new_password)
-    log_activity("Password reset", f"Reset password for {user.name or user.username}", "admin")
+    log_activity(
+        "Password reset",
+        f"Admin reset password for {user.name or user.username} ({user.username})",
+        "admin",
+        target=user,
+    )
     db.session.commit()
     return jsonify({"success": True})
 
@@ -399,18 +442,55 @@ def reset_password(user_id):
 @admin_bp.route("/logs", methods=["GET"])
 @admin_required
 def get_logs():
-    user_id = request.args.get("user_id")
+    from datetime import datetime as _dt
+    user_id  = request.args.get("user_id")
     log_type = request.args.get("type")
-    limit = max(1, min(int(request.args.get("limit", 50)), 200))
+    search   = (request.args.get("search") or "").strip()
+    date_from = request.args.get("date_from")
+    date_to   = request.args.get("date_to")
+    limit  = max(1, min(int(request.args.get("limit", 50)), 500))
+    offset = max(0, int(request.args.get("offset", 0)))
 
     query = ActivityLog.query.order_by(ActivityLog.created_at.desc())
+
     if user_id:
-        query = query.filter(ActivityLog.actor_username == user_id)
+        query = query.filter(
+            (ActivityLog.actor_username == user_id) |
+            (ActivityLog.target_username == user_id)
+        )
     if log_type and log_type != "all":
         query = query.filter(ActivityLog.type == log_type)
+    if search:
+        like = f"%{search}%"
+        query = query.filter(
+            ActivityLog.actor_name.ilike(like) |
+            ActivityLog.actor_username.ilike(like) |
+            ActivityLog.target_name.ilike(like) |
+            ActivityLog.target_username.ilike(like) |
+            ActivityLog.action.ilike(like) |
+            ActivityLog.detail.ilike(like)
+        )
+    if date_from:
+        try:
+            query = query.filter(ActivityLog.created_at >= _dt.strptime(date_from, "%Y-%m-%d"))
+        except ValueError:
+            pass
+    if date_to:
+        try:
+            query = query.filter(
+                ActivityLog.created_at <= _dt.strptime(date_to, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+            )
+        except ValueError:
+            pass
 
-    logs = query.limit(limit).all()
-    return jsonify([log.to_api_dict() for log in logs])
+    total = query.count()
+    logs  = query.offset(offset).limit(limit).all()
+    return jsonify({
+        "total":  total,
+        "offset": offset,
+        "limit":  limit,
+        "logs":   [log.to_api_dict() for log in logs],
+    })
 
 
 @admin_bp.route("/stats", methods=["GET"])
