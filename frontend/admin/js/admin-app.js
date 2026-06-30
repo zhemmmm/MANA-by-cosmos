@@ -565,7 +565,6 @@ async function loadLogs(resetPage = false) {
 
 function renderLogs() {
   const TYPE_COLORS = { auth:"#3b82f6", edit:"#10b981", admin:"#8b5cf6", system:"#f59e0b" };
-  const TYPE_LABELS = { auth:"Auth", edit:"Edit", admin:"Admin", system:"System" };
 
   const filterLabel = adminState.logFilters.user_id
     ? ` · Filtered by user`
@@ -593,7 +592,6 @@ function renderLogs() {
           <div class="activity-dot" style="background:${TYPE_COLORS[log.type] || "var(--text-faint)"};"></div>
           <div class="activity-body">
             <strong>${escHtml(log.user)}${targetChip} — ${escHtml(log.action)} ${postChip ? `<span class="log-post-label">·</span> ${postChip}` : ""}</strong>
-            <span class="log-type-badge" style="background:${TYPE_COLORS[log.type]}22;color:${TYPE_COLORS[log.type]};">${TYPE_LABELS[log.type] || log.type}</span>
             <span>${escHtml(log.detail)}</span>
           </div>
           <div class="activity-time">${log.time}</div>
