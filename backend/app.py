@@ -24,7 +24,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 load_dotenv()
 
 from data import seed_clusters
-from models import SystemSetting, User, db
+from models import ActivityLog, SystemSetting, User, db
 from routes.auth     import auth_bp
 from routes.posts    import posts_bp
 from routes.stats    import stats_bp
@@ -226,6 +226,27 @@ def ensure_audit_log_columns():
             conn.execute(text("CREATE INDEX IF NOT EXISTS ix_activity_logs_target_post_id ON activity_logs(target_post_id)"))
 
 
+def normalize_audit_log_actor_names():
+    """Backfill actor/target display names from the current user table."""
+    try:
+        users = {
+            user.username: (user.name or user.username)
+            for user in User.query.all()
+        }
+        changed = False
+        for log in ActivityLog.query.all():
+            if log.actor_username and users.get(log.actor_username) and log.actor_name != users[log.actor_username]:
+                log.actor_name = users[log.actor_username]
+                changed = True
+            if log.target_username and users.get(log.target_username) and log.target_name != users[log.target_username]:
+                log.target_name = users[log.target_username]
+                changed = True
+        if changed:
+            db.session.commit()
+    except Exception:
+        db.session.rollback()
+
+
 def ensure_post_verification_columns():
     """Add shared verification fields to posts so verification state syncs between users."""
     inspector = inspect(db.engine)
@@ -379,6 +400,7 @@ def ensure_database():
             ensure_post_cluster_label_columns()
             ensure_post_priority_table()
         ensure_audit_log_columns()
+        normalize_audit_log_actor_names()
         ensure_post_verification_columns()
         seed_clusters()
         seed_default_users()
