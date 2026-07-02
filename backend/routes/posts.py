@@ -104,8 +104,6 @@ def apply_post_filters(query):
     if not include_irrelevant:
         query = query.filter(Post.is_relevant == True)
 
-    query = query.filter(Post.caption != None, Post.caption != "")
-
     if source:
         query = query.filter(Post.source == source)
     if cluster_id:
