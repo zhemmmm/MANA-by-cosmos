@@ -336,9 +336,8 @@ function renderPostCards(postList, options = {}) {
             ${displayedComments.map(c => {
               const tone = (c.sentimentTone || getDominantSentiment(c.sentimentScore || 0).tone || "neutral").toLowerCase();
               const impact = normalizePriority(c.impactLevel || classifyCommentImpact(c)).toLowerCase();
-              const impactLabel = c.impactLabel || `${impact.charAt(0).toUpperCase() + impact.slice(1)} impact`;
+              const impactLabel = (c.impactLabel || `${impact.charAt(0).toUpperCase() + impact.slice(1)}`).replace(/\s+impact$/i, "");
               const toneLabel = c.sentimentLabel || `${tone.charAt(0).toUpperCase() + tone.slice(1)}`;
-              const toneNote = c.signalNote || (tone === postTone.tone ? `Matches the post's ${postTone.label.toLowerCase()} tone` : `Differs from the post's ${postTone.label.toLowerCase()} tone`);
               return `
                 <div class="comment-entry">
                   <div class="comment-entry-head">
@@ -348,7 +347,6 @@ function renderPostCards(postList, options = {}) {
                       <span class="comment-tone-pill tone-${tone}">${toneLabel}</span>
                     </div>
                   </div>
-                  <small class="comment-tone-note">${toneNote}</small>
                   <span>${c.text || "No comment text captured."}</span>
                 </div>
               `;

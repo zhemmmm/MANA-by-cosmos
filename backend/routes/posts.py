@@ -115,17 +115,6 @@ def _build_comment_view(comment: Comment, post_tone: str):
     else:
         signal_label = "Positive signal"
 
-    if post_tone == "neutral" and comment_tone == "neutral":
-        signal_note = "Keeps the post neutral"
-    elif post_tone == "negative" and comment_tone == "negative":
-        signal_note = "Reinforces the post's negative tone"
-    elif post_tone == "positive" and comment_tone == "positive":
-        signal_note = "Reinforces the post's positive tone"
-    elif comment_tone == post_tone:
-        signal_note = f"Matches the post's {post_tone} tone"
-    else:
-        signal_note = f"Differs from the post's {post_tone} tone"
-
     return {
         "id": comment.id,
         "author": comment.author,
@@ -133,13 +122,12 @@ def _build_comment_view(comment: Comment, post_tone: str):
         "likes": comment.likes,
         "date": utc_iso(comment.date),
         "impactLevel": impact_level,
-        "impactLabel": f"{impact_level} impact",
+        "impactLabel": impact_level,
         "impactScore": comment_rank(comment),
         "sentimentTone": comment_tone,
         "sentimentLabel": analysis["label"],
         "sentimentScore": compound_to_score(analysis["compound"]),
         "signalLabel": signal_label,
-        "signalNote": signal_note,
         "signalClass": f"tone-{comment_tone}",
         "matchesPostTone": comment_tone == post_tone,
     }
