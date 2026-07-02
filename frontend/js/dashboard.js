@@ -82,8 +82,8 @@ function dashboardBarValue(value, total) {
   return Math.max(12, Math.min(100, Math.round((value / total) * 100)));
 }
 
-function buildDashboardSummary(posts, range, clusters) {
-  const filtered = filterPosts(posts || [], range, "All", state.globalSearch);
+function buildDashboardSummary(posts, range, clusters, postOrigin = "All") {
+  const filtered = filterPosts(posts || [], range, "All", state.globalSearch, { postOrigin });
   const totalPosts = filtered.length;
   const highPriorityCount = filtered.filter(post => normalizePriority(post.priority) === "High").length;
   const facebookPosts = filtered.filter(post => post.source === "Facebook").length;
@@ -126,8 +126,8 @@ function buildDashboardSummary(posts, range, clusters) {
   ];
 }
 
-function buildMockDashboardComments(posts, range) {
-  return filterPosts(posts || [], range, "All", state.globalSearch)
+function buildMockDashboardComments(posts, range, postOrigin = "All") {
+  return filterPosts(posts || [], range, "All", state.globalSearch, { postOrigin })
     .filter(post => Array.isArray(post.topComments))
     .flatMap(post => post.topComments.map(comment => ({
       ...comment,
@@ -321,7 +321,8 @@ function getIrrelevantPostsViewModel() {
 }
 
 function getDashboardViewModel() {
-  const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch);
+  const dashboardOrigin = state.dashboardPostOrigin || "All";
+  const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { postOrigin: dashboardOrigin });
   const dashboardSource = state.dashboardPostsSource || "All";
   const dashboardSort = state.dashboardPostsSort || "newest";
   const dashboardPanelPosts = filteredPosts
@@ -368,7 +369,7 @@ function renderClusterNav() {
 // ─── Render: Priority Posts ───────────────────────────────────────────────────
 function renderPriorityPosts(priority) {
   const filter = priority || document.getElementById("priorityFilter")?.value || "All";
-  const posts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch)
+  const posts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { postOrigin: state.dashboardPostOrigin || "All" })
     .filter(p => filter === "All" || p.priority === filter)
     .sort((a, b) => b.severityRank - a.severityRank || getEngagement(b) - getEngagement(a))
     .slice(0, 15);
@@ -385,7 +386,7 @@ function renderDashboard() {
   const { filteredPosts, visiblePosts, sourceDirectory, pagination, sortedTrendingPosts } = getDashboardViewModel();
   const summaryCards = Array.isArray(state.dashboardSummary) && state.dashboardSummary.length
     ? state.dashboardSummary
-    : buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
+    : buildDashboardSummary(state.posts, state.dashboardRange, state.clusters, state.dashboardPostOrigin || "All");
 
   document.getElementById("kpiGrid").innerHTML = summaryCards.length ? summaryCards.map(card => `
     <div class="mini-card ${kpiToneClass(card.label)}">
@@ -416,7 +417,7 @@ function renderDashboard() {
 
   const commentCards = Array.isArray(state.dashboardComments) && state.dashboardComments.length
     ? state.dashboardComments
-    : buildMockDashboardComments(state.posts, state.dashboardRange);
+    : buildMockDashboardComments(state.posts, state.dashboardRange, state.dashboardPostOrigin || "All");
 
   document.getElementById("dashboardComments").innerHTML = commentCards.length ? commentCards.map(c => `
     <article class="comment-card">
@@ -433,7 +434,7 @@ function renderDashboard() {
 }
 
 function renderResolvedArchivePage() {
-  const resolvedPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { includeResolved: true })
+  const resolvedPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { includeResolved: true, postOrigin: state.dashboardPostOrigin || "All" })
     .filter(isResolvedPost)
     .sort((a, b) => getPostScrapeTimestamp(b) - getPostScrapeTimestamp(a));
 

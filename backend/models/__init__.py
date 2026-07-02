@@ -189,6 +189,32 @@ class Post(TimestampMixin, db.Model):
     def keywords(self):
         return json.loads(self.keywords_json or "[]")
 
+    @property
+    def post_origin(self):
+        if self.source != "Facebook":
+            return None
+
+        payload = {}
+        if self.raw_payload_json:
+            try:
+                payload = json.loads(self.raw_payload_json) or {}
+            except (TypeError, ValueError, json.JSONDecodeError):
+                payload = {}
+
+        facebook_url = str(
+            payload.get("facebookUrl")
+            or payload.get("inputUrl")
+            or payload.get("url")
+            or payload.get("topLevelUrl")
+            or self.account_url
+            or self.source_url
+            or ""
+        ).lower()
+
+        if payload.get("groupName") or "/groups/" in facebook_url:
+            return "People"
+        return "Admin"
+
     def to_api_dict(self, top_comments=None):
         recommendation_details = evaluate_from_post(
             topic=self.cluster_id,
@@ -204,6 +230,7 @@ class Post(TimestampMixin, db.Model):
             "source": self.source,
             "pageSource": self.page_source,
             "author": self.author or self.page_source,
+            "postOrigin": self.post_origin,
             "caption": self.caption,
             "reactions": self.reactions,
             "shares": self.shares,

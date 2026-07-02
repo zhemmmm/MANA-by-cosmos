@@ -111,6 +111,29 @@ function getEngagement(post) {
     : (post.likes     || 0) + (post.reposts  || 0) + (post.comments || 0);
 }
 
+function normalizePostOrigin(value) {
+  const origin = String(value || "").trim().toLowerCase();
+  if (origin === "admin") return "Admin";
+  if (origin === "people") return "People";
+  return "";
+}
+
+function getPostOrigin(post) {
+  const explicitOrigin = normalizePostOrigin(post?.postOrigin || post?.sourceType || post?.accountType);
+  if (explicitOrigin) return explicitOrigin;
+  if (post?.source !== "Facebook") return "";
+
+  const pageSource = String(post?.pageSource || "").toLowerCase();
+  const sourceUrl = String(post?.sourceUrl || post?.accountUrl || "").toLowerCase();
+  if (pageSource.includes("group") || sourceUrl.includes("/groups/")) return "People";
+  return "Admin";
+}
+
+function matchesPostOrigin(post, origin) {
+  if (!origin || origin === "All") return true;
+  return getPostOrigin(post) === origin;
+}
+
 // ─── Post Filtering & Sorting ─────────────────────────────────────────────────
 function matchesDateRange(postDate, range, post = null) {
   if (range === "all") return true;
@@ -175,11 +198,12 @@ function isResolvedPost(post) {
 }
 
 function filterPosts(sourcePosts, dateRange, source, searchTerm = "", options = {}) {
-  const { includeResolved = false } = options;
+  const { includeResolved = false, postOrigin = "All" } = options;
   return sourcePosts
     .filter(p => includeResolved || !isResolvedPost(p))
     .filter(p => matchesDateRange(p.date, dateRange, p))
     .filter(p => source === "All" ? true : p.source === source)
+    .filter(p => matchesPostOrigin(p, postOrigin))
     .filter(p => matchesPostSearch(p, searchTerm));
 }
 

@@ -28,6 +28,7 @@ const state = {
 
   // Filter state
   dashboardRange:   "30d",
+  dashboardPostOrigin: "All",
   dashboardPostsSource: "All",
   dashboardPostsSort: "newest",
   dashboardPage:    1,
@@ -35,7 +36,7 @@ const state = {
   irrelevantPage:   1,
   irrelevantPostsPerPage: 15,
   alerts:           { dateRange: "30d", source: "All" },
-  clusterFilters:   { source: "All", severity: "Trending", dateRange: "30d" },
+  clusterFilters:   { source: "All", postOrigin: "All", severity: "Trending", dateRange: "30d" },
   analyticsRange:   "30d",
   globalSearch:     "",
 
@@ -216,7 +217,7 @@ async function loadCriticalAppData() {
       }
 
       state.dashboardPage = 1;
-      state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
+      state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters, state.dashboardPostOrigin);
       initVerifications(state.posts);
       state.loaded.criticalData = true;
 
@@ -745,7 +746,7 @@ function bindStaticControls() {
     state.dashboardRange  = e.target.value;
     state.dashboardPage = 1;
     state.irrelevantPage = 1;
-    state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
+    state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters, state.dashboardPostOrigin);
     loadDashboardComments(state.dashboardRange);
     renderDashboard();
   });
@@ -753,6 +754,13 @@ function bindStaticControls() {
   document.getElementById("dashboardPostsSource").addEventListener("change", e => {
     state.dashboardPostsSource = e.target.value;
     state.dashboardPage = 1;
+    renderDashboard();
+  });
+
+  document.getElementById("dashboardPostOrigin").addEventListener("change", e => {
+    state.dashboardPostOrigin = e.target.value;
+    state.dashboardPage = 1;
+    state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters, state.dashboardPostOrigin);
     renderDashboard();
   });
 
@@ -776,6 +784,7 @@ function bindStaticControls() {
   document.getElementById("alertsSource").addEventListener("change",    e => { state.alerts.source    = e.target.value; renderAlerts(); });
 
   document.getElementById("clusterSourceFilter").addEventListener("change",   e => { state.clusterFilters.source   = e.target.value; renderClusterDetail(); });
+  document.getElementById("clusterPostOrigin").addEventListener("change",     e => { state.clusterFilters.postOrigin = e.target.value; renderClusterDetail(); });
   document.getElementById("clusterSeverityFilter").addEventListener("change", e => { state.clusterFilters.severity = e.target.value; renderClusterDetail(); });
   document.getElementById("clusterDateFilter").addEventListener("change",     e => { state.clusterFilters.dateRange= e.target.value; renderClusterDetail(); });
 
@@ -1036,7 +1045,7 @@ function renderAll() {
 
 function renderCurrentPage({ refreshDashboardSummary = false } = {}) {
   if (refreshDashboardSummary && state.loaded.criticalData) {
-    state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters);
+    state.dashboardSummary = buildDashboardSummary(state.posts, state.dashboardRange, state.clusters, state.dashboardPostOrigin);
   }
 
   if (state.currentPage === "dashboard") {

@@ -262,9 +262,17 @@
           <div class="dashboard-grid dashboard-grid-equal">
             <div class="surface tone-gold dashboard-posts-surface">
               <div class="surface-header">
-                <div>
+              <div>
                   <div class="surface-title">Dashboard posts</div>
                   <div class="surface-subtitle">Posts automatically fill available screen space</div>
+                </div>
+                <div class="filter-block inline-select">
+                  <label class="filter-label" for="dashboardPostOrigin">Post origin</label>
+                  <select class="filter-control" id="dashboardPostOrigin">
+                    <option value="All" selected>All</option>
+                    <option value="Admin">Admin</option>
+                    <option value="People">People</option>
+                  </select>
                 </div>
                 <div class="filter-block inline-select">
                   <label class="filter-label" for="dashboardPostsSource">Source</label>
@@ -538,6 +546,14 @@
 
           <div class="panel">
             <div class="filters-row">
+              <div class="filter-block">
+                <label class="filter-label" for="clusterPostOrigin">Post origin</label>
+                <select class="filter-control" id="clusterPostOrigin">
+                  <option value="All" selected>All</option>
+                  <option value="Admin">Admin</option>
+                  <option value="People">People</option>
+                </select>
+              </div>
               <div class="filter-block">
                 <label class="filter-label" for="clusterSourceFilter">Source</label>
                 <select class="filter-control" id="clusterSourceFilter">
