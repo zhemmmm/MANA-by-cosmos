@@ -219,8 +219,27 @@ function renderPostCards(postList, options = {}) {
       ? post.allComments
       : (Array.isArray(post.topComments) ? post.topComments : []);
     const postTone = getDominantSentiment(post.sentimentScore || 0);
-    const commentToneSummary = post.commentToneSummary || {};
     const displayedComments = previewComments;
+    const derivedToneSummary = displayedComments.reduce((summary, comment) => {
+      const tone = (comment.sentimentTone || getDominantSentiment(comment.sentimentScore || 0).tone || "neutral").toLowerCase();
+      if (tone === "negative") summary.negative += 1;
+      else if (tone === "neutral") summary.neutral += 1;
+      else summary.positive += 1;
+      return summary;
+    }, { negative: 0, neutral: 0, positive: 0 });
+    const commentToneSummary = displayedComments.length
+      ? { ...derivedToneSummary, ...(post.commentToneSummary || {}) }
+      : (post.commentToneSummary || {});
+    const commentImpactSummary = displayedComments.reduce((summary, comment) => {
+      const impact = normalizePriority(comment.impactLevel || classifyCommentImpact(comment)).toLowerCase();
+      if (impact === "high") summary.high += 1;
+      else if (impact === "medium") summary.medium += 1;
+      else summary.low += 1;
+      return summary;
+    }, { high: 0, medium: 0, low: 0 });
+    const effectiveImpactSummary = displayedComments.length
+      ? { ...commentImpactSummary, ...(post.commentImpactSummary || {}) }
+      : (post.commentImpactSummary || commentImpactSummary);
 
     const isVerified = verifyStatus === "auto-verified" || verifyStatus === "manually-verified";
     const verifyLabel = isVerified ? "✓ Verified" : "⊕ Unverified";
@@ -310,16 +329,24 @@ function renderPostCards(postList, options = {}) {
               <span class="comment-summary-chip">Negative ${commentToneSummary.negative || 0}</span>
               <span class="comment-summary-chip">Neutral ${commentToneSummary.neutral || 0}</span>
               <span class="comment-summary-chip">Positive ${commentToneSummary.positive || 0}</span>
+              <span class="comment-summary-chip">High ${effectiveImpactSummary.high || 0}</span>
+              <span class="comment-summary-chip">Medium ${effectiveImpactSummary.medium || 0}</span>
+              <span class="comment-summary-chip">Low ${effectiveImpactSummary.low || 0}</span>
             </div>
             ${displayedComments.map(c => {
               const tone = (c.sentimentTone || getDominantSentiment(c.sentimentScore || 0).tone || "neutral").toLowerCase();
-              const toneLabel = c.signalLabel || `${tone.charAt(0).toUpperCase() + tone.slice(1)} signal`;
+              const impact = normalizePriority(c.impactLevel || classifyCommentImpact(c)).toLowerCase();
+              const impactLabel = c.impactLabel || `${impact.charAt(0).toUpperCase() + impact.slice(1)} impact`;
+              const toneLabel = c.sentimentLabel || `${tone.charAt(0).toUpperCase() + tone.slice(1)}`;
               const toneNote = c.signalNote || (tone === postTone.tone ? `Matches the post's ${postTone.label.toLowerCase()} tone` : `Differs from the post's ${postTone.label.toLowerCase()} tone`);
               return `
                 <div class="comment-entry">
                   <div class="comment-entry-head">
                     <strong>${anonymizedCommentAuthor({ ...c, source: post.source })}</strong>
-                    <span class="comment-tone-pill comment-tone-${tone}">${toneLabel}</span>
+                    <div class="comment-entry-tags">
+                      <span class="comment-impact-pill impact-${impact}">${impactLabel}</span>
+                      <span class="comment-tone-pill tone-${tone}">${toneLabel}</span>
+                    </div>
                   </div>
                   <small class="comment-tone-note">${toneNote}</small>
                   <span>${c.text || "No comment text captured."}</span>

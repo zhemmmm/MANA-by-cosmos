@@ -2271,7 +2271,8 @@ body.light-theme .status-select.status-unresolved {
 }
 
 .comment-summary-chip,
-.comment-tone-pill {
+.comment-tone-pill,
+.comment-impact-pill {
   display: inline-flex;
   align-items: center;
   padding: 3px 8px;
@@ -2281,6 +2282,31 @@ body.light-theme .status-select.status-unresolved {
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-soft);
+}
+
+.comment-entry-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.comment-impact-pill.impact-high {
+  color: #ffe2b8;
+  border-color: rgba(245, 158, 11, 0.24);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.comment-impact-pill.impact-medium {
+  color: #ccecff;
+  border-color: rgba(56, 189, 248, 0.24);
+  background: rgba(56, 189, 248, 0.1);
+}
+
+.comment-impact-pill.impact-low {
+  color: #c8f7de;
+  border-color: rgba(52, 211, 153, 0.24);
+  background: rgba(52, 211, 153, 0.1);
 }
 
 .comment-tone-pill.tone-negative {

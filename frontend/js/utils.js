@@ -231,6 +231,18 @@ function getDominantSentiment(score) {
 }
 
 // ─── CSS Class Helpers ────────────────────────────────────────────────────────
+function classifyCommentImpact(comment = {}) {
+  const text = String(comment.text || "").toLowerCase();
+  const likes = toCount(comment.likes);
+  const urgentTerms = ["urgent", "sos", "rescue", "help", "init", "tubig", "water", "hospital", "senior", "bata", "newborn"];
+  const termScore = urgentTerms.reduce((score, term) => score + (text.includes(term) ? 8 : 0), 0);
+  const wordScore = Math.min(text.split(/\s+/).filter(Boolean).length, 12);
+  const score = termScore + (likes * 4) + wordScore;
+  if (score >= 70) return "High";
+  if (score >= 35) return "Medium";
+  return "Low";
+}
+
 function normalizePriority(priority) {
   if (priority === "Critical")   return "High";
   if (priority === "Moderate")   return "Medium";

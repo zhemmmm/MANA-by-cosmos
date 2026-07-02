@@ -91,6 +91,15 @@ def comment_rank(comment: Comment):
     return signal_score + (comment.likes * 4) + (severity * 12) + min(len((comment.text or "").split()), 12)
 
 
+def comment_impact_level(comment: Comment):
+    score = comment_rank(comment)
+    if score >= 70:
+        return "High"
+    if score >= 35:
+        return "Medium"
+    return "Low"
+
+
 def _latest_timestamp(*values):
     return max([value for value in values if value], default=None)
 
@@ -98,6 +107,7 @@ def _latest_timestamp(*values):
 def _build_comment_view(comment: Comment, post_tone: str):
     analysis = analyze_sentiment(comment.text or "")
     comment_tone = analysis["label"].lower()
+    impact_level = comment_impact_level(comment)
     if comment_tone == "neutral":
         signal_label = "Neutral signal"
     elif comment_tone == "negative":
@@ -122,6 +132,9 @@ def _build_comment_view(comment: Comment, post_tone: str):
         "text": comment.text,
         "likes": comment.likes,
         "date": utc_iso(comment.date),
+        "impactLevel": impact_level,
+        "impactLabel": f"{impact_level} impact",
+        "impactScore": comment_rank(comment),
         "sentimentTone": comment_tone,
         "sentimentLabel": analysis["label"],
         "sentimentScore": compound_to_score(analysis["compound"]),
@@ -242,14 +255,17 @@ def get_posts():
     for post in posts:
         comment_views = comments_by_post.get(post.id, [])
         tone_counts = {"negative": 0, "neutral": 0, "positive": 0}
+        impact_counts = {"high": 0, "medium": 0, "low": 0}
         for comment_view in comment_views:
             tone_counts[comment_view["sentimentTone"]] += 1
+            impact_counts[comment_view["impactLevel"].lower()] += 1
 
         post_payload = post.to_api_dict(top_comments=top_comments_by_post_id.get(post.id, []))
         post_payload.update({
             "allComments": comment_views,
             "commentCount": len(comment_views),
             "commentToneSummary": tone_counts,
+            "commentImpactSummary": impact_counts,
             "postTone": score_tone(post.sentiment_score),
         })
         response_posts.append(post_payload)
