@@ -103,9 +103,22 @@ def parse_iso_datetime(value: str):
 
 
 def normalize_item(item: dict):
-    text = (item.get("text") or item.get("caption") or item.get("content") or "").strip()
-    if not text:
-        return None
+    raw_text = (
+        item.get("text")
+        or item.get("caption")
+        or item.get("content")
+        or item.get("message")
+        or item.get("story")
+        or item.get("title")
+        or ""
+    ).strip()
+    text = raw_text or (
+        item.get("pageName")
+        or item.get("groupName")
+        or item.get("url")
+        or item.get("facebookUrl")
+        or "Facebook post"
+    )
     cluster, keywords = infer_cluster(text)
     if cluster is None:
         # Keep the import running even when a post has too little signal to classify.

@@ -262,7 +262,7 @@ function renderPostCards(postList, options = {}) {
           </div>
         </div>
 
-        <div class="post-body">${post.caption}</div>
+        <div class="post-body">${post.caption || "No text was captured in this scrape."}</div>
 
         <div class="post-metrics">
           <div class="post-metric-box">
