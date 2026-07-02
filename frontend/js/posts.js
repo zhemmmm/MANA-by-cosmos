@@ -215,7 +215,12 @@ function renderPostCards(postList, options = {}) {
     const reshareMetric = isFB
       ? { label: "Shares", value: formatCompact(toCount(post.shares)) }
       : { label: "Reposts", value: formatCompact(toCount(post.reposts)) };
-    const previewComments = Array.isArray(post.topComments) ? post.topComments : [];
+    const previewComments = Array.isArray(post.allComments) && post.allComments.length
+      ? post.allComments
+      : (Array.isArray(post.topComments) ? post.topComments : []);
+    const postTone = getDominantSentiment(post.sentimentScore || 0);
+    const commentToneSummary = post.commentToneSummary || {};
+    const displayedComments = previewComments;
 
     const isVerified = verifyStatus === "auto-verified" || verifyStatus === "manually-verified";
     const verifyLabel = isVerified ? "✓ Verified" : "⊕ Unverified";
@@ -299,12 +304,29 @@ function renderPostCards(postList, options = {}) {
         </div>
 
         <div class="comments-box" data-comments-box="${post.id}">
-          ${previewComments.length ? previewComments.map(c => `
-              <div class="comment-entry">
-                <strong>${anonymizedCommentAuthor({ ...c, source: post.source })}</strong>
-                <span>${c.text}</span>
-              </div>
-            `).join("") : `<div class="comment-entry empty-comment">No preview comments are available for this post yet.</div>`}
+          ${displayedComments.length ? `
+            <div class="comments-summary">
+              <span class="comment-summary-chip">Post tone: ${postTone.label}</span>
+              <span class="comment-summary-chip">Negative ${commentToneSummary.negative || 0}</span>
+              <span class="comment-summary-chip">Neutral ${commentToneSummary.neutral || 0}</span>
+              <span class="comment-summary-chip">Positive ${commentToneSummary.positive || 0}</span>
+            </div>
+            ${displayedComments.map(c => {
+              const tone = (c.sentimentTone || getDominantSentiment(c.sentimentScore || 0).tone || "neutral").toLowerCase();
+              const toneLabel = c.signalLabel || `${tone.charAt(0).toUpperCase() + tone.slice(1)} signal`;
+              const toneNote = c.signalNote || (tone === postTone.tone ? `Matches the post's ${postTone.label.toLowerCase()} tone` : `Differs from the post's ${postTone.label.toLowerCase()} tone`);
+              return `
+                <div class="comment-entry">
+                  <div class="comment-entry-head">
+                    <strong>${anonymizedCommentAuthor({ ...c, source: post.source })}</strong>
+                    <span class="comment-tone-pill comment-tone-${tone}">${toneLabel}</span>
+                  </div>
+                  <small class="comment-tone-note">${toneNote}</small>
+                  <span>${c.text || "No comment text captured."}</span>
+                </div>
+              `;
+            }).join("")}
+          ` : `<div class="comment-entry empty-comment">No preview comments are available for this post yet.</div>`}
         </div>
       </article>`;
   }).join("");
