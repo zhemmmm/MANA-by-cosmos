@@ -10,10 +10,11 @@ from sqlalchemy import func
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
-from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, top_keywords_from_posts
+from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, score_tone, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
 from models import ActivityLog, Comment, Post, PostTopic, SystemSetting, User, Watchlist, db, utc_iso
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
+from services.vader.sentiment_analyzer import analyze_sentiment, compound_to_score
 from x_matching import build_post_match_index as build_x_post_match_index, find_post_match as find_x_post_match
 
 posts_bp = Blueprint("posts", __name__)
@@ -92,6 +93,43 @@ def comment_rank(comment: Comment):
 
 def _latest_timestamp(*values):
     return max([value for value in values if value], default=None)
+
+
+def _build_comment_view(comment: Comment, post_tone: str):
+    analysis = analyze_sentiment(comment.text or "")
+    comment_tone = analysis["label"].lower()
+    if comment_tone == "neutral":
+        signal_label = "Neutral signal"
+    elif comment_tone == "negative":
+        signal_label = "Negative signal"
+    else:
+        signal_label = "Positive signal"
+
+    if post_tone == "neutral" and comment_tone == "neutral":
+        signal_note = "Keeps the post neutral"
+    elif post_tone == "negative" and comment_tone == "negative":
+        signal_note = "Reinforces the post's negative tone"
+    elif post_tone == "positive" and comment_tone == "positive":
+        signal_note = "Reinforces the post's positive tone"
+    elif comment_tone == post_tone:
+        signal_note = f"Matches the post's {post_tone} tone"
+    else:
+        signal_note = f"Differs from the post's {post_tone} tone"
+
+    return {
+        "id": comment.id,
+        "author": comment.author,
+        "text": comment.text,
+        "likes": comment.likes,
+        "date": utc_iso(comment.date),
+        "sentimentTone": comment_tone,
+        "sentimentLabel": analysis["label"],
+        "sentimentScore": compound_to_score(analysis["compound"]),
+        "signalLabel": signal_label,
+        "signalNote": signal_note,
+        "signalClass": f"tone-{comment_tone}",
+        "matchesPostTone": comment_tone == post_tone,
+    }
 
 
 def apply_post_filters(query):
@@ -187,22 +225,36 @@ def get_posts():
             if target_post_id:
                 ranked_comments[target_post_id].append(comment)
 
+        comments_by_post = {}
         for post_id, post_comments in ranked_comments.items():
+            post_tone = score_tone(db.session.get(Post, post_id).sentiment_score if db.session.get(Post, post_id) else 60)
+            comment_views = [
+                _build_comment_view(comment, post_tone)
+                for comment in sorted(post_comments, key=comment_rank, reverse=True)
+            ]
+            comments_by_post[post_id] = comment_views
             top_comments_by_post_id[post_id] = [
-                {
-                    "id": comment.id,
-                    "author": comment.author,
-                    "text": comment.text,
-                    "likes": comment.likes,
-                    "date": utc_iso(comment.date),
-                }
-                for comment in sorted(post_comments, key=comment_rank, reverse=True)[:3]
+                comment_view
+                for comment_view in comment_views[:3]
             ]
 
-    return jsonify([
-        post.to_api_dict(top_comments=top_comments_by_post_id.get(post.id, []))
-        for post in posts
-    ])
+    response_posts = []
+    for post in posts:
+        comment_views = comments_by_post.get(post.id, [])
+        tone_counts = {"negative": 0, "neutral": 0, "positive": 0}
+        for comment_view in comment_views:
+            tone_counts[comment_view["sentimentTone"]] += 1
+
+        post_payload = post.to_api_dict(top_comments=top_comments_by_post_id.get(post.id, []))
+        post_payload.update({
+            "allComments": comment_views,
+            "commentCount": len(comment_views),
+            "commentToneSummary": tone_counts,
+            "postTone": score_tone(post.sentiment_score),
+        })
+        response_posts.append(post_payload)
+
+    return jsonify(response_posts)
 
 
 @posts_bp.route("/posts/<post_id>/status", methods=["PATCH"])
