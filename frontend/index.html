@@ -266,12 +266,12 @@
                   <div class="surface-title">Dashboard posts</div>
                   <div class="surface-subtitle">Posts automatically fill available screen space</div>
                 </div>
-                <div class="filter-block inline-select">
-                  <label class="filter-label" for="dashboardPostOrigin">Post origin</label>
+                <div class="filter-block inline-select hidden" id="dashboardPostOriginFilter">
+                  <label class="filter-label" for="dashboardPostOrigin">Facebook origin</label>
                   <select class="filter-control" id="dashboardPostOrigin">
                     <option value="All" selected>All</option>
-                    <option value="Admin">Admin</option>
-                    <option value="People">People</option>
+                    <option value="Admin">Page / Official</option>
+                    <option value="People">Group / Community</option>
                   </select>
                 </div>
                 <div class="filter-block inline-select">
@@ -546,12 +546,12 @@
 
           <div class="panel">
             <div class="filters-row">
-              <div class="filter-block">
-                <label class="filter-label" for="clusterPostOrigin">Post origin</label>
+              <div class="filter-block hidden" id="clusterPostOriginFilter">
+                <label class="filter-label" for="clusterPostOrigin">Facebook origin</label>
                 <select class="filter-control" id="clusterPostOrigin">
                   <option value="All" selected>All</option>
-                  <option value="Admin">Admin</option>
-                  <option value="People">People</option>
+                  <option value="Admin">Page / Official</option>
+                  <option value="People">Group / Community</option>
                 </select>
               </div>
               <div class="filter-block">

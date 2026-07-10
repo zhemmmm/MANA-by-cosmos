@@ -511,7 +511,8 @@ async function renderClusterDetail() {
     clusterPosts = state.posts.filter(p => p.clusterId === cluster.id);
   }
   const f = state.clusterFilters;
-  const baseClusterPosts = filterPosts(clusterPosts, f.dateRange, f.source, state.globalSearch, { postOrigin: f.postOrigin || "All" });
+  const clusterOrigin = f.source === "Facebook" ? (f.postOrigin || "All") : "All";
+  const baseClusterPosts = filterPosts(clusterPosts, f.dateRange, f.source, state.globalSearch, { postOrigin: clusterOrigin });
   const highCount = baseClusterPosts.filter(p => normalizePriority(p.priority) === "High").length;
 
   document.getElementById("clusterHero").innerHTML = `
@@ -542,6 +543,7 @@ async function renderClusterDetail() {
     });
   document.getElementById("clusterPostGrid").innerHTML = renderPostCards(filteredPosts);
   renderClusterNav();
+  syncClusterOriginFilter();
   document.getElementById("clusterPostOrigin").value = f.postOrigin || "All";
   applySeverityStyle(document.getElementById("clusterSeverityFilter"), f.severity);
 }
