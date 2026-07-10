@@ -354,6 +354,7 @@ function buildSourcePostCounts(posts = []) {
 
     if (existing) {
       existing.postCount += 1;
+      existing.interactionCount += getEngagement(post);
       if (comparePostsByChronology(post, existing.latestPost, "newest") < 0) {
         existing.latestPost = post;
       }
@@ -364,6 +365,7 @@ function buildSourcePostCounts(posts = []) {
       pageSource: sourceName,
       source: sourceType,
       postCount: 1,
+      interactionCount: getEngagement(post),
       latestPost: post,
     });
   });
@@ -381,7 +383,10 @@ function renderSourceDirectorySection(sourceDirectory) {
         <div class="source-badge ${source.source === "Facebook" ? "facebook" : "x"}">${source.source === "Facebook" ? "F" : "X"}</div>
         <div class="source-item-meta"><strong>${source.pageSource}</strong><span>${source.source}</span></div>
       </div>
-      <div class="source-count">${formatNumber(source.postCount)} ${source.postCount === 1 ? "post" : "posts"}</div>
+      <div class="source-count">
+        <strong>${formatNumber(source.postCount)} ${source.postCount === 1 ? "post" : "posts"}</strong>
+        <span>${formatCompact(source.interactionCount)} ${source.interactionCount === 1 ? "interaction" : "interactions"}</span>
+      </div>
     </div>
   `).join("") : (state.loading.criticalData
     ? renderLoadingMessage("Loading source directory...")

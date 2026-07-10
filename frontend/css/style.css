@@ -2695,9 +2695,24 @@ body.light-theme .status-select.status-unresolved {
 }
 
 .source-count {
+  display: grid;
+  gap: 3px;
+  justify-items: end;
   color: var(--text-soft);
   font-size: 0.78rem;
+  line-height: 1.25;
+  text-align: right;
   white-space: nowrap;
+}
+
+.source-count strong {
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.source-count span {
+  color: var(--text-soft);
 }
 
 .histogram-legend {
