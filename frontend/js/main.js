@@ -96,6 +96,18 @@ function showViewerReadOnlyToast(actionLabel = "That action") {
   );
 }
 
+function syncDashboardOriginFilter() {
+  const wrapper = document.getElementById("dashboardPostOriginFilter");
+  if (!wrapper) return;
+  wrapper.classList.toggle("hidden", state.dashboardPostsSource !== "Facebook");
+}
+
+function syncClusterOriginFilter() {
+  const wrapper = document.getElementById("clusterPostOriginFilter");
+  if (!wrapper) return;
+  wrapper.classList.toggle("hidden", state.clusterFilters.source !== "Facebook");
+}
+
 function updateViewerModeUI() {
   const viewer = isViewerMode();
   document.body.classList.toggle("viewer-mode", viewer);
@@ -741,6 +753,8 @@ function stopLiveUpdates() {
 // ─── Event Bindings ───────────────────────────────────────────────────────────
 function bindStaticControls() {
   document.getElementById("loginForm").addEventListener("submit", handleLogin);
+  syncDashboardOriginFilter();
+  syncClusterOriginFilter();
 
   document.getElementById("dashboardRange").addEventListener("change", async e => {
     state.dashboardRange  = e.target.value;
@@ -753,6 +767,11 @@ function bindStaticControls() {
 
   document.getElementById("dashboardPostsSource").addEventListener("change", e => {
     state.dashboardPostsSource = e.target.value;
+    if (state.dashboardPostsSource !== "Facebook") {
+      state.dashboardPostOrigin = "All";
+      document.getElementById("dashboardPostOrigin").value = "All";
+    }
+    syncDashboardOriginFilter();
     state.dashboardPage = 1;
     renderDashboard();
   });
@@ -783,7 +802,15 @@ function bindStaticControls() {
   document.getElementById("alertsDateRange").addEventListener("change", e => { state.alerts.dateRange = e.target.value; renderAlerts(); });
   document.getElementById("alertsSource").addEventListener("change",    e => { state.alerts.source    = e.target.value; renderAlerts(); });
 
-  document.getElementById("clusterSourceFilter").addEventListener("change",   e => { state.clusterFilters.source   = e.target.value; renderClusterDetail(); });
+  document.getElementById("clusterSourceFilter").addEventListener("change",   e => {
+    state.clusterFilters.source = e.target.value;
+    if (state.clusterFilters.source !== "Facebook") {
+      state.clusterFilters.postOrigin = "All";
+      document.getElementById("clusterPostOrigin").value = "All";
+    }
+    syncClusterOriginFilter();
+    renderClusterDetail();
+  });
   document.getElementById("clusterPostOrigin").addEventListener("change",     e => { state.clusterFilters.postOrigin = e.target.value; renderClusterDetail(); });
   document.getElementById("clusterSeverityFilter").addEventListener("change", e => { state.clusterFilters.severity = e.target.value; renderClusterDetail(); });
   document.getElementById("clusterDateFilter").addEventListener("change",     e => { state.clusterFilters.dateRange= e.target.value; renderClusterDetail(); });

@@ -321,14 +321,16 @@ function getIrrelevantPostsViewModel() {
 }
 
 function getDashboardViewModel() {
-  const dashboardOrigin = state.dashboardPostOrigin || "All";
-  const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { postOrigin: dashboardOrigin });
   const dashboardSource = state.dashboardPostsSource || "All";
   const dashboardSort = state.dashboardPostsSort || "newest";
+  const dashboardOrigin = dashboardSource === "Facebook"
+    ? (state.dashboardPostOrigin || "All")
+    : "All";
+  const filteredPosts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { postOrigin: dashboardOrigin });
   const dashboardPanelPosts = filteredPosts
     .filter(post => dashboardSource === "All" || post.source === dashboardSource);
   const sortedTrendingPosts = [...dashboardPanelPosts].sort((a, b) => comparePostsByChronology(a, b, dashboardSort));
-  const sourceDirectory = [...new Map(filteredPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
+  const sourceDirectory = [...new Map(dashboardPanelPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
   const pagination = getDashboardPagination(sortedTrendingPosts.length);
   const visiblePosts = sortedTrendingPosts.slice(pagination.startIndex, pagination.endIndex);
 
@@ -369,7 +371,11 @@ function renderClusterNav() {
 // ─── Render: Priority Posts ───────────────────────────────────────────────────
 function renderPriorityPosts(priority) {
   const filter = priority || document.getElementById("priorityFilter")?.value || "All";
-  const posts = filterPosts(state.posts, state.dashboardRange, "All", state.globalSearch, { postOrigin: state.dashboardPostOrigin || "All" })
+  const dashboardSource = state.dashboardPostsSource || "All";
+  const dashboardOrigin = dashboardSource === "Facebook"
+    ? (state.dashboardPostOrigin || "All")
+    : "All";
+  const posts = filterPosts(state.posts, state.dashboardRange, dashboardSource, state.globalSearch, { postOrigin: dashboardOrigin })
     .filter(p => filter === "All" || p.priority === filter)
     .sort((a, b) => b.severityRank - a.severityRank || getEngagement(b) - getEngagement(a))
     .slice(0, 15);
@@ -383,6 +389,7 @@ function renderPriorityPosts(priority) {
 
 // ─── Render: Dashboard ────────────────────────────────────────────────────────
 function renderDashboard() {
+  syncDashboardOriginFilter();
   const { filteredPosts, visiblePosts, sourceDirectory, pagination, sortedTrendingPosts } = getDashboardViewModel();
   const summaryCards = Array.isArray(state.dashboardSummary) && state.dashboardSummary.length
     ? state.dashboardSummary
