@@ -25,6 +25,7 @@ const state = {
   currentTheme:     "dark",
   currentCaptcha:   "",
   pendingFocusPost: null,
+  expandedPostCaptions: new Set(),
 
   // Filter state
   dashboardRange:   "30d",
@@ -173,6 +174,7 @@ function resetDeferredState() {
   state.statusHistory = {};
   state.verifications = {};
   state.pinned = new Set();
+  state.expandedPostCaptions = new Set();
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -867,6 +869,7 @@ async function handleDocumentClick(event) {
   const action        = event.target.closest("[data-action]");
   const pin           = event.target.closest("[data-pin]");
   const commentToggle = event.target.closest("[data-toggle-comments]");
+  const captionToggle = event.target.closest("[data-caption-toggle]");
   const restorePost   = event.target.closest("[data-restore-post]");
   const focusCommentPost = event.target.closest("[data-focus-comment-post]");
 
@@ -883,6 +886,15 @@ async function handleDocumentClick(event) {
   }
 
   if (pin) togglePin(pin.dataset.pin);
+  if (captionToggle) {
+    const postId = captionToggle.dataset.captionToggle;
+    if (state.expandedPostCaptions.has(postId)) {
+      state.expandedPostCaptions.delete(postId);
+    } else {
+      state.expandedPostCaptions.add(postId);
+    }
+    renderCurrentPage({ refreshDashboardSummary: false });
+  }
   if (restorePost) {
     if (isViewerMode()) {
       showViewerReadOnlyToast("Restoring resolved posts");

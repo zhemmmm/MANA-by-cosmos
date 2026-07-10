@@ -151,6 +151,38 @@ const PostsService = {
 };
 
 // ─── Toggle Pin ───────────────────────────────────────────────────────────────
+const POST_CAPTION_COLLAPSE_LIMIT = 260;
+
+function getCollapsedCaption(caption, limit = POST_CAPTION_COLLAPSE_LIMIT) {
+  const text = String(caption || "No text was captured in this scrape.");
+  if (text.length <= limit) return text;
+
+  const clipped = text.slice(0, limit).trimEnd();
+  const lastSpace = clipped.lastIndexOf(" ");
+  return `${(lastSpace > 160 ? clipped.slice(0, lastSpace) : clipped).trimEnd()}...`;
+}
+
+function renderPostCaption(post) {
+  const caption = String(post.caption || "No text was captured in this scrape.");
+  const isLong = caption.length > POST_CAPTION_COLLAPSE_LIMIT;
+  const isExpanded = state.expandedPostCaptions?.has(post.id);
+  const visibleCaption = isLong && !isExpanded ? getCollapsedCaption(caption) : caption;
+
+  return `
+    <div class="post-body ${isLong ? "post-body-collapsible" : ""}">
+      <span class="post-caption-text">${visibleCaption}</span>
+      ${isLong ? `
+        <button
+          class="post-caption-toggle"
+          type="button"
+          data-caption-toggle="${post.id}"
+          aria-expanded="${isExpanded ? "true" : "false"}"
+        >${isExpanded ? "Show less" : "See more"}</button>
+      ` : ""}
+    </div>
+  `;
+}
+
 async function togglePin(postId) {
   if (typeof isViewerMode === "function" && isViewerMode()) {
     showViewerReadOnlyToast("Managing saved posts");
@@ -286,7 +318,7 @@ function renderPostCards(postList, options = {}) {
           </div>
         </div>
 
-        <div class="post-body">${post.caption || "No text was captured in this scrape."}</div>
+        ${renderPostCaption(post)}
 
         <div class="post-metrics">
           <div class="post-metric-box">

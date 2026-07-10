@@ -1780,6 +1780,31 @@ body.light-theme .rec-popup-text  { color: #134e4a; }
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.post-body-collapsible {
+  display: block;
+}
+
+.post-caption-toggle {
+  display: inline;
+  margin-left: 6px;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.84rem;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+.post-caption-toggle:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.post-caption-toggle:focus-visible {
+  outline: 2px solid rgba(88, 166, 255, 0.65);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* ── Metrics row ─────────────────────────────────────────────────────────── */
 .post-metrics {
   display: flex;
