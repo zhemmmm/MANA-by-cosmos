@@ -1160,6 +1160,10 @@ body.sidebar-collapsed .sidebar {
   min-width: 180px;
 }
 
+.dashboard-controls .inline-select {
+  margin-right: 28px;
+}
+
 .analytics-grid,
 .settings-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2308,6 +2312,41 @@ body.light-theme .comments-box,
 body.light-theme .verify-popup,
 body.light-theme .post-metric-box { background: #f1f5fb; border-color: #e5e7eb; }
 body.light-theme .comment-entry   { background: #ffffff; border-color: #e5e7eb; }
+body.light-theme .comment-summary-chip {
+  background: #e8eef7;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+body.light-theme .comment-impact-pill.impact-high {
+  background: #ffedd5;
+  border-color: #fb923c;
+  color: #9a3412;
+}
+body.light-theme .comment-impact-pill.impact-medium {
+  background: #dbeafe;
+  border-color: #60a5fa;
+  color: #1d4ed8;
+}
+body.light-theme .comment-impact-pill.impact-low {
+  background: #d1fae5;
+  border-color: #34d399;
+  color: #047857;
+}
+body.light-theme .comment-tone-pill.tone-negative {
+  background: #ffe4e6;
+  border-color: #fb7185;
+  color: #be123c;
+}
+body.light-theme .comment-tone-pill.tone-neutral {
+  background: #e0f2fe;
+  border-color: #38bdf8;
+  color: #0369a1;
+}
+body.light-theme .comment-tone-pill.tone-positive {
+  background: #dcfce7;
+  border-color: #4ade80;
+  color: #15803d;
+}
 body.light-theme .dashboard-feed-footer {
   color: #64748b;
 }
