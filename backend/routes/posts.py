@@ -12,7 +12,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from data import CLUSTER_DEFINITIONS, TOPIC_TO_CLUSTER, date_range_cutoff, date_range_label, score_tone, top_keywords_from_posts
 from facebook_matching import build_post_match_index, find_post_match
-from models import ActivityLog, Comment, Post, PostTopic, SystemSetting, User, Watchlist, db, utc_iso
+from models import ActivityLog, Comment, Post, PostTopic, PreprocessedText, SystemSetting, User, Watchlist, db, utc_iso
 from services.corex.topic_modeler import MIN_CLUSTER_CONFIDENCE
 from services.vader.sentiment_analyzer import analyze_sentiment, compound_to_score
 from x_matching import build_post_match_index as build_x_post_match_index, find_post_match as find_x_post_match
@@ -104,7 +104,40 @@ def _latest_timestamp(*values):
     return max([value for value in values if value], default=None)
 
 
-def _build_comment_view(comment: Comment, post_tone: str):
+def _comment_relevance_map(comments: list[Comment]):
+    comment_ids = [comment.id for comment in comments if comment.id]
+    if not comment_ids:
+        return {}
+    rows = (
+        PreprocessedText.query
+        .filter(PreprocessedText.record_type == "comment")
+        .filter(PreprocessedText.raw_id.in_(comment_ids))
+        .all()
+    )
+    return {row.raw_id: row.is_relevant for row in rows}
+
+
+def _build_comment_view(comment: Comment, post_tone: str, is_relevant: bool = True):
+    if not is_relevant:
+        return {
+            "id": comment.id,
+            "author": comment.author,
+            "text": comment.text,
+            "likes": comment.likes,
+            "date": utc_iso(comment.date),
+            "isRelevant": False,
+            "relevanceLabel": "Irrelevant",
+            "impactLevel": None,
+            "impactLabel": None,
+            "impactScore": 0,
+            "sentimentTone": None,
+            "sentimentLabel": None,
+            "sentimentScore": None,
+            "signalLabel": "Irrelevant",
+            "signalClass": "tone-irrelevant",
+            "matchesPostTone": False,
+        }
+
     analysis = analyze_sentiment(comment.text or "")
     comment_tone = analysis["label"].lower()
     impact_level = comment_impact_level(comment)
@@ -121,6 +154,8 @@ def _build_comment_view(comment: Comment, post_tone: str):
         "text": comment.text,
         "likes": comment.likes,
         "date": utc_iso(comment.date),
+        "isRelevant": True,
+        "relevanceLabel": "Relevant",
         "impactLevel": impact_level,
         "impactLabel": impact_level,
         "impactScore": comment_rank(comment),
@@ -220,6 +255,7 @@ def get_posts():
                 comment.post = matched_post
                 comments.append(comment)
 
+        relevance_by_comment_id = _comment_relevance_map(comments)
         ranked_comments = defaultdict(list)
         for comment in comments:
             target_post_id = comment.post_id or getattr(comment.post, "id", None)
@@ -230,8 +266,19 @@ def get_posts():
         for post_id, post_comments in ranked_comments.items():
             post_tone = score_tone(db.session.get(Post, post_id).sentiment_score if db.session.get(Post, post_id) else 60)
             comment_views = [
-                _build_comment_view(comment, post_tone)
-                for comment in sorted(post_comments, key=comment_rank, reverse=True)
+                _build_comment_view(
+                    comment,
+                    post_tone,
+                    relevance_by_comment_id.get(comment.id, True),
+                )
+                for comment in sorted(
+                    post_comments,
+                    key=lambda item: (
+                        bool(relevance_by_comment_id.get(item.id, True)),
+                        comment_rank(item),
+                    ),
+                    reverse=True,
+                )
             ]
             comments_by_post[post_id] = comment_views
             top_comments_by_post_id[post_id] = [
@@ -245,6 +292,8 @@ def get_posts():
         tone_counts = {"negative": 0, "neutral": 0, "positive": 0}
         impact_counts = {"high": 0, "medium": 0, "low": 0}
         for comment_view in comment_views:
+            if not comment_view.get("isRelevant", True):
+                continue
             tone_counts[comment_view["sentimentTone"]] += 1
             impact_counts[comment_view["impactLevel"].lower()] += 1
 
@@ -479,9 +528,17 @@ def get_dashboard_comments():
         query = query.filter(Comment.date >= cutoff)
 
     comments = query.order_by(Comment.date.desc()).all()
+    relevance_by_comment_id = _comment_relevance_map(comments)
 
     ranked = sorted(comments, key=lambda comment: (comment_rank(comment), comment.likes, comment.date), reverse=True)
-    return jsonify({"comments": [comment.to_api_dict() for comment in ranked[:limit]]})
+    payload = []
+    for comment in ranked[:limit]:
+        item = comment.to_api_dict()
+        is_relevant = relevance_by_comment_id.get(comment.id, True)
+        item["isRelevant"] = is_relevant
+        item["relevanceLabel"] = "Relevant" if is_relevant else "Irrelevant"
+        payload.append(item)
+    return jsonify({"comments": payload})
 
 
 @posts_bp.route("/settings/email-alerts", methods=["PATCH"])
