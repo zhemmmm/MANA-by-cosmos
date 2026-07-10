@@ -151,7 +151,7 @@ const PostsService = {
 };
 
 // ─── Toggle Pin ───────────────────────────────────────────────────────────────
-const POST_CAPTION_COLLAPSE_LIMIT = 120;
+const POST_CAPTION_COLLAPSE_LIMIT = 180;
 
 function getCollapsedCaption(caption, limit = POST_CAPTION_COLLAPSE_LIMIT) {
   const text = String(caption || "No text was captured in this scrape.");
@@ -159,7 +159,7 @@ function getCollapsedCaption(caption, limit = POST_CAPTION_COLLAPSE_LIMIT) {
 
   const clipped = text.slice(0, limit).trimEnd();
   const lastSpace = clipped.lastIndexOf(" ");
-  return `${(lastSpace > 70 ? clipped.slice(0, lastSpace) : clipped).trimEnd()}...`;
+  return `${(lastSpace > 110 ? clipped.slice(0, lastSpace) : clipped).trimEnd()}...`;
 }
 
 function renderPostCaption(post) {
