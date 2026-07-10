@@ -252,24 +252,26 @@ function renderPostCards(postList, options = {}) {
       : (Array.isArray(post.topComments) ? post.topComments : []);
     const postTone = getDominantSentiment(post.sentimentScore || 0);
     const displayedComments = previewComments;
-    const derivedToneSummary = displayedComments.reduce((summary, comment) => {
+    const relevantDisplayedComments = displayedComments.filter(comment => comment.isRelevant !== false);
+    const irrelevantCommentCount = displayedComments.length - relevantDisplayedComments.length;
+    const derivedToneSummary = relevantDisplayedComments.reduce((summary, comment) => {
       const tone = (comment.sentimentTone || getDominantSentiment(comment.sentimentScore || 0).tone || "neutral").toLowerCase();
       if (tone === "negative") summary.negative += 1;
       else if (tone === "neutral") summary.neutral += 1;
       else summary.positive += 1;
       return summary;
     }, { negative: 0, neutral: 0, positive: 0 });
-    const commentToneSummary = displayedComments.length
+    const commentToneSummary = relevantDisplayedComments.length
       ? { ...derivedToneSummary, ...(post.commentToneSummary || {}) }
       : (post.commentToneSummary || {});
-    const commentImpactSummary = displayedComments.reduce((summary, comment) => {
+    const commentImpactSummary = relevantDisplayedComments.reduce((summary, comment) => {
       const impact = normalizePriority(comment.impactLevel || classifyCommentImpact(comment)).toLowerCase();
       if (impact === "high") summary.high += 1;
       else if (impact === "medium") summary.medium += 1;
       else summary.low += 1;
       return summary;
     }, { high: 0, medium: 0, low: 0 });
-    const effectiveImpactSummary = displayedComments.length
+    const effectiveImpactSummary = relevantDisplayedComments.length
       ? { ...commentImpactSummary, ...(post.commentImpactSummary || {}) }
       : (post.commentImpactSummary || commentImpactSummary);
 
@@ -364,8 +366,22 @@ function renderPostCards(postList, options = {}) {
               <span class="comment-summary-chip">High ${effectiveImpactSummary.high || 0}</span>
               <span class="comment-summary-chip">Medium ${effectiveImpactSummary.medium || 0}</span>
               <span class="comment-summary-chip">Low ${effectiveImpactSummary.low || 0}</span>
+              ${irrelevantCommentCount ? `<span class="comment-summary-chip comment-summary-irrelevant">Irrelevant ${irrelevantCommentCount}</span>` : ""}
             </div>
             ${displayedComments.map(c => {
+              if (c.isRelevant === false) {
+                return `
+                  <div class="comment-entry comment-entry-irrelevant">
+                    <div class="comment-entry-head">
+                      <strong>${anonymizedCommentAuthor({ ...c, source: post.source })}</strong>
+                      <div class="comment-entry-tags">
+                        <span class="comment-relevance-pill">Irrelevant</span>
+                      </div>
+                    </div>
+                    <span>${c.text || "No comment text captured."}</span>
+                  </div>
+                `;
+              }
               const tone = (c.sentimentTone || getDominantSentiment(c.sentimentScore || 0).tone || "neutral").toLowerCase();
               const impact = normalizePriority(c.impactLevel || classifyCommentImpact(c)).toLowerCase();
               const impactLabel = (c.impactLabel || `${impact.charAt(0).toUpperCase() + impact.slice(1)}`).replace(/\s+impact$/i, "");

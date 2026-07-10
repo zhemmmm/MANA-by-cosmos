@@ -465,6 +465,7 @@ function renderDashboard() {
   document.getElementById("dashboardComments").innerHTML = commentCards.length ? commentCards.map(c => `
     <article class="comment-card">
       <div class="comment-tag">${c.source || "Facebook"} comment</div>
+      ${c.isRelevant === false ? `<div class="comment-tag comment-tag-irrelevant">Irrelevant</div>` : ""}
       <small>${anonymizedCommentAuthor(c)} on ${c.pageSource || "Facebook Source"} · ${(state.clusters.find(cl => cl.id === c.clusterId) || {}).short || ""}</small>
       <p>${c.text}</p>
       <small>${formatNumber(toCount(c.likes))} likes · From post in ${c.location || "Philippines"}</small>
