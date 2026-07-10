@@ -103,6 +103,15 @@ def parse_iso_datetime(value: str):
 
 
 def normalize_item(item: dict):
+    source_payload = item.get("raw_payload_json") if isinstance(item.get("raw_payload_json"), dict) else {}
+    page_source = (
+        item.get("pageName")
+        or item.get("groupName")
+        or item.get("groupTitle")
+        or source_payload.get("groupName")
+        or source_payload.get("groupTitle")
+        or "Facebook Source"
+    )
     raw_text = (
         item.get("text")
         or item.get("caption")
@@ -147,9 +156,9 @@ def normalize_item(item: dict):
     return {
         "id": post_id,
         "source": "Facebook",
-        "page_source": item.get("pageName") or "Facebook Source",
+        "page_source": page_source,
         "account_url": item.get("facebookUrl") or item.get("inputUrl"),
-        "author": (item.get("user") or {}).get("name") or item.get("pageName"),
+        "author": (item.get("user") or {}).get("name") or page_source,
         "caption": text,
         "source_url": item.get("url") or item.get("topLevelUrl") or item.get("facebookUrl"),
         "external_id": str(item.get("postId") or ""),

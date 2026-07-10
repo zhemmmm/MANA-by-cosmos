@@ -200,18 +200,29 @@ class Post(TimestampMixin, db.Model):
                 payload = json.loads(self.raw_payload_json) or {}
             except (TypeError, ValueError, json.JSONDecodeError):
                 payload = {}
+        source_payload = payload.get("raw_payload_json") if isinstance(payload.get("raw_payload_json"), dict) else {}
 
         facebook_url = str(
             payload.get("facebookUrl")
             or payload.get("inputUrl")
             or payload.get("url")
             or payload.get("topLevelUrl")
+            or source_payload.get("facebookUrl")
+            or source_payload.get("inputUrl")
+            or source_payload.get("url")
+            or source_payload.get("topLevelUrl")
             or self.account_url
             or self.source_url
             or ""
         ).lower()
 
-        if payload.get("groupName") or "/groups/" in facebook_url:
+        group_markers = (
+            payload.get("groupName"),
+            payload.get("groupTitle"),
+            source_payload.get("groupName"),
+            source_payload.get("groupTitle"),
+        )
+        if any(group_markers) or "/groups/" in facebook_url:
             return "People"
         return "Admin"
 

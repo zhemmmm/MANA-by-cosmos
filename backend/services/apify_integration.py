@@ -89,16 +89,36 @@ def infer_kind_from_items(items: list[dict[str, Any]]) -> str | None:
             or item.get("topLevelUrl")
             or ""
         )
+        source_payload = item.get("raw_payload_json") if isinstance(item.get("raw_payload_json"), dict) else {}
+        source_facebook_url = str(
+            source_payload.get("facebookUrl")
+            or source_payload.get("inputUrl")
+            or source_payload.get("url")
+            or source_payload.get("topLevelUrl")
+            or ""
+        )
         facebook_markers = (
             item.get("pageName"),
             item.get("topReactionsCount"),
             item.get("reactionLikeCount"),
             item.get("groupName"),
+            item.get("groupTitle"),
+            source_payload.get("groupName"),
+            source_payload.get("groupTitle"),
             "/facebook.com/" in facebook_url,
             "facebook.com" in facebook_url,
+            "/facebook.com/" in source_facebook_url,
+            "facebook.com" in source_facebook_url,
         )
         if any(facebook_markers):
-            if "/groups/" in facebook_url or item.get("groupName"):
+            if (
+                "/groups/" in facebook_url
+                or "/groups/" in source_facebook_url
+                or item.get("groupName")
+                or item.get("groupTitle")
+                or source_payload.get("groupName")
+                or source_payload.get("groupTitle")
+            ):
                 return KIND_FACEBOOK_GROUP
             return KIND_FACEBOOK
 
