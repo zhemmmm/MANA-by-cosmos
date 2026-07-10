@@ -330,7 +330,7 @@ function getDashboardViewModel() {
   const dashboardPanelPosts = filteredPosts
     .filter(post => dashboardSource === "All" || post.source === dashboardSource);
   const sortedTrendingPosts = [...dashboardPanelPosts].sort((a, b) => comparePostsByChronology(a, b, dashboardSort));
-  const sourceDirectory = [...new Map(dashboardPanelPosts.map(p => [p.pageSource, p])).values()].slice(0, 8);
+  const sourceDirectory = buildSourcePostCounts(dashboardPanelPosts).slice(0, 8);
   const pagination = getDashboardPagination(sortedTrendingPosts.length);
   const visiblePosts = sortedTrendingPosts.slice(pagination.startIndex, pagination.endIndex);
 
@@ -343,14 +343,45 @@ function getDashboardViewModel() {
   };
 }
 
+function buildSourcePostCounts(posts = []) {
+  const sourceMap = new Map();
+
+  posts.forEach(post => {
+    const sourceName = post.pageSource || post.author || "Unknown source";
+    const sourceType = post.source || "Source";
+    const key = `${sourceType}::${sourceName}`;
+    const existing = sourceMap.get(key);
+
+    if (existing) {
+      existing.postCount += 1;
+      if (comparePostsByChronology(post, existing.latestPost, "newest") < 0) {
+        existing.latestPost = post;
+      }
+      return;
+    }
+
+    sourceMap.set(key, {
+      pageSource: sourceName,
+      source: sourceType,
+      postCount: 1,
+      latestPost: post,
+    });
+  });
+
+  return [...sourceMap.values()].sort((a, b) => {
+    if (b.postCount !== a.postCount) return b.postCount - a.postCount;
+    return comparePostsByChronology(a.latestPost, b.latestPost, "newest");
+  });
+}
+
 function renderSourceDirectorySection(sourceDirectory) {
-  document.getElementById("sourceDirectory").innerHTML = sourceDirectory.length ? sourceDirectory.map(post => `
+  document.getElementById("sourceDirectory").innerHTML = sourceDirectory.length ? sourceDirectory.map(source => `
     <div class="source-item">
       <div class="source-item-main">
-        <div class="source-badge ${post.source === "Facebook" ? "facebook" : "x"}">${post.source === "Facebook" ? "F" : "X"}</div>
-        <div class="source-item-meta"><strong>${post.pageSource}</strong><span>${post.source}</span></div>
+        <div class="source-badge ${source.source === "Facebook" ? "facebook" : "x"}">${source.source === "Facebook" ? "F" : "X"}</div>
+        <div class="source-item-meta"><strong>${source.pageSource}</strong><span>${source.source}</span></div>
       </div>
-      <div class="source-count">${formatCompact(getEngagement(post))} interactions</div>
+      <div class="source-count">${formatNumber(source.postCount)} ${source.postCount === 1 ? "post" : "posts"}</div>
     </div>
   `).join("") : (state.loading.criticalData
     ? renderLoadingMessage("Loading source directory...")
