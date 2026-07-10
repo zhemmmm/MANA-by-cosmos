@@ -114,7 +114,7 @@ def _comment_relevance_map(comments: list[Comment]):
         .filter(PreprocessedText.raw_id.in_(comment_ids))
         .all()
     )
-    return {row.raw_id: row.is_relevant for row in rows}
+    return {row.raw_id: (row.is_relevant and not row.is_emotion_only) for row in rows}
 
 
 def _build_comment_view(comment: Comment, post_tone: str, is_relevant: bool = True):

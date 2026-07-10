@@ -609,7 +609,7 @@ def preprocess_record(
             is_emotion_only = record_type == "comment" and is_emotion_only_text(raw_text, cleaned, tokens)
             result["translated_text"] = ""
             result["is_emotion_only"] = is_emotion_only
-            result["is_relevant"] = bool(parent_post_id) if is_emotion_only else False
+            result["is_relevant"] = False
             result["preprocessing_stage"] = "finalized" if is_emotion_only else "tokenized"
             result["preprocessing_status"] = "processed" if is_emotion_only else "skipped"
             result["error_message"] = "Text became empty after preprocessing."
@@ -666,8 +666,8 @@ def preprocess_record(
 
         is_emotion_only = record_type == "comment" and is_emotion_only_text(raw_text, cleaned, tokens)
         relevant = is_relevant_text(final_tokens, bigrams, cleaned, parent_context_text=parent_context_text)
-        if is_emotion_only and parent_post_id:
-            relevant = True
+        if is_emotion_only:
+            relevant = False
 
         result["negation_handled_tokens"] = negation_tokens
         result["lemmatized_tokens"] = lemmatized_tokens
